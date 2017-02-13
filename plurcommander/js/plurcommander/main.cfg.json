@@ -8,7 +8,7 @@
       "plurcommander-cfg/webui/service/Main" ]
   },
   { "namepath": "plur/web/ui/App",
-    "service": "plurcommander/webui/service/Main"
+    "main": "plurcommander/webui/service/Main"
   },
   { "namepath": "plurcommander/webui/service/Main",
     "service": {
