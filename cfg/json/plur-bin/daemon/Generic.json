@@ -1,0 +1,7 @@
+{
+    "namepath": "plur/config/Config",
+    "subjectNamepath": "plur/service/daemon/Generic",
+    "serviceNamepaths": [
+        "plur/node/NodeCommService"
+    ]
+}

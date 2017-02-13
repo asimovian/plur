@@ -20,7 +20,7 @@ Common third-party software services (e.g., PostgreSQL, Memcached, etc.) are iso
 
 Contributors
 ------------
-* Roy Laurie \<<roy.laurie@gmail.com>\>, Asimovian LLC
+* Roy Laurie \<<roy.laurie@asimovian.software>\>, Asimovian LLC
 
 
 Core Stack
