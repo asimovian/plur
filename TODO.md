@@ -1,12 +1,19 @@
 TODO
-===
+====
 
-feb 2017
+Feb 2017
 --------
+Working towards v0.0.1 ...
 
-* es6
-* * pull PlurPromise (oob now)
-* finish comm channel
-* research tls handshake v homegrown
-* more code docs.
-* verify tests, work towards 100%
+* Well defined: Config library
+* Basic functionality: UI & WebUI library
+* Well defined: Bootstrap -> IApplication -> IPlurNode -> IService
+* Operational: IPlurNode -> CommService <-> WebsocketClientService
+* Operational: IService <-> CommService
+* ES6 everything. Remove PlurPromise.
+* Basic JSDoc3 + ClosureDoc for everything.
+  * @copyright, @license, and @module in every file.
+  * @alias in every class.
+  * @extends, @abstract, @interface, and @final for every class that needs them.
+  * @type for every class member variable
+  * @param, @returns, @throws for every class method that needs them.
