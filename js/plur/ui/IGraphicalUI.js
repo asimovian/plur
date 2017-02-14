@@ -1,0 +1,1 @@
+// models the GUI platform itself, to be used by the GUI Controller

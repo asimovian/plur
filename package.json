@@ -16,7 +16,13 @@
     "asimovian",
     "network",
     "framework", 
-    "platform"
+    "platform",
+    "service",
+    "application",
+    "daemon",
+    "app",
+    "p2p",
+    "crypto"
   ],
   "author": "roylaurie <roy.laurie@gmail.com>",
   "license": "MIT",

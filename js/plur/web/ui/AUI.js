@@ -12,13 +12,13 @@ function(
     IGraphicalUI ) {
 
 /**
- * Handles core node-to-node communication, including handshakes.
+ * An
  *
- * @class AWebUI
+ * @class AWebUIService
+ * @alias {plur/web/ui/AWebUIService}
  * @abstract
- * @param plur/node/PlurNode
  */
-class AWebUI  {
+class AWebUIService  {
     static getDefaultConfig() {
         return AWebUI._DEFAULT_CONFIG;
     };

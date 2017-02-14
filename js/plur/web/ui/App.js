@@ -7,7 +7,7 @@
  'use strict';
 
 define([
-    'plur/PlurObject',
+    '../../PlurObject',
     'plur/app/IApplication',
     'plur/node/INode',
     'plur/node/Service',
