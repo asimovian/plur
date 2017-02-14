@@ -8,8 +8,8 @@ Working towards v0.0.1 ...
 * Well defined: Config library
 * Basic functionality: UI & WebUI library
 * Well defined: Bootstrap -> IApplication -> IPlurNode -> IService
-* Operational: IPlurNode -> CommService <-> WebsocketClientService
-* Operational: IService <-> CommService
+* Operational: IPlurNode -> CommChannel <-> WebsocketClientService
+* Operational: IService <-> CommChannel
 * ES6 everything. Remove PlurPromise.
 * Basic JSDoc3 + ClosureDoc for everything.
   * @copyright, @license, and @module in every file.
