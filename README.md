@@ -1,6 +1,6 @@
-plur
-====
 ![Image of plur](/doc/plur.png)
+====
+
 
 Plur is both an application framework and a cloud platform that is designed to scale across networks of virtual machines.
 
