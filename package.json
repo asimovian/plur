@@ -1,11 +1,12 @@
 {
   "name": "@asimovian/plur",
   "version": "0.0.1",
-  "description": "A distributed internet application platform",
+  "type": "module",
+  "description": "An application framework and nodal network platform.",
   "main": "",
   "scripts": {
-    "test": "node ./plur-bin/bin/plur-bin/test/test.js",
-    "docgen": "jsdoc -c cfg/json/plur/jsdoc/jsdoc.json"
+    "test": "node ./bin/test.js",
+    "docgen": "jsdoc -c cfg/jsdoc/jsdoc.json"
   },
   "repository": {
     "type": "git",
