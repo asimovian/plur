@@ -5,7 +5,7 @@
 
 The **framework** provides reusable cross-platform JS libraries for rapid development of both front-end and server-side applications. Applications are interconnected as plur _nodes_ out of the box. The API also provides basic identity, authentication, and message passing.
 
-The cloud **platform** builds on top of the framework, providing scalable network support services that control the plur _cloud_, control VMs, authenticate roles and requests, and route messages between nodes based on _roles_ and technical _capabilties_.
+The cloud **platform** builds on top of the framework, providing scalable network services that control the plur _cloud_, control VMs, authenticate roles and requests, and route messages between nodes based on _roles_ and technical _capabilties_.
 
 Documentation
 -------------
