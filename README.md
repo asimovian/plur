@@ -1,8 +1,7 @@
 ![Image of plur](/doc/plur.png)
 ====
 
-
-Plur is both an application framework and a cloud platform that is designed to scale across networks of virtual machines.
+**Plur** is both an application framework and a nodal network cloud platform that scales apps and services across VMs.
 
 The **framework** provides reusable cross-platform JS libraries for rapid development of both front-end and server-side applications. Applications are interconnected as plur Nodes out of the box. The API also provides basic identity, authentication, and message passing built in to each application.
 
