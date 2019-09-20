@@ -4,7 +4,7 @@
 
 Plur is both an application framework and a cloud platform that is designed to scale across networks of virtual machines.
 
-The **framework** provides cross-platform JS libraries for rapid development of both front-end and server-side applications. Applications are interconnected as Nodes out of the box. The API also provides basic identity, authentication, and message passing built in to each application.
+The **framework** provides reusable cross-platform JS libraries for rapid development of both front-end and server-side applications. Applications are interconnected as plur Nodes out of the box. The API also provides basic identity, authentication, and message passing built in to each application.
 
 The cloud **platform** builds on top of the framework, providing scalable network support services that control the plur Cloud, control VMs, authenticate roles and requests, and route messages between nodes based on capabilties.
 
