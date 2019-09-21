@@ -56,34 +56,6 @@ class PlurObject {
     };
 
     /**
-     * Creates a prototype object; extending it from a parent constructor if provided via Object.create().
-     * Injects a namepath variable to the constructor and prototype that provided the namespace + partial file name.
-     * Injects an implemented assoc array into the constructor that maintains namepaths of all interfaces implemented.
-     *
-     * @param {string} namepath
-     * @param {class} constructor
-     * @param {IPlurified.prototype.constructor} parentConstructor
-     * @returns {{}} constructor.prototype
-     */
-    static create(namepath, constructor, parentConstructor) {
-        let prototype = constructor.prototype;
-
-        if (typeof parentConstructor !== 'undefined') {
-            prototype = Object.create(parentConstructor.prototype);
-            prototype.constructor = constructor;
-        }
-
-        // inject namepath on both constructor and prototype
-        Object.defineProperty(constructor, 'namepath', { value: namepath });
-        prototype.namepath = namepath;
-
-        // inject an array that will store namepaths of interfaces as keys into the constructor
-        Object.defineProperty(constructor, 'implemented', { value: {'plur/IPlurified' : IPlurified } });
-
-        return prototype;
-    };
-
-    /**
      * Initializes a class as a Plur Object.
      *
      * Designed to be used from within a ES6+ class declaration. Always assigned to a static property "namepath".
@@ -108,8 +80,8 @@ class PlurObject {
      */
     static plurify(namepath, constructor, ifaces) {
         // inject namepath on the prototype.
-        Object.defineProperty(constructor, 'namepath', { value: namepath });
-        Object.defineProperty(constructor.prototype, 'namepath', { value: namepath });
+        PlurObject.constProperty(constructor, 'namepath', namepath);
+        PlurObject.constProperty(constructor.prototype, 'namepath', namepath);
         constructor.implemented = { 'plur/IPlurified' : IPlurified };
 
         if (typeof ifaces === 'undefined') {
@@ -184,7 +156,7 @@ class PlurObject {
     };
 
     static constProperty(object, key, value) {
-        Object.defineProperty(object, key, value, { writable: false, enumerable: false, configurable: false });
+        Object.defineProperty(object, key, { value: value, writable: false, enumerable: true, configurable: false });
     };
 
     constructor() {

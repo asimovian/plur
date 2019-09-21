@@ -1,10 +1,8 @@
 /**
- * @copyright 2017 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur
  */
-
-define(function() {
 
 /**
  * Standard interface for all Plur library classes.
@@ -17,8 +15,7 @@ class IPlurified {
     };
 }
 
-Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified' } );
-Object.defineProperty(IPlurified, 'implemented', { value: [] } );
+Object.defineProperty(IPlurified, 'namepath', {value: 'plur/IPlurified', writable: false, enumerable: true, configurable: false});
+Object.defineProperty(IPlurified, 'implemented', {value: [], writable: true, enumerable: true, configurable: true});
 
-return IPlurified;
-});
+export default IPlurified;

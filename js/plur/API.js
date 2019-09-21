@@ -1,5 +1,5 @@
 /**
- * @copyright 2016 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @requires plur/PlurObject
  * @module plur/PlurAPI
@@ -30,8 +30,6 @@ PlurObject.plurify('plur/plurAPI', PlurAPI);
 const API = new PlurAPI(
     '0.0.1',
     'git://github.com/asimovian/plur.git',
-    'roylaurie/unstable'
-);
-
+    'roylaurie/unstable' );
 
 export default API;
