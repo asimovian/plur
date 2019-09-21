@@ -14,7 +14,7 @@ Documentation
 
 Contributors
 ------------
-* Roy Laurie \<<roy.laurie@asimovian.software>\>, Asimovian LLC
+* Roy Laurie \<<roy.laurie@asimovian.software>\>
 
 License (MIT)
 --------------
