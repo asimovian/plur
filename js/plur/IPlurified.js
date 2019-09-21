@@ -22,12 +22,12 @@
  *   - Export the class as the default export.
  *
  * Interface classes must:
- *   - Throw InterfaceError on construction - not constructable.
- *   - Assign only properties, static or prototype, meant to be implemented methods. Assigned PlurObject.abstractMethod.
- *   - Use the @interface jsdoc tag.
+ *   - Extend from this class or one of its descendents.
+ *   - Call super() on construction and nothing else. (Not constructable: Throws error)
+ *   - Properties intended to be implemented as methods should assign PlurObject.abstractMethod as the value.
+ *   - Use the @interface class doc tag. Use @param, @returns and @throws tags to define and enforce method signatures.
  *
  * @interface
- * @final
  */
 class IPlurified {
     constructor() {
@@ -35,7 +35,9 @@ class IPlurified {
     };
 }
 
-Object.defineProperty(IPlurified, 'namepath', {value: 'plur/IPlurified', writable: false, enumerable: true, configurable: false});
-Object.defineProperty(IPlurified, 'implemented', {value: [], writable: true, enumerable: true, configurable: true});
+Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified', writable: false, enumerable: true,
+    configurable: false });
+Object.defineProperty(IPlurified, 'implemented', { value: [], writable: true, enumerable: true,
+    configurable: true });
 
 export default IPlurified;
