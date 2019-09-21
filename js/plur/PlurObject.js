@@ -1,11 +1,11 @@
 /**
- * @copyright 2016 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur
+ * @module plur/PlurObject
  */
 'use strict';
 
-import { IPlurified } from 'plur/IPlurified';
+import IPlurified from 'plur/IPlurified';
 
 
 /**

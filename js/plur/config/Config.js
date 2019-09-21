@@ -5,9 +5,7 @@
  */
 'use strict';
 
-import { PlurObject } from 'plur/PlurObject';
-import { IConfigurable } from 'plur/config/IConfigurable';
-import { MapTreeNode } from 'plur/tree/MapNode';
+import PlurObject from 'plur/PlurObject';
 
 /**
  * Maintains key/value configuration for a subject object, typically for a prototype.
@@ -18,16 +16,14 @@ import { MapTreeNode } from 'plur/tree/MapNode';
  */
 class Config {
     /**
-     *
      * @param {IConfigurable} configurableObject
      * @param {Config} defaultConfig
      * @param {} override 
-     *
      */
     constructor(configurableObject, defaultConfig, override) {
-	this._configuredNamepath = configurableObject.namepath;
-	this._defaultConfig = ( defaultConfig || null );
-	this._parentDefaultConfig = (defaultConfig ? defaultConfig.getParentConfig() : null );
+        this._configuredNamepath = configurableObject.namepath;
+        this._defaultConfig = ( defaultConfig || null );
+        this._parentDefaultConfig = (defaultConfig ? defaultConfig.getParentConfig() : null );
         this._config = {};
 
         // build _config
@@ -37,7 +33,7 @@ class Config {
      * @returns {{string:*}}
      * */
     config() {
-	const cfgobj = //todo: deep clone _config
+        const cfgobj = {}; //todo: deep clone _config
         return cfgobj;
     };
 
@@ -46,7 +42,7 @@ class Config {
     };
 }
 
-PlurObject.plurify('plur/config/Config', Config, [ IConfig ]);
+PlurObject.plurify('plur/config/Config', Config);
 
 
 Config.merge = function(config1, config2) {
@@ -69,16 +65,16 @@ Config._mergePrimitive = function(primitiveMap) {
 };
 
 Config._fillWithPrimitiveMap = function(config, configTreeNode, primitiveMap) {
-    for (var key in primitiveMap) {
-        var node = null;
+    for (const key in primitiveMap) {
+        let node = null;
 
-        if (!configTreeNode.has(key) {
+        if (!configTreeNode.has(key)) {
             node = configTreeNode.addChild(new MapTreeNode(configTreeNode, key));
         } else {
             node = configTreeNode.get(node);
         }
 
-        var value = primitiveMap[key];
+        const value = primitiveMap[key];
 
         switch(typeof value) {
         case 'string':
@@ -110,4 +106,4 @@ Config._fillWithPrimitiveMap = function(config, configTreeNode, primitiveMap) {
 };
 
 
-export default Config
+export default Config;
