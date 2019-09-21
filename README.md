@@ -1,4 +1,4 @@
-![Image of plur](/doc/plur.png)
+![Image of plur](/plur.png)
 ====
 
 **Plur** is both an application framework and a nodal network cloud platform that scales apps and services across VMs.
