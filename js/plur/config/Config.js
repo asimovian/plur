@@ -1,22 +1,20 @@
 /**
- * @copyright 2017 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/config/Config
  */
-define([
-    'plur/PlurObject',
-    'plur/config/IConfig',
-    'plur/tree/MapNode' ],
-function(
-    PlurObject,
-    IConfig,
-    MapTreeNode ) {
+'use strict';
+
+import { plurObject } from 'plur/PlurObject';
+import { IConfigurable } from 'plur/config/IConfigurable';
+import { MapTreeNode } from 'plur/tree/MapNode';
 
 /**
  * Maintains key/value configuration for a subject object, typically for a prototype.
  *
  * @class Config
  * @alias {module:plur/config/Config}
+ * @final
  */
 class Config {
     /**
@@ -27,24 +25,33 @@ class Config {
      */
     constructor(config, parentConfig, override) {
         this._inheritanceTree = new MapTreeNode();
-        this._configurableNamepath = null;
-        this._parentConfigurableNamepath = null;
+        this._configuredNamepath = null;
+        this._parentConfiguredNamepath = null;
         this._config = {};
 
         if (config instanceof Config) {
         } else {
         }
     };
+
+    /**
+     * @returns {{string:*}}
+     * */
+    config() {
+	const cfgobj = //todo: deep clone
+        return cfgobj;
+    };
+	
+    getNamepath() {
+        return this._configuredNamepath;
+    };
 }
 
 PlurObject.plurify('plur/config/Config', Config, [ IConfig ]);
 
 
-Config.prototype.getConfigurableNamepath = function() {
-    return this._configurableNamepath;
-};
-
-Config.prototype.merge = function(config) {
+Config.merge = function(config1, config2) {
+	/*
     if (typeof config === 'undefined') {
         return this;
     } else if (config instanceof Config) {
@@ -52,20 +59,17 @@ Config.prototype.merge = function(config) {
     } else {
         return this._mergePrimitive(config);
     }
+    */
 };
 
-Config.prototype.mergeJson = function(json) {
-    return this.merge(JSON.parse(json));
-};
-
-Config.prototype._mergePrimitive = function(primitiveMap) {
+Config._mergePrimitive = function(primitiveMap) {
     var config = this.copy();
     this._fillWithPrimitiveMap(config, this._configTree, primitiveMap)
     config._update();
     return config;
 };
 
-Config.prototype._fillWithPrimitiveMap = function(config, configTreeNode, primitiveMap) {
+Config._fillWithPrimitiveMap = function(config, configTreeNode, primitiveMap) {
     for (var key in primitiveMap) {
         var node = null;
 
@@ -106,23 +110,5 @@ Config.prototype._fillWithPrimitiveMap = function(config, configTreeNode, primit
     }
 };
 
-Config.prototype.copy = function() {
-};
 
-Config.prototype.config = function() {
-    return this._config;
-};
-
-Config.prototype.configure = function(map) {
-    /* Example usage:
-     *     config.configure({ foo.bar.foobar: 'numberwang' });
-     *     var foobar = config.config().foo.bar.foobar;
-     *     console.log(foobar); // prints "numberwang"
-     */
-};
-	
-
-	
-
-return Config;
-});
+export default Config
