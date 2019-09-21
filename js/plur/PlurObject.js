@@ -3,12 +3,10 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur
  */
- 'use strict';
+'use strict';
 
-define([
-    'plur/IPlurified' ],
-function(
-    IPlurified ) {
+import { IPlurified } from 'plur/IPlurified';
+
 
 /**
  * Utility for prototype object construction.
@@ -185,12 +183,16 @@ class PlurObject {
         return values;
     };
 
+    static constProperty(object, key, value) {
+        Object.defineProperty(object, key, value, { writable: false, enumerable: false, configurable: false });
+    };
+
     constructor() {
         throw new Error('Cannot instantiate private constructor of PlurObject');
     };
 }
 
+
 PlurObject.plurify('plur/PlurObject', PlurObject);
 
-return PlurObject;
-});
+export default PlurObject;
