@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import { plurObject } from 'plur/PlurObject';
+import { PlurObject } from 'plur/PlurObject';
 import { IConfigurable } from 'plur/config/IConfigurable';
 import { MapTreeNode } from 'plur/tree/MapNode';
 
@@ -19,29 +19,28 @@ import { MapTreeNode } from 'plur/tree/MapNode';
 class Config {
     /**
      *
-     * @param IConfig config
-     * @param parentConfigurable
-     * @param config
+     * @param {IConfigurable} configurableObject
+     * @param {Config} defaultConfig
+     * @param {} override 
+     *
      */
-    constructor(config, parentConfig, override) {
-        this._inheritanceTree = new MapTreeNode();
-        this._configuredNamepath = null;
-        this._parentConfiguredNamepath = null;
+    constructor(configurableObject, defaultConfig, override) {
+	this._configuredNamepath = configurableObject.namepath;
+	this._defaultConfig = ( defaultConfig || null );
+	this._parentDefaultConfig = (defaultConfig ? defaultConfig.getParentConfig() : null );
         this._config = {};
 
-        if (config instanceof Config) {
-        } else {
-        }
+        // build _config
     };
 
     /**
      * @returns {{string:*}}
      * */
     config() {
-	const cfgobj = //todo: deep clone
+	const cfgobj = //todo: deep clone _config
         return cfgobj;
     };
-	
+
     getNamepath() {
         return this._configuredNamepath;
     };
@@ -51,7 +50,7 @@ PlurObject.plurify('plur/config/Config', Config, [ IConfig ]);
 
 
 Config.merge = function(config1, config2) {
-	/*
+/*
     if (typeof config === 'undefined') {
         return this;
     } else if (config instanceof Config) {
@@ -59,7 +58,7 @@ Config.merge = function(config1, config2) {
     } else {
         return this._mergePrimitive(config);
     }
-    */
+*/
 };
 
 Config._mergePrimitive = function(primitiveMap) {
