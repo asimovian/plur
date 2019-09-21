@@ -6,7 +6,6 @@
 'use strict';
 
 import PlurObject from 'plur/PlurObject';
-import IPlurified from 'plur/IPlurified';
 import InterfaceError from 'plur/error/Interface';
 
 /**
@@ -16,11 +15,12 @@ import InterfaceError from 'plur/error/Interface';
  *   - Maintain an immutable inherited (possibly modified) copy of the static plur/Config for each instance of the class.
  *   - Provide accessors for the static Config and the instance's Config->config()
  * @interface
+ * @implements {plur/IPlurified}
  * @final
  */
-class IConfigurable extends IPlurified {
+class IConfigurable {
     constructor() {
-        super();
+        throw new InterfaceError(this);
     };
 }
 
@@ -30,7 +30,7 @@ PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
  * Returns an immutable copy of the configuration data as a primitive nested JS object.
  * @type {function}
  * @abstract
- * @returns {{(string):(*)}}
+ * @returns {!Object<string,(number|string|Object|null>)}
  */
 IConfigurable.prototype.config = PlurObject.abstractMethod;
 
@@ -38,7 +38,7 @@ IConfigurable.prototype.config = PlurObject.abstractMethod;
  * Returns the default configuration for the configured class.
  * @type {function}
  * @abstract
- * @returns {plur/Config}
+ * @returns {!plur/Config}
  */
 IConfigurable.getDefaultConfig = PlurObject.abstractMethod;
 

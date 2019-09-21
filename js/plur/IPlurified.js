@@ -22,10 +22,10 @@
  *   - Export the class as the default export.
  *
  * Interface classes must:
- *   - Extend from this class or one of its descendents.
- *   - Call super() on construction and nothing else. (Not constructable: Throws error)
+ *   - Throw an InterfaceError on construction and nothing else. (Not constructable: Throws error)
  *   - Properties intended to be implemented as methods should assign PlurObject.abstractMethod as the value.
- *   - Use the @interface class doc tag. Use @param, @returns and @throws tags to define and enforce method signatures.
+ *   - Use the @interface and @implements class doc tags. List IPlurified as implemented.
+ *   - Use @param, @returns and @throws tags on abstract method signatures to define and enforce a contract.
  *
  * @interface
  */
@@ -35,8 +35,19 @@ class IPlurified {
     };
 }
 
+/**
+ * The class's module path.
+ * @alias IPlurified.namepath
+ * @type {string}
+ */
 Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified', writable: false, enumerable: true,
     configurable: false });
+
+/**
+ * A map of each implemented class, with the namepath as the key and the class object as the value.
+ * @alias IPlurified.implemented
+ * @type {!Object<string,!IPlurified>}
+ */
 Object.defineProperty(IPlurified, 'implemented', { value: [], writable: true, enumerable: true,
     configurable: true });
 
