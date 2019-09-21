@@ -1,44 +1,19 @@
-plur
+![Image of plur](/doc/plur.png)
 ====
-![Image of "plur"](https://raw.githubusercontent.com/asimovian/plur/master/doc/plur.png)
 
-(This project is in an early development stage.)
+**Plur** is both an application framework and a nodal network cloud platform that scales apps and services across VMs.
 
-Plur is a distributed Web3 application platform that is intended to scale across networks of virtual machines. The framework
-is designed to improve cross-platform code reuse by allowing most of the same libraries to be imported on both backend and
-frontend applications.
+The **framework** provides reusable cross-platform JS libraries for rapid development of both front-end and server-side applications. Applications are **interconnected** as plur *nodes* out of the box. The API also provides basic identity, authentication, and message passing.
 
-One or more plur services run on each plur network node (application), communicating with local services directly
-and with remote services through encrypted message forwarding.
-
-Plur networks are controlled by management services that receive and react to metrics from other plur services as well
-as to new directives by the network administrators. Management services start, stop, and reconfigure other plur
-services dynamically, based on changing operational requirements.
-
-Common third-party software services (e.g., PostgreSQL, Memcached, etc.) are isolated from communicating with anything other than their locally running plur node, which forwards only authorized requests from application servers.
-
+The cloud **platform** builds on top of the framework, scaling core API services across a nodal network that we call a plur **cloud**. Each plur _cloud_ operates as simple network appliance that may be started and stopped at will. Internally, the cloud contains plur **nodes** that control VMs, authenticate requests, route messages, and scale any apps or services developed with the plur framework.
 
 Contributors
 ------------
-* Roy Laurie \<<roy.laurie@gmail.com>\>, Asimovian LLC
-
-
-Core Stack
-----------
-Javascript is the primary programming language used for both server-side and client-side API.
-
-Linux is the targeted server-side environment. 
-
-HTML5/CSS is used for presentation on client-side applications.
-
-PostgreSQL is the primary database service used.
-
-Git is used to distribute open-source modules and upgrades within the platform.
-
+* Roy Laurie \<<roy.laurie@asimovian.software>\>, Asimovian LLC
 
 License (MIT)
 --------------
-Copyright (c) 2017 Asimovian LLC
+Copyright (c) 2019 Asimovian LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
