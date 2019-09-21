@@ -1,16 +1,12 @@
 /**
- * @copyright 2017 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/config
  */
 'use strict';
 
-define([
-    'plur/PlurObject',
-    'plur/error/Interface' ],
-function(
-    PlurObject,
-    InterfaceError ) {
+import { PlurObject } from 'plur/PlurObject';
+import { InterfaceError } from 'plur/error/Interface';
 
 /**
  * Interface for any configurable prototype.
@@ -26,29 +22,10 @@ class IConfigurable {
 PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
 
 /**
- * @interface
- */
-IConfigurable.IStatic = class {
-    constructor() {
-        throw new InterfaceError(this);
-    };
-}
-
-/**
- * @returns {plur/config/ITemplate}
- */
-IConfigurable.IStatic.prototype.configTemplate = PlurObject.abstractMethod;
-
-/**
- * @returns {plur/config/IConfig}
- */
-IConfigurable.prototype.getConfig = PlurObject.abstractMethod;
-
-/**
+ * Returns an immutable copy of the config data as a primitive nested JS object.
  * @returns {{(string):(*)}}
  */
 IConfigurable.prototype.config = PlurObject.abstractMethod;
 
 
-return IConfigurable;
-});
+export default IConfigurable;
