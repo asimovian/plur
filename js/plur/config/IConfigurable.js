@@ -14,6 +14,7 @@ import InterfaceError from 'plur/error/Interface';
  *   - Maintain an immutable static plur/Config with a schema & default settings.
  *   - Maintain an immutable inherited (possibly modified) copy of the static plur/Config for each instance of the class.
  *   - Provide accessors for the static Config and the instance's Config->config()
+ *
  * @interface
  * @implements {plur/IPlurified}
  * @final
@@ -30,7 +31,7 @@ PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
  * Returns an immutable copy of the configuration data as a primitive nested JS object.
  * @type {function}
  * @abstract
- * @returns {!Object<string,(number|string|Object|null>)}
+ * @returns {!Object<string,(number|string|Object|null)>}
  */
 IConfigurable.prototype.config = PlurObject.abstractMethod;
 
@@ -41,6 +42,5 @@ IConfigurable.prototype.config = PlurObject.abstractMethod;
  * @returns {!plur/Config}
  */
 IConfigurable.getDefaultConfig = PlurObject.abstractMethod;
-
 
 export default IConfigurable;

@@ -11,7 +11,6 @@ import InterfaceError from 'plur/error/Interface';
 /**
  * Transforms data objects to and from other formats (e.g., JSON, XML, ProtoBuff, etc.).
  *
- * @constructor plur/model/ITransformer
  * @interface
  * @implements {plur/IPlurified}
  */

@@ -6,6 +6,7 @@
 'use strict';
 
 import PlurObject from 'plur/PlurObject';
+import Bootstrap from "./Bootstrap";
 
 /**
  * Plur Framework API information. Version, debugging, etc.
@@ -15,16 +16,24 @@ import PlurObject from 'plur/PlurObject';
  */
 class API {
     /**
-     * Retrieves an API object by name.
+     * Retrieves an API object by name. Without parameters, retrieves plur. With an API object, registers the API.
      *
-     * @param {string} name
-     * @returns {API}
-     * @throws {Error} If name not found.
+     * @param {string=} name
+     * @param {!API=} api
+     * @returns {!API}
+     * @throws {Error} If name not found or unable to register.
      */
-    static api(name) {
-        if (typeof name === 'undefined') {
+    static api(name, api) {
+        if (typeof name === 'undefined') { // no parameters: retrieve plur
             return API.plur;
-        } else if (API._apis[name] instanceof API) {
+        } else if (api instanceof API) { // if api provided: attempt to register
+            if (API._apis[name] instanceof API) {
+                throw Error('API ' + name + ' already registered.');
+            }
+
+            API._apis[name] = api;
+            return api;
+        } else if (API._apis[name] instanceof API) { // return the specified api
             return API._apis[name];
         }
 
@@ -45,6 +54,7 @@ class API {
         PlurObject.constProperty(this, 'branch', branch);
         PlurObject.constProperty(this, 'debug', !!debug); // framework-wide debugging, overrides runtime debug
 
+        this._bootstrap = null;
         this._debug = this.debug;
     };
 
@@ -62,9 +72,47 @@ class API {
 
         return this._debug;
     };
+
+    /**
+     * Retrieves the platform Bootstrap object for this API, if any. Null if no nodejs has been registered.
+     *
+     * @param {Bootstrap=} bootstrap
+     * @returns {Bootstrap}
+     */
+    boostrap(bootstrap) {
+       if (typeof bootstrap !== 'undefined') {
+           if (this._bootstrap !== null) {
+               throw new Error('Bootstrap already registered for API ' + this.name);
+           }
+
+           this._bootstrap = bootstrap;
+       }
+
+       return this._bootstrap;
+    };
 }
 
-PlurObject.plurify('plur/plurAPI', PlurAPI);
+PlurObject.plurify('plur/api/API', API);
+
+API.PlatformType = {
+    NodeJS: 'nodejs',
+    Browser: 'browser',
+    Other: 'other'
+};
+
+API.OSType = {
+    Linux: 'linux',
+    OSX: 'osx',
+    Windows: 'windows',
+    Other: 'other'
+};
+
+API.BrowserType = {
+    Chrome: 'chrome',
+    Safari: 'safari',
+    Edge: 'edge',
+    Other: 'other'
+};
 
 /** @type {Array<API>} **/
 API._apis = [];
@@ -76,5 +124,6 @@ API.plur = new API(
     'git://github.com/asimovian/plur.git',
     'roylaurie/unstable',
     true );
+
 
 export default API;

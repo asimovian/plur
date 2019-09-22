@@ -2,7 +2,7 @@
  * @copyright 2017 Asimovian LLC
  * @license MIT https://github.com/asimovian/asimovian-webui/blob/master/LICENSE.txt
  * @module plur-webui/plur/webui/index/App
- * @requires plur/PlurObject plur/app/IApplication plur/node/Node plur-webui/plur/web/ui/index/Service
+ * @requires plur/PlurObject plur/app/IApplication plur/node/Node plur-webui/plur/browser/ui/index/Service
  */
  'use strict';
 
@@ -11,7 +11,7 @@ define([
     'plur/app/IApplication',
     'plur/node/INode',
     'plur/node/Service',
-    'plur/web/ui/IService' ],
+    'plur/browser/ui/IService' ],
 function(
     PlurObject,
     IApplication,
@@ -20,10 +20,10 @@ function(
     IWebUIService ) {
 
 /**
- * Start and control a web-based plur node.
+ * Start and control a browser-based plur node.
  *
  * @class WebUIApp
- * @alias {module:plur/web/App}
+ * @alias {module:plur/browser/App}
  * @implements {module:plur/app/IApplication}
  */
 class WebUIApp {
@@ -93,7 +93,7 @@ class WebUIApp {
     };
 }
 
-PlurObject.plurify('plur/web/App', WebUIApp, IApplication);
+PlurObject.plurify('plur/browser/App', WebUIApp, IApplication);
 
 
 return WebUIApp;

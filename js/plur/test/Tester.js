@@ -9,7 +9,7 @@ define([
 	'plur/PlurObject',
 	'plur/error/Error',
 	'plur/log/System',
-	'plur/bootstrap/Bootstrap',
+	'plur/nodejs/Bootstrap',
 	'plur/es6/Promise' ],
 function(
     PlurObject,

@@ -7,7 +7,7 @@
 
 define([
     'plur/PlurObject',
-    'plur/bootstrap/Bootstrap',
+    'plur/nodejs/Bootstrap',
     'plur/file/System',
     'plur/nodejs/file/System' ],
 function(

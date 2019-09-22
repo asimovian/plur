@@ -9,7 +9,7 @@ define([
     'path',
     'glob',
     'plur/PlurObject',
-    'plur/bootstrap/Bootstrap',
+    'plur/nodejs/Bootstrap',
     'plur/test/Tester',
     'plur/file/System' ],
 function(

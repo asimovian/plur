@@ -21,6 +21,6 @@ var plurbootstrap = (function() {
         enforceDefine: true
     });
 
-    platformBoostrap.platformType = 'web';
+    platformBoostrap.platformType = 'browser';
     return platformBoostrap;
 })();

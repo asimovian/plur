@@ -6,11 +6,11 @@
 'use strict';
 
 /**
- * Expects web/bootstrap.js to be loaded.
+ * Expects browser/nodejs.js to be loaded.
  */
 plurbootstrap.require([
     'plur/web/Bootstrap',
-    'plur/web/ui/App' ],
+    'plur/browser/ui/App' ],
 function(
     WebBootstrap,
     WebUIApp ) {

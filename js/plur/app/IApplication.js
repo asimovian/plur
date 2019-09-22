@@ -14,7 +14,7 @@ function(
     InterfaceError ) {
 
 /**
- * Basic interface for all applications (shell, web, etc.). Simple start / stop / status interface.
+ * Basic interface for all applications (shell, browser, etc.). Simple start / stop / status interface.
  *
  * Applications, by design, should be extremely basic -- simply a driver for starting/stopping the local Plur Node and
  * for starting the Application's main Service. The main Service class should perform all real setup, teardown, and

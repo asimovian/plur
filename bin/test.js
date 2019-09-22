@@ -6,7 +6,7 @@
  */
  'use strict';
 
-var plurbootstrap = require('../../../js/plur/nodejs/bootstrap.js');
+var plurbootstrap = require('../../../js/plur/nodejs/nodejs.js');
 plurbootstrap.require([
     'plur/nodejs/Bootstrap',
     'plur-bin/plur/test/TestApp' ],

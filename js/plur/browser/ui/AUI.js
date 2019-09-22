@@ -15,7 +15,7 @@ function(
  * An
  *
  * @class AWebUIService
- * @alias {plur/web/ui/AWebUIService}
+ * @alias {plur/browser/ui/AWebUIService}
  * @abstract
  */
 class AWebUIService  {
@@ -25,7 +25,7 @@ class AWebUIService  {
 
     static _DEFAULT_CONFIG = new ConstructorConfig(AWebUI, null, __FILE_CONFIG, {
         webui: {
-            rootComponent: Config.string('plurcommander/plur/web/ui/main/Body')
+            rootComponent: Config.string('plurcommander/plur/browser/ui/main/Body')
         }
     });
 
@@ -50,7 +50,7 @@ class AWebUIService  {
     };
 }
 
-PlurObject.plurify('plurcommander/plur/web/IWebUI', IWebUI, [ IGraphicalUI ]);
+PlurObject.plurify('plurcommander/plur/browser/IWebUI', IWebUI, [ IGraphicalUI ]);
 
 return AWebUI;
 });

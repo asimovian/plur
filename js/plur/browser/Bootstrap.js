@@ -7,7 +7,7 @@
 
 define([
     'plur/PlurObject',
-    'plur/bootstrap/Bootstrap' ],
+    'plur/nodejs/Bootstrap' ],
 function(
     PlurObject,
     Bootstrap ) {
@@ -15,7 +15,7 @@ function(
 /**
  * Web Bootstrap
  *
- * @constructor plur/web/Bootstrap
+ * @constructor plur/browser/Bootstrap
  * @extends plur/bootstrap/Bootstrap
  **
  */
