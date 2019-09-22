@@ -1,20 +1,17 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/error/Error
  */
-define([
-    'plur/PlurObject',
-    'plur/ITransformable' ],
-function(
-    PlurObject,
-    ITransformable ) {
+'use strict';
+
+import PlurObject from 'plur/PlurObject';
+import Model from 'plur/model/Model';
+import IModeling from 'plur/model/IModeling';
 
 /**
- * Errors thrown by the plur internal platform.
+ * Base class for all plur framework error classes.
  *
- * @class PlurError
- * @alias {module:plur/error/Error}
  * @extends Error
  */
 class PlurError extends Error {
@@ -24,6 +21,11 @@ class PlurError extends Error {
         }
     };
 
+    /**
+     * @override
+     * @param {!Object<string,(string|number|boolean|null)>} model
+     * @returns {PlurError}
+     */
     static fromModel(model) {
         return new PlurError(model.message, model.data);
     };
@@ -40,13 +42,15 @@ class PlurError extends Error {
     };
 
     /**
-     * @param {string|undefined} message
-     * @param {*} data
+     * @param {string} message
+     * @param {*=} data
      */
     constructor(message, data) {
-        /** @type {string} **/
+        super();
+
+        /** @type {string} Uses the error class's namepath as the name. **/
         this.name = this.namepath;
-        /** @type {string|undefined} **/
+        /** @type {string=} **/
         this.message = message;
         /** @type {*} **/
         this.data = ( typeof data === 'undefined' ? null : data );
@@ -65,17 +69,17 @@ class PlurError extends Error {
     };
 
     /**
+     * @override
      * @returns {{message: (string|undefined), data: (*)}}
      */
     model() {
         return {
             message: this.message,
-            data: IModel.model(this.data)
+            data: Model.model(this.data)
         };
     };
 }
 
-PlurObject.purify('plur/error/Error', PlurError, [ ITransformable ]);
+PlurObject.plurify('plur/error/Error', PlurError, [ IModeling ]);
 
-return PlurError;
-});
+export default PlurError;

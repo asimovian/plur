@@ -1,5 +1,5 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/error/Interface
  */
@@ -11,13 +11,13 @@ import PlurError from 'plur/error/Error';
  * Thrown on an attempt to instantiate an interface prototype.
  *
  * @class InterfaceError
- * @alias {module:plur/error/Interface}
- * @extends {module:plur/error/Error}
+ * @alias {plur/error/Interface}
+ * @extends {plur/error/Error}
  */
 class InterfaceError extends PlurError {
     /**
-     * @param {undefined|string} message
-     * @param {*} data
+     * @param {string=} message
+     * @param {*=} data
      */
     constructor(message, data) {
         if (typeof message === 'object') {

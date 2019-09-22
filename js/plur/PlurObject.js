@@ -12,6 +12,7 @@ import IPlurified from 'plur/IPlurified';
  * Utility for prototype object construction.
  *
  * @implements {plur/IPlurified}
+ * @final
  */
 class PlurObject {
     static hasPlurPrototype(object) {
@@ -74,15 +75,14 @@ class PlurObject {
      * to their constructors.
      *
      * @param {string} namepath The namepath to set both statically and on the prototype.
-     * @param {class} constructor The constructor to be plurified
-     * @param {function(new: plur/IPlurified)[]} [ifaces] Interfaces to be implemented.
-     * @returns {string} namepath
+     * @param {!IPlurified} classObject The class to be plurified
+     * @param {Array<IPlurified>=} ifaces Interfaces to be implemented.
      */
-    static plurify(namepath, constructor, ifaces) {
+    static plurify(namepath, classObject, ifaces) {
         // inject namepath on the prototype.
-        PlurObject.constProperty(constructor, 'namepath', namepath);
-        PlurObject.constProperty(constructor.prototype, 'namepath', namepath);
-        constructor.implemented = { 'plur/IPlurified' : IPlurified };
+        PlurObject.constProperty(classObject, 'namepath', namepath);
+        PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
+        classObject.implemented = { 'plur/IPlurified' : IPlurified };
 
         if (typeof ifaces === 'undefined') {
             return namepath;
@@ -94,10 +94,8 @@ class PlurObject {
         }
 
         for (let i = 0; i < ifaces.length; ++i) {
-            PlurObject.implement(constructor, ifaces[i]);
+            PlurObject.implement(classObject, ifaces[i]);
         }
-
-        return namepath; // returned for the static namepath property
     };
 
     /**
@@ -105,9 +103,8 @@ class PlurObject {
      * Copies the interface prototype's abstract methods in to the subject prototype.
      * Adds the interface pathname to the subject constructor.implemented variable.
      *
-     * @param {plur/IPlurified.prototype.constructor} constructor
-     * @param {plur/IPlurified.prototype.constructor} interfaceConstructor
-     * @returns {plur/PlurObject|null} For use in cascaded calls to PlurObject method
+     * @param {IPlurified} constructor
+     * @param {IPlurified} interfaceConstructor
      * @throws {Error}
      */
     static implement(constructor, interfaceConstructor) {
@@ -135,8 +132,7 @@ class PlurObject {
             }
         }
 
-        constructor.implemented[interfaceConstructor.namepath] = null;
-        return constructor;
+        constructor.implemented[interfaceConstructor.namepath] = interfaceConstructor;
     };
 
     /**

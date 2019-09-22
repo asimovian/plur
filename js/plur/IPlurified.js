@@ -48,7 +48,7 @@ Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified', writab
  * @alias IPlurified.implemented
  * @type {!Object<string,!IPlurified>}
  */
-Object.defineProperty(IPlurified, 'implemented', { value: [], writable: true, enumerable: true,
-    configurable: true });
+Object.defineProperty(IPlurified, 'implemented', { value: {}, writable: false, enumerable: true,
+    configurable: false });
 
 export default IPlurified;

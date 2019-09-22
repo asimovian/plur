@@ -1,12 +1,10 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @module plur/model/Model
  */
-define([
-    'plur/PlurObject' ],
-function(
-    PlurObject ) {
+
+import PlurObject from 'plur/PlurObject';
 
 /**
  * Converts an object to / from a simple data model.
@@ -15,102 +13,99 @@ function(
  * @abstract
  **
  */
-var Model = function() {
-};
+class Model {
+    /**
+     * Creates a simple data model of this object.
+     *
+     * @function plur/model/Model.prototype.model
+     * @abstract
+     * @param {} object
+     * @returns {} model
+     */
+    static model(v, options) {
+        var override = (typeof options !== 'undefined' && options.override === false ? false : true);
 
-Model.prototype = PlurObject.create('plur/model/Model', Model);
+        switch (typeof v) {
+            case 'string':
+            case 'number':
+            case 'boolean':
+                return v;
+                break;
 
-/**
- * Creates a simple data model of this object.
- *
- * @function plur/model/Model.prototype.model
- * @abstract
- * @param {} object
- * @returns {} model
- */
-Model.prototype.model = function(v, options) {
-    var override = ( typeof options !== 'undefined' && options.override === false ? false : true );
+            case 'object':
+                if (Array.isArray(v)) {
+                    // handle arrays
+                    var model = [];
 
-    switch(typeof v) {
-    case 'string':
-    case 'number':
-    case 'boolean':
-        return v;
-        break;
+                    for (var i = 0; i < v.length; ++i) {
+                        var m = PlurObject.model(v[i], options);
+                        if (m !== null) {
+                            model.push(m);
+                        }
+                    }
 
-    case 'object':
-        if (Array.isArray(v)) {
-            // handle arrays
-            var model = [];
+                    return model;
+                } else if (!override && Object.hasOwnProperty(v.prototype, 'model') && typeof v.model === 'function') {
+                    return v.model();
+                } else {
+                    // build the model using only public variables
+                    var model = {};
 
-            for (var i = 0; i < v.length; ++i) {
-                var m = PlurObject.model(v[i], options);
-                if (m !== null) {
-                    model.push(m);
+                    for (var propertyName in v) {
+                        // only include public variables (starts with a lower case letter)
+                        if (!propertyName.match(/^[a-z]/)) {
+                            continue;
+                        }
+
+                        var m = PlurObject.model(v[propertyName], options);
+                        if (m !== null) {
+                            model[propertyName] = m;
+                        }
+                    }
+
+                    return model;
                 }
-            }
+                break;
 
-            return model;
-        } else if (!override && Object.hasOwnProperty(v.prototype, 'model') && typeof v.model === 'function') {
-                return v.model();
-        } else {
-            // build the model using only public variables
-            var model = {};
-
-            for (var propertyName in v)  {
-                // only include public variables (starts with a lower case letter)
-                if (!propertyName.match(/^[a-z]/)) {
-                    continue;
-                }
-
-                var m = PlurObject.model(v[propertyName], options);
-                if (m !== null) {
-                    model[propertyName] = m;
-                }
-            }
-
-            return model;
+            default:
+                return null;
         }
-        break;
+    };
 
-    default:
-        return null;
-    }
-};
+    /**
+     * Constructs an object from a data model.
+     *
+     * @function plur/model/Model.prototype.model
+     * @abstract
+     * @param {} model
+     * @returns {} object
+     */
+    static fromModel(model, callback) {
+        if (typeof model.namepath === 'undefined') {
+            callback(model);
+        }
 
-/**
- * Constructs an object from a data model.
- *
- * @function plur/model/Model.prototype.model
- * @abstract
- * @param {} model
- * @returns {} object
- */
-Model.prototype.fromModel = createFromModel = function(model, callback) {
-    if (typeof model.namepath === 'undefined') {
-        callback(model);
-    }
+        requirejs([model.namepath], function (constructor) {
+            if (typeof constructor.fromModel === 'function') {
+                var object = constructor.fromModel(model);
+                callback(object);
+            } else {
+                var object = new Constructor();
 
-    requirejs([model.namepath], function(constructor) {
-        if (typeof constructor.fromModel === 'function') {
-            var object = constructor.fromModel(model);
-            callback(object);
-        } else {
-            var object = new Constructor();
+                for (var propertyName in model) {
+                    if (!propertyName.match(/^[a-z]/)) {
+                        continue;
+                    }
 
-            for (var propertyName in model) {
-                if (!propertyName.match(/^[a-z]/)) {
-                    continue;
+                    object[propertyName] = this._createFromModel(model[propertyName]);
                 }
 
-                object[propertyName] = this._createFromModel(model[propertyName]);
+                callback(object);
             }
+        });
+    };
+}
 
-            callback(object);
-        }
-    });
-};
+PlurObject.plurify('plur/model/Model', Model);
 
-
-return Model;
-});
+export default Model;
