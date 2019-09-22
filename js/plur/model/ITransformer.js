@@ -1,46 +1,46 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject plur/error/Error plur/model/Transformer
+ * @module plur/model/ITransformer
  */
-define([
-    'plur/PlurObject',
-    'plur/error/Interface' ],
-function(
-    PlurObject,
-    InterfaceError ) {
+'use strict';
+
+import PlurObject from 'plur/PlurObject';
+import InterfaceError from 'plur/error/Interface';
 
 /**
  * Transforms data objects to and from other formats (e.g., JSON, XML, ProtoBuff, etc.).
  *
  * @constructor plur/model/ITransformer
  * @interface
- **
+ * @implements {plur/IPlurified}
  */
-var IModelTransformer = function() { throw new InterfaceError(this); }
+class IModelTransformer {
+    constructor() {
+        throw new InterfaceError(this);
+    };
+};
 
-IModelTransformer.prototype = PlurObject.create('plur/model/ITransformer', IModelTransformer);
+PlurObject.plurify('plur/model/ITransformer', IModelTransformer);
 
 /**
- * Transforms a subject format into a data model object.
+ * Transforms a data model object into the subject format.
  *
  * @function plur/model/ITransformer.prototype.encode
  * @abstract
- * @param {*}
- * @returns {}
+ * @param {!Object<string,(string|number|boolean|null)>} model Nested primitive JS object.
+ * @returns {*}
  */
 IModelTransformer.prototype.encode = PlurObject.abstractMethod;
 
 /**
- * Transforms a data model into the subject format.
+ * Transforms a subject format into a data model object.
  *
  * @function plur/model/Transformer.prototype.decode
  * @abstract
- * @param {} model
- * @returns {}
+ * @param {*}
+ * @returns {*}
  */
 IModelTransformer.prototype.decode = PlurObject.abstractMethod;
 
-
-return ModelTransformer;
-});
+export default IModelTransformer;

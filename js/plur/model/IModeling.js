@@ -9,11 +9,12 @@ import PlurObject from 'plur/PlurObject';
 import InterfaceError from 'plur/error/Interface';
 
 /**
- * Implements a configurable class that uses plur/Config to maintain its configuration.
+ * Implementing classes that uses plur/Config to maintain its configuration.
  * The implementing class must:
  *   - Maintain an immutable static plur/Config with a schema & default settings.
  *   - Maintain an immutable inherited (possibly modified) copy of the static plur/Config for each instance of the class.
  *   - Provide accessors for the static Config and the instance's Config->config()
+ *
  * @interface
  * @implements {IPlurified}
  * @final
