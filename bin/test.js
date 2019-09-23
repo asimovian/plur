@@ -1,19 +1,11 @@
 #!/usr/bin/env nodejs
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires fs plur/PlurObject plur/test/Tester
  */
- 'use strict';
+'use strict';
 
-var plurbootstrap = require('../../../js/plur/nodejs/nodejs.js');
-plurbootstrap.require([
-    'plur/nodejs/Bootstrap',
-    'plur-bin/plur/test/TestApp' ],
-function(
-    NodeJsBootstrap,
-    TestApp ) {
+import NodeJSBootstrap from '../js/plur/api/bootstraps/nodejs'
+import TestApp from '../js/plur-bin/test/App';
 
-NodeJsBootstrap.init(plurbootstrap);
 new TestApp().start();
-});

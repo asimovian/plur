@@ -5,8 +5,7 @@
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject';
-import Bootstrap from "./Bootstrap";
+import PlurObject from '../../plur/PlurObject';
 
 /**
  * Plur Framework API information. Version, debugging, etc.
@@ -28,7 +27,7 @@ class API {
             return API.plur;
         } else if (api instanceof API) { // if api provided: attempt to register
             if (API._apis[name] instanceof API) {
-                throw Error('API ' + name + ' already registered.');
+                throw Error('API ' + name + ' is already registered.');
             }
 
             API._apis[name] = api;
@@ -54,7 +53,6 @@ class API {
         PlurObject.constProperty(this, 'branch', branch);
         PlurObject.constProperty(this, 'debug', !!debug); // framework-wide debugging, overrides runtime debug
 
-        this._bootstrap = null;
         this._debug = this.debug;
     };
 
@@ -71,24 +69,6 @@ class API {
         }
 
         return this._debug;
-    };
-
-    /**
-     * Retrieves the platform Bootstrap object for this API, if any. Null if no nodejs has been registered.
-     *
-     * @param {Bootstrap=} bootstrap
-     * @returns {Bootstrap}
-     */
-    boostrap(bootstrap) {
-       if (typeof bootstrap !== 'undefined') {
-           if (this._bootstrap !== null) {
-               throw new Error('Bootstrap already registered for API ' + this.name);
-           }
-
-           this._bootstrap = bootstrap;
-       }
-
-       return this._bootstrap;
     };
 }
 
@@ -117,13 +97,6 @@ API.BrowserType = {
 /** @type {Array<API>} **/
 API._apis = [];
 
-// This will probably be generated at build time in later versions ...
-API.plur = new API(
-    'plur',
-    '0.0.1',
-    'git://github.com/asimovian/plur.git',
-    'roylaurie/unstable',
-    true );
 
 
 export default API;

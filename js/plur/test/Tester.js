@@ -9,14 +9,10 @@ define([
 	'plur/PlurObject',
 	'plur/error/Error',
 	'plur/log/System',
-	'plur/nodejs/Bootstrap',
-	'plur/es6/Promise' ],
 function(
     PlurObject,
     PlurError,
     SystemLog,
-    Bootstrap,
-    PlurPromise ) {
 
 var Tester = function(testTargets) {
     this._log = SystemLog.get();
@@ -33,7 +29,6 @@ Tester.prototype = PlurObject.create('plur/test/Tester', Tester);
 Tester._TEST_CONSTRUCTOR = /^[a-zA-Z0-9_\-\/]+$/;
 
 Tester.prototype.test = function() {
-    var bootstrap = Bootstrap.get();
     var self = this;
 
     // pass a noop function that writes the resolve and reject methods to state for use by test callbacks
@@ -75,7 +70,7 @@ Tester.prototype._testNextTarget = function() {
     this._log.info('Testing object: ' + this._testTarget + ' ...');
 
     var targetPromise = new PlurPromise(function(targetPromiseResolve, targetPromiseReject) {
-        Bootstrap.get().require([self._testTarget], function(TestConstructor) {
+        import([self._testTarget]).then(function(TestConstructor) {
             var test = new TestConstructor();
 
             var methodPromiseResolve = null;

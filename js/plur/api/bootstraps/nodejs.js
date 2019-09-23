@@ -5,18 +5,20 @@
  */
 'use strict';
 
-import API from '../Bootstrap.js';
-import Bootstrap from '../Bootstrap';
+import API from '../../../plur/api/API';
+import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap';
 
-const bootstrap = new Bootstrap();
+const bootstrap = new NodeJsBootstrap()
+    .setPlatformType(API.PlatformType.NodeJS)
+    .setOSType(API.OSType.Other)
+    .setBrowserType(API.BrowserType.Other)
+    .importPath({
+        'plur': 'plur/js/plur',
+        'plur-lib': 'plur/extern/js',
+        'plur-cfg': '~/.plur/cfg/plur',
+        'plur-bin': 'plur/js/plur-bin',
+        'plur-tests': 'plur/js/plur-tests' });
 
-bootstrap.importPaths({
-    'plur': 'plur/js/plur',
-    'plur-cfg': 'plur/cfg/plur',
-    'plur-lib': 'plur/lib/js',
-    'plur-bin': 'plur/plur-bin/js/plur-bin',
-    'plur-test': 'plur/plur-tests/js/plur-tests' });
-
-API.plur.bootstrap(bootstrap);
+bootstrap.boot();
 
 export default bootstrap;
