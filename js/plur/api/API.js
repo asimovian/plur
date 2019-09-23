@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/PlurAPI
+ * @module plur/api/API
  */
 'use strict';
 
@@ -11,7 +11,6 @@ import PlurObject from '../../plur/PlurObject';
  * Plur Framework API information. Version, debugging, etc.
  *
  * @implements {IPlurified}
- * @final
  */
 class API {
     /**
@@ -31,6 +30,10 @@ class API {
             }
 
             API._apis[name] = api;
+            if (name === 'plur') { // plur gets its own public static member variable
+                API.plur = api;
+            }
+
             return api;
         } else if (API._apis[name] instanceof API) { // return the specified api
             return API._apis[name];
@@ -96,7 +99,7 @@ API.BrowserType = {
 
 /** @type {Array<API>} **/
 API._apis = [];
-
-
+/** @type {API} **/
+API.plur = null;
 
 export default API;

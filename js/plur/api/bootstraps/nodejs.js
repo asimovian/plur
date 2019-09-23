@@ -9,7 +9,6 @@ import API from '../../../plur/api/API';
 import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap';
 
 const bootstrap = new NodeJsBootstrap()
-    .setPlatformType(API.PlatformType.NodeJS)
     .setOSType(API.OSType.Other)
     .setBrowserType(API.BrowserType.Other)
     .importPath({

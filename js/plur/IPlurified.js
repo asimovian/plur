@@ -13,7 +13,8 @@
  *
  *   - Class Identity: Each class provides a static and instance copy of its module path, known as a "namepath".
  *
- * The PlurObject utility class provides all of the methods required to use plur psuedo language features.
+ * The PlurObject utility class provides all of the methods required to use plur psuedo language features. Each call
+ * to plurify() a class will shim this interface into the class's implemented map.
  *
  * Implementing classes must:
  *   - Provide the module path as an immutable static property and prototype property copy: "namepath".
@@ -24,8 +25,8 @@
  * Interface classes must:
  *   - Throw an InterfaceError on construction and nothing else. (Not constructable: Throws error)
  *   - Properties intended to be implemented as methods should assign PlurObject.abstractMethod as the value.
- *   - Use the @interface and @implements class doc tags. List IPlurified as implemented.
- *   - Use @param, @returns and @throws tags on abstract method signatures to define and enforce a contract.
+ *   - Use the @interface and @implements class doc tags. List IPlurified as implemented (it is after plurify().).
+ *   - Use @abstract, @param, @returns and @throws tags on abstract method signatures to define and enforce a contract.
  *
  * @interface
  */

@@ -160,7 +160,6 @@ class PlurObject {
     };
 }
 
-
 PlurObject.plurify('plur/PlurObject', PlurObject);
 
 export default PlurObject;

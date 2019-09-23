@@ -6,7 +6,8 @@
  'use strict';
 
 import PlurObject from '../../plur/PlurObject';
-import API from "../../plur/API";
+import API from "../../plur/api/API";
+import PlurAPI from "../../plur/api/PlurAPI";
 import BUILD_META from "../../plur/api/build.meta";
 
 /**
@@ -51,7 +52,7 @@ class Bootstrap {
         }
 
         // This will probably be generated at build time in later versions ...
-        API.plur = new API(
+        API.plur = new PlurAPI(
             BUILD_META.name,
             BUILD_META.version,
             BUILD_META.scmUrl,

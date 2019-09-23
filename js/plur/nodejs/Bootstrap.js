@@ -1,44 +1,35 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @module plur/nodejs/Bootstrap
  */
- 'use strict';
+'use strict';
 
-define([
-    'plur/PlurObject',
-    'plur/nodejs/Bootstrap',
-    'plur/file/System',
-    'plur/nodejs/file/System' ],
-function(
-    PlurObject,
-    Bootstrap,
-    FileSystem,
-    NodeJsFileSystem ) {
+import PlurObject from "../../plur/PlurObject";
+import API from "../../plur/api/API";
+import Bootstrap from "../../plur/api/Bootstrap";
+import FileSystem from "../../plur/file/System";
+import NodeJsFileSystem from "../../plur/nodejs/file/System";
 
 /**
- * NodeJS NodeJsBootstrap
+ * Initializes plur API for use with NodeJS.
  *
- * @constructor plur/nodejs/Bootstrap
- * @extends plur/bootstrap/Bootstrap
- **
+ * @implements {IPlurified}
  */
-var NodeJsBootstrap = function(platformBootstrap) {
-    Bootstrap.call(this, platformBootstrap) ;
+class NodeJsBootstrap extends Bootstrap {
+    constructor() {
+        super();
+        this.setPlatformType(API.PlatformType.NodeJS)
+    };
 
-    // initialize the local file system api
-    FileSystem.initLocal(new NodeJsFileSystem());
+    boot() {
+        super.boot();
+
+        // initialize the local file system api
+        FileSystem.initLocal(new NodeJsFileSystem());
+    };
 };
 
-NodeJsBootstrap.prototype = PlurObject.create('plur/nodejs/Bootstrap', NodeJsBootstrap, Bootstrap);
+PlurObject.plurify('plur/nodejs/Bootstrap', NodeJsBootstrap, Bootstrap);
 
-NodeJsBootstrap.init = function(platformNodeJsBootstrap) {
-    Bootstrap.init(new NodeJsBootstrap(platformNodeJsBootstrap));
-};
-
-NodeJsBootstrap.get = function() {
-    return Bootstrap.singleton;
-};
-
-return NodeJsBootstrap;
-});
+export default NodeJsBootstrap;
