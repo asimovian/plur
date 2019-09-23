@@ -5,6 +5,8 @@
   "description": "An application framework and nodal network platform.",
   "main": "",
   "scripts": {
+    "preinstall": "sudo apt-get install build-essential",
+    "compile": "bash ./bin/compile.bash",
     "test": "node ./bin/test.js",
     "docgen": "jsdoc -c cfg/jsdoc/jsdoc.json"
   },
@@ -25,13 +27,17 @@
     "p2p",
     "crypto"
   ],
-  "author": "roylaurie <roy.laurie@gmail.com>",
+  "author": "roylaurie <roy.laurie@asimovian.software>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/asimovian/plur/issues"
   },
   "dependencies": {
     "requirejs": "~2.2.0",
-    "node-json-rpc": "0.0.1"
+    "node-json-rpc": "0.0.1",
+    "glob": "~7.1.4",
+    "web3": "~1.2.1",
+    "google-closure-compiler": "~20190909.0.0"
+
   }
 }

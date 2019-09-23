@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import IPlurified from '../plur/IPlurified';
+import IPlurified from './IPlurified';
 
 /**
  * Utility for prototype object construction.
@@ -14,7 +14,7 @@ import IPlurified from '../plur/IPlurified';
  * @implements {plur/IPlurified}
  * @final
  */
-class PlurObject {
+export default class PlurObject {
     static hasPlurPrototype(object) {
         return ( typeof object.namepath === 'string' );
     };
@@ -161,5 +161,3 @@ class PlurObject {
 }
 
 PlurObject.plurify('plur/PlurObject', PlurObject);
-
-export default PlurObject;

@@ -31,7 +31,7 @@
  *
  * @interface
  */
-class IPlurified {
+export default class IPlurified {
     constructor() {
         throw new Error("Cannot instantiate an interface.");
     };
@@ -40,7 +40,6 @@ class IPlurified {
 /**
  * The class's module path.
  * @alias IPlurified.namepath
- * @type {string}
  */
 Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified', writable: false, enumerable: true,
     configurable: false });
@@ -48,9 +47,6 @@ Object.defineProperty(IPlurified, 'namepath', { value: 'plur/IPlurified', writab
 /**
  * A map of each implemented class, with the namepath as the key and the class object as the value.
  * @alias IPlurified.implemented
- * @type {!Object<string,!IPlurified>}
  */
 Object.defineProperty(IPlurified, 'implemented', { value: {}, writable: false, enumerable: true,
     configurable: false });
-
-export default IPlurified;
