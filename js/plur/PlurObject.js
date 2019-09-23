@@ -2,11 +2,11 @@
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/PlurObject
+ * @version 0.1.0
  */
 'use strict';
 
-import IPlurified from 'plur/IPlurified';
-
+import IPlurified from '../plur/IPlurified';
 
 /**
  * Utility for prototype object construction.

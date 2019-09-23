@@ -2,6 +2,7 @@
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/IPlurified
+ * @version 0.1.0
  */
 
 /**
