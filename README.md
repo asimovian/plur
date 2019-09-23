@@ -9,6 +9,7 @@ The cloud **platform** builds on top of the framework, scaling core API services
 
 Documentation
 -------------
+* [GettingStarted](/doc/GettingStarted)
 * [Licensing](/doc/license)
 * [Roadmap](/doc/TODO.md)
 
