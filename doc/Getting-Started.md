@@ -77,7 +77,7 @@ Source
 Use the script tag and filename as such:
 
 ```html
-<script type="modle" src="module/path/File.js"></script>
+<script type="module" src="module/path/File.js"></script>
 <!-- Note the type and file extension for a Browser entry-point. -->
 ```
 
