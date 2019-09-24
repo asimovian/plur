@@ -23,8 +23,39 @@ sudo snap install node --classic --channel=12
 sudo snap install webstorm --classic
 ~~~~
 
-How to Run
-==========
+NPM Project Packages
+--------------------
+ ```json
+ "dependencies": {
+    "glob": "~7.1.4",
+    "google-closure-compiler": "^20190909.0.0",
+    "node-json-rpc": "0.0.1",
+    "requirejs": "~2.2.0",
+    "web3": "~1.2.1"
+  }
+```
+
+How to Configure the Project
+============================
+
+Clone the plur.git repository and work from that directory.
+
+Run the NPM installation script:
+~~~~
+npm install
+~~~~
+
+The installation script will install NPM project packages.
+
+Use the following to compile everything or just a single file:
+~~~~
+./bin/compile path/to/File.mjs
+# or
+npm run compile path/to/File.mjs
+~~~~
+
+How to Test
+===========
 
 Chrome
 ------
@@ -68,3 +99,4 @@ Compile individual modules by providing their dependencies as well, one per --js
 ~~~~
 ./node_modules/google-closure-compiler/linux/compiler --language_in=ECMASCRIPT_2019 --js js/plur/IPlurified.mjs --js js/plur/PlurObject.mjs
 ~~~~
+
