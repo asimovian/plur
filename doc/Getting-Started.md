@@ -38,8 +38,8 @@ NPM Project Packages
   }
 ```
 
-How to Configure the Project
-============================
+How to Install
+==============
 
 Clone the plur.git repository and work from that directory:
 ```sh
