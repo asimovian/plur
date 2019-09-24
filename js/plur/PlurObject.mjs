@@ -84,7 +84,7 @@ export default class PlurObject {
         PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
         classObject.implemented = { 'plur/IPlurified' : IPlurified };
 
-        if (typeof ifaces === 'undefined') {
+        if (typeof ifaces === 'undefined') { // all done then
             return namepath;
         }
 
