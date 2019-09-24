@@ -6,21 +6,22 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
+import Singleton from '../../plur/design/singleton/ASingleton.mjs';
 import Log from '../../plur/log/Log.mjs';
 
 /**
  * Log singleton
  *
  */
-export default class SystemLog extends Log {
+export default class SystemLog extends Singleton {
     constructor() {
         super(new Log());
 
         // add listeners that output to console
-        const emitter = this.object.emitter();
+        const emitter = this.get().emitter();
 
         emitter.on('info', function (event) {
-            const data = event.getData();
+            const data = event.data();
             if (typeof data.logEntry.data !== 'undefined')
                 console.info(data.logEntry.message, data.logEntry.data);
             else
@@ -28,7 +29,7 @@ export default class SystemLog extends Log {
         });
 
         emitter.on('error', function (event) {
-            const data = event.getData();
+            const data = event.data();
             if (typeof data.logEntry.data !== 'undefined')
                 console.error(data.logEntry.message, data.logEntry.data);
             else
@@ -38,3 +39,6 @@ export default class SystemLog extends Log {
 }
 
 PlurObject.plurify('plur/log/System', SystemLog);
+
+const singleton = new SystemLog;
+export {singleton};

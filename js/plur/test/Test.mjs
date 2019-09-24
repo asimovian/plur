@@ -1,32 +1,30 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject plur/error/Assertion
+ * @module plur/test/Test
  */
-define([
-    'plur/PlurObject',
-    'plur/error/Assertion',
-    'plur/event/Emitter' ],
-function(
-    PlurObject,
-    AssertionError,
-    Emitter ) {
+
+'use strict';
+
+import PlurObject from '../../plur/PlurObject.mjs';
+import AssertionError from '../../plur/error/Assertion.mjs';
+import Emitter from '../../plur/event/Emitter.mjs';
 
 /**
  * Basic unit and integration testing.
  *
- * @constructor plur/test/Test
- **
  */
-var Test = function() {
-    this._promises = [];
-    this._emitter = new Emitter();
-    this._expectedEmissions = {};
-    this._actualEmissions = {};
-    this.namepathPrefix = this.namepath + '.';
+export default class Test {
+    constructor() {
+        this._promises = [];
+        this._emitter = new Emitter();
+        this._expectedEmissions = {};
+        this._actualEmissions = {};
+        this.namepathPrefix = this.namepath + '.';
+    }
 };
 
-Test.prototype = PlurObject.create('plur/test/Test', Test);
+PlurObject.plurify('plur/test/Test', Test);
 
 Test.prototype.sleep = function(milliseconds) {
     sleep.sleep((milliseconds? milliseconds : 500)); // defualt 500 ms
@@ -173,5 +171,3 @@ Test.prototype.fail = function(message, data) {
     throw new AssertionError(message || 'Assertion failed', data);
 };
 
-return Test;
-});

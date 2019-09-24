@@ -58,12 +58,12 @@ TestApp.prototype._findTargets = function(callback) {
         var jsPath = homePath + '/' + importPathMap[key];
 
         // scope jsPath value into callback as it will change value on the next iteration
-        glob(jsPath + '/**/*Test.js', (function(jsPath) {
+        glob(jsPath + '/**/*Test.mjs', (function(jsPath) {
             return function(err, files) {
                 for (var i = 0; i < files.length; ++i) {
                     var filepath = files[i];
                     // skip any files that do not end in "Test.js"
-                    if (!path.basename(filepath).match(/^[a-zA-Z0-9_\-]+Test\.js$/)) {
+                    if (!path.basename(filepath).match(/^[a-zA-Z0-9_\-]+Test\.mjs$/)) {
                         continue;
                     }
 
@@ -99,17 +99,17 @@ TestApp.prototype.start = function() {
 };
 
 TestApp.prototype._start = function(tester) {
-    var self = this;
-    var promise = tester.test(this._targets);
+    const self = this;
+    let promise = tester.test(this._targets);
     promise.then(
-        function() { self._onTesterPromiseFulfilled(); },
-        function(error) { self._onTesterPromiseRejected(error); } );
+        function() { TestApp._onTesterPromiseFulfilled(self); },
+        function(error) { TestApp._onTesterPromiseRejected(self, error); } );
 };
 
 /**
  * Expects variable "self" to exist in calling closure.
  */
-TestApp.prototype._onTesterPromiseFulfilled = function() {
+TestApp._onTesterPromiseFulfilled = function(self) {
     console.log('Tests passed.');
     self.stop(true);
 };
@@ -117,11 +117,10 @@ TestApp.prototype._onTesterPromiseFulfilled = function() {
 /**
  * Expects variable "self" to exist in calling closure.
  */
-TestApp.prototype._onTesterPromiseRejected = function(error) {
+TestApp._onTesterPromiseRejected = function(self, error) {
     console.error('Tests failed');
     console.error(error.stack)
     self.stop(false);
-
 };
 
 TestApp.prototype.stop = function(success) {
@@ -131,3 +130,5 @@ TestApp.prototype.stop = function(success) {
 TestApp.prototype.heartbeat = function() {
     return true;
 };
+
+

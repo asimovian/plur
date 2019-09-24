@@ -37,7 +37,7 @@ export default class Emitter {
      * Splits an event type string into a string array of individual tokens. Splits on / and . characters.
      * E.g., foo/bar.* => [ 'foo', 'bar', '*' ]
      *
-     * @function plur/event/Emitter._tokenizeEventType
+     * @function plur/event/Emitter.tokenizeEventType
      * @param string eventType
      * @returns string[] eventTypeTokens
      */
@@ -75,8 +75,7 @@ export default class Emitter {
         let branch = this._listenerTree;
 
         for (let i = 0, n = eventTypeTokens.length; i < n; ++i) {
-            let token = eventTypeTokens[i];
-            let branch = branch.child(eventTypeTokens[i]);
+            branch = branch.child(eventTypeTokens[i]);
             if (branch === null) {
                 break;
             }
@@ -137,7 +136,7 @@ export default class Emitter {
         }
 
         let listener = new _Listener(eventType, callback, this._nextSubscriptionId(), temporary);
-        let eventTypeTokens = Emitter._tokenizeEventType(eventType);
+        let eventTypeTokens = Emitter.tokenizeEventType(eventType);
         let isWildcard = ( eventTypeTokens[eventTypeTokens.length - 1] === Emitter.WILDCARD );
         let branch = null;
 
@@ -166,7 +165,8 @@ export default class Emitter {
      * @returns int
      */
     _nextSubscriptionId() {
-        for (let id = null; id === null;) {
+        let id = null;
+        while(id === null) {
             id = ++this._subscriptionIdIndex;
             if (id < 0) {
                 id = this._subscriptionIdIndex = 1;
@@ -241,7 +241,7 @@ export default class Emitter {
         let event = new Event(eventType, eventData);
 
         // find listeners for event type
-        let listeners = this._findListeners(Emitter._tokenizeEventType(eventType));
+        let listeners = this._findListeners(Emitter.tokenizeEventType(eventType));
         for (let i = 0, n = listeners.length; i < n; ++i) {
             let listener = listeners[i];
 

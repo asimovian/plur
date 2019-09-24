@@ -7,14 +7,14 @@
 
 import PlurObject from '../../plur/PlurObject.mjs';
 import PlurError from '../../plur/error/Error.mjs';
-import SystemLog from '../../plur/log/System.mjs';
+import {singleton as SystemLog} from '../../plur/log/System.mjs';
 
 /**
  *
  */
 export default class Tester {
 	constructor(testTargets) {
-        this._log = new SystemLog();//SystemLog.get();
+        this._log = SystemLog.get();
         this._testTargets = testTargets;
         this._testTargetIndex = -1;
         this._testTarget = null;
@@ -33,11 +33,15 @@ Tester.prototype.test = function() {
 
     // pass a noop function that writes the resolve and reject methods to state for use by test callbacks
     this._promise = new Promise(function(resolve, reject) {
-        self._promiseResolved = resolve;
+        self._promiseResolve = resolve;
         self._promiseReject = reject;
     });
 
-    this._testNextTarget();
+    if (this._testTargets.length === 0) {
+        this._promiseResolve();
+    } else {
+        this._testNextTarget();
+    }
 
     return this._promise;
 };
@@ -56,7 +60,7 @@ Tester.prototype._testNextTarget = function() {
     var self = this;
 
     // if this was the last target prototype, resolve to pass the test entirely
-    if (this._testTargetIndex === this._testTargets.length) {
+    if (this._testTargetIndex+1 === this._testTargets.length) {
         this._resolved();
         return;
     }
@@ -70,8 +74,8 @@ Tester.prototype._testNextTarget = function() {
     this._log.info('Testing object: ' + this._testTarget + ' ...');
 
     var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
-        import([self._testTarget]).then(function(TestConstructor) {
-            var test = new TestConstructor();
+        import('../../' + [self._testTarget] + '.mjs').then(function(module) {
+            var test = new module.default();
 
             var methodPromiseResolve = null;
             var methodPromise = new Promise(function(resolve, reject) {
@@ -91,7 +95,6 @@ Tester.prototype._testNextTarget = function() {
             self._testNextMethod(methodPromise, test, 0, testMethodNames, targetPromiseResolve, targetPromiseReject);
 
             methodPromiseResolve();
-
         });
     });
 
