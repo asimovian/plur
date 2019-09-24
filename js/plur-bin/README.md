@@ -1,4 +1,4 @@
 Executables Source
 ==================
 
-Source-code that runs he execuables in plur/bin.
+Source-code dependencies for the execuables in plur/bin.
