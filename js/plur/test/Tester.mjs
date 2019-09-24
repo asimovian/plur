@@ -1,30 +1,30 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @require plur/PlurObject plur/error/Error
+ * @module plur/test/Tester
  */
- 'use strict';
+'use strict';
 
-define([
-	'plur/PlurObject',
-	'plur/error/Error',
-	'plur/log/System',
-function(
-    PlurObject,
-    PlurError,
-    SystemLog,
+import PlurObject from '../../plur/PlurObject.mjs';
+import PlurError from '../../plur/error/Error.mjs';
+import SystemLog from '../../plur/log/System.mjs';
 
-var Tester = function(testTargets) {
-    this._log = SystemLog.get();
-    this._testTargets = testTargets;
-    this._testTargetIndex = -1;
-    this._testTarget = null;
-    this._promise = null;
-    this._promiseResolve = null;
-    this._promiseReject = null;
-};
+/**
+ *
+ */
+export default class Tester {
+	constructor(testTargets) {
+        this._log = new SystemLog();//SystemLog.get();
+        this._testTargets = testTargets;
+        this._testTargetIndex = -1;
+        this._testTarget = null;
+        this._promise = null;
+        this._promiseResolve = null;
+        this._promiseReject = null;
+    };
+}
 
-Tester.prototype = PlurObject.create('plur/test/Tester', Tester);
+PlurObject.plurify('plur/test/Tester', Tester);
 
 Tester._TEST_CONSTRUCTOR = /^[a-zA-Z0-9_\-\/]+$/;
 
@@ -32,7 +32,7 @@ Tester.prototype.test = function() {
     var self = this;
 
     // pass a noop function that writes the resolve and reject methods to state for use by test callbacks
-    this._promise = new PlurPromise(function(resolve, reject) {
+    this._promise = new Promise(function(resolve, reject) {
         self._promiseResolved = resolve;
         self._promiseReject = reject;
     });
@@ -69,12 +69,12 @@ Tester.prototype._testNextTarget = function() {
 
     this._log.info('Testing object: ' + this._testTarget + ' ...');
 
-    var targetPromise = new PlurPromise(function(targetPromiseResolve, targetPromiseReject) {
+    var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
         import([self._testTarget]).then(function(TestConstructor) {
             var test = new TestConstructor();
 
             var methodPromiseResolve = null;
-            var methodPromise = new PlurPromise(function(resolve, reject) {
+            var methodPromise = new Promise(function(resolve, reject) {
                 methodPromiseResolve = resolve;
             });
 
@@ -124,7 +124,7 @@ Tester.prototype._testNextMethod = function(prevMethodPromise, test, testMethodI
 Tester.prototype._testMethod = function(test, methodName) {
     var self = this;
 
-    var methodTestPromise = new PlurPromise(function(resolve, reject) {
+    var methodTestPromise = new Promise(function(resolve, reject) {
         self._log.info('Testing method: ' + test.namepath + '.prototype.' + methodName + '()');
         test[methodName]();
         resolve();
@@ -150,6 +150,3 @@ Tester._timeoutPromiseExecutor = function(resolve, reject) {
         reject('Test timed out after 2000 ms');
     });
 };
-
-return Tester;
-});

@@ -1,0 +1,2 @@
+#!/bin/sh
+/snap/bin/node --experimental_modules $*

@@ -3,8 +3,9 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/model/Model
  */
+'use strict';
 
-import PlurObject from 'plur/PlurObject.mjs';
+import PlurObject from '../../plur/PlurObject.mjs';
 
 /**
  * Converts an object to / from a simple data model.
@@ -13,7 +14,7 @@ import PlurObject from 'plur/PlurObject.mjs';
  * @abstract
  **
  */
-class Model {
+export default class Model {
     /**
      * Creates a simple data model of this object.
      *
@@ -107,5 +108,3 @@ class Model {
 }
 
 PlurObject.plurify('plur/model/Model', Model);
-
-export default Model;

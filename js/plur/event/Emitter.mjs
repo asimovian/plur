@@ -1,21 +1,16 @@
 /**
- * @copyright 2016 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/event/Emitter
  */
-define([
-    'plur/PlurObject',
-    'plur/error/State',
-    'plur/error/Destroyed',
-    'plur/event/Event',
-    'plur/design/tree/MapNode' ],
-function(
-    PlurObject,
-    StateError,
-    DestroyedError,
-    Event,
-    MapTreeNode ) {
-	
+'use strict';
+
+import PlurObject from '../../plur/PlurObject.mjs';
+import StateError from '../../plur/error/State.mjs';
+import DestroyedError from '../../plur/error/Destroyed.mjs';
+import Event from '../../plur/event/Event.mjs';
+import MapTreeNode from '../../plur/design/tree/MapNode.mjs';
+
 /**
  * Provides publish-subscribe functionality for Event objects.
  *
@@ -30,11 +25,8 @@ function(
  * to unsubscribe from the emitter in the future. The once() method allows for a subscriber to automatically unsubscribe
  * after the first message is passed.
  *
- * @class plur/event/Emitter
- * @alias {module:plur/event/Emitter}
- **
  */
-class Emitter {
+export default class Emitter {
     /**
      * @var string Emitter.WILDCARD The event type wildcard. When used, it will catch any event that has the preceding token
      * in its path.
@@ -305,7 +297,9 @@ class _Listener {
         this.temporary = !!temporary;
     };
 }
-    
+
+PlurObject.plurify('plur/event/Emitter._Listener', _Listener);
+
 /**
  * The Listener Tree stores every Event Type that is currently being subscribed to by representing each token of each
  * event type as a Tree Node. Each subsequent token of a given event type is created as a Child Node of the previous
@@ -395,7 +389,4 @@ class _ListenerTreeValue {
 }
     
 PlurObject.plurify('plur/event/Emitter._ListenerTreeValue', _ListenerTreeValue);
-
-return Emitter;
-});
 

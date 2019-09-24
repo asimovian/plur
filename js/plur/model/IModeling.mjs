@@ -5,8 +5,8 @@
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject.mjs';
-import InterfaceError from 'plur/error/Interface';
+import PlurObject from '../../plur/PlurObject.mjs';
+import InterfaceError from '../../plur/error/Interface.mjs';
 
 /**
  * Implementing classes that uses plur/Config to maintain its configuration.
@@ -19,7 +19,7 @@ import InterfaceError from 'plur/error/Interface';
  * @implements {IPlurified}
  * @final
  */
-class IModeling {
+export default class IModeling {
     constructor() {
         throw new InterfaceError(this);
     };
@@ -46,5 +46,3 @@ IModeling.fromModel = PlurObject.abstractMethod;
  * @returns {!Object<string,(number|string|Object|null)>}
  */
 IModeling.prototype.model = PlurObject.abstractMethod;
-
-export default IModeling;

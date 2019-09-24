@@ -1,17 +1,12 @@
 /**
- * @copyright 2017 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/app/IApplication
- * @requires plur/PlurObject
  */
 'use strict';
 
-define([
-    'plur/PlurObject'
-    'plur/error/Interface' ],
-function(
-    PlurObject,
-    InterfaceError ) {
+import PlurObject from "../../plur/PlurObject.mjs";
+import InterfaceError from "../../plur/error/Interface.mjs";
 
 /**
  * Basic interface for all applications (shell, browser, etc.). Simple start / stop / status interface.
@@ -20,15 +15,15 @@ function(
  * for starting the Application's main Service. The main Service class should perform all real setup, teardown, and
  * logic.
  *
- * @class IApplication
  * @interface
- * @alias {module:plur/app/IApplication}
  */
-class IApplication {
+export default class IApplication {
     constructor() {
-        throw new InterfaceError({'this': this});
+        throw new InterfaceError(this);
     };
 }
+
+PlurObject.plurify('plur/app/IApplication', IApplication);
 
 /**
  * Bitwise status flags for use with IApplication.prototype.status().
@@ -39,7 +34,7 @@ class IApplication {
  *   ONLINE | INIT | PAUSED => Service was paused during INIT
  *   OFFLINE | INIT | ERROR => Service crashed during INIT
  */
-IService.Status = {
+IApplication.Status = {
     OFFLINE:        0x00,
     ONLINE:         0x01,
     INIT:           0x02,
@@ -54,7 +49,7 @@ IService.Status = {
 /**
  * Starts the plur node, registers and starts the application's main service.
  *
- * @function plur/app/Application.prototype.start
+ * @type {function}
  * @abstract
  */
 IApplication.prototype.start = PlurObject.abstractMethod;
@@ -62,7 +57,7 @@ IApplication.prototype.start = PlurObject.abstractMethod;
 /**
  * Stops the application, performing any cleanup necessary.
  *
- * @function plur/app/Application.prototype.start
+ * @type {function}
  * @abstract
  */
 IApplication.prototype.stop = PlurObject.abstractMethod,
@@ -70,20 +65,18 @@ IApplication.prototype.stop = PlurObject.abstractMethod,
 /**
  * Retrieves the plur node attached to this application.
  *
- * @returns {module:plur/node/INode}
+ * @type {function}
  * @abstract
+ * @returns {module:plur/node/INode}
  */
 IApplication.prototype.plurNode = PlurObject.abstractMethod;
 
 /**
  * Retrieves the application's main service.
  *
- * @returns {module:plur/service/IService}
+ * @type {function}
  * @abstract
+ * @returns {module:plur/service/IService}
  */
 IApplication.prototype.service = PlurObject.abstractMethod;
 
-PlurObject.plurify('plur/app/IApplication', IApplication);
-
-return IApplication;
-});

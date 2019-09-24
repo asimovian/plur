@@ -1,14 +1,17 @@
 {
   "name": "@asimovian/plur",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "An application framework and nodal network platform.",
   "main": "",
   "scripts": {
-    "preinstall": "sudo apt-get install build-essential",
-    "compile": "bash ./bin/compile.bash",
+    "setup-system": "sudo ./bin/setup/sdk-setup-system.bash",
+    "setup-repository": "./bin/setup/sdk-setup-repository.bash",
+    "compile": "./bin/compile.bash",
     "test": "node ./bin/test.js",
-    "docgen": "jsdoc -c cfg/jsdoc/jsdoc.json"
+    "document": "jsdoc -c cfg/jsdoc/jsdoc.json",
+    "build": "echo not yet",
+    "release": "echo not yet"
   },
   "repository": {
     "type": "git",
@@ -34,7 +37,6 @@
   },
   "dependencies": {
     "glob": "~7.1.4",
-    "google-closure-compiler": "^20190909.0.0",
     "node-json-rpc": "0.0.1",
     "requirejs": "~2.2.0",
     "web3": "~1.2.1"

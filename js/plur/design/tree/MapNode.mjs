@@ -1,33 +1,28 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @module plur/design/tree/MapTreeNode
  */
- 'use strict';
+'use strict';
 
-define([
-    'plur/PlurObject',
-    'plur/design/tree/INode' ],
-function(
-    PlurObject,
-    ITreeNode ) {
+import PlurObject from '../../../plur/PlurObject.mjs';
+import ITreeNode from '../../../plur/design/tree/INode.mjs';
 
 /**
  * Tree backed by a {} map.
  *
- * @constructor plur/design/tree/MapNode
- * @implements plur/design/tree/INode
- **
+ * @implements {ITreeNode}
  */
-var MapTreeNode = function(value, parent, key) {
-    this._value = value || null;
-    this._parent = parent || null;
-    this._key = key || null;
-    this._children = {};
+export default class MapTreeNode {
+    constructor(value, parent, key) {
+        this._value = value || null;
+        this._parent = parent || null;
+        this._key = key || null;
+        this._children = {};
+    }
 };
 
-MapTreeNode.prototype = PlurObject.create('plur/design/tree/MapNode', MapTreeNode);
-PlurObject.implement(MapTreeNode, ITreeNode);
+PlurObject.plurify('plur/design/tree/MapNode', MapTreeNode, [ITreeNode]);
 
 /**
  * Gets the value for this node.
@@ -253,6 +248,3 @@ MapTreeNode.prototype.isLeaf = function() {
 MapTreeNode.prototype.key = function() {
     return this._key;
 };
-
-return MapTreeNode;
-});

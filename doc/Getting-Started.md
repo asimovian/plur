@@ -5,7 +5,7 @@ OS
 : Linux Mint 19.2<br/>
 Arch
 : x86_64<br/>
-Plur API
+Plur SDK
 : v0.1.0
 
 System Packages
@@ -32,30 +32,50 @@ NPM Project Packages
  ```json
  "dependencies": {
     "glob": "~7.1.4",
-    "google-closure-compiler": "^20190909.0.0",
     "node-json-rpc": "0.0.1",
     "requirejs": "~2.2.0",
     "web3": "~1.2.1"
   }
 ```
 
+The dependency ```{ "google-closure-compiler": "^20190909.0.0" }``` is installed globally by the system setup script.
+
+Configuration in /etc
+---------------------
+
+**```cat >> /etc/bash.bashrc```**
+~~~sh
+#plur: default nodejs package removed. snapd node package does not have an alias.
+alias nodejs="node"
+~~~
+
+Configuration in repository
+---------------------------
+
+A symlink is created from the global NPM ```google-closure-compiler``` executable to ```plur/bin/compiler```.
+
 How to Install
 ==============
 
 Clone the plur.git repository and work from that directory:
 ```sh
-mkdir -p ~/project/asimovian-plur ; cd ~/project/asimovian-plur
+mkdir -p ~/project/asimovian/plur ; cd ~/project/asimovian/plur
 git clone git@github.com:asimovian/plur.git
 git checkout roylaurie/unstable
 git clean -f ; git pull
 ```
+If this is the first time configuring this system for the Plur SDK, run the sdk setup scripts:
+~~~sh
+# Installs and configures necessary system packages and settings for the SDK
+sudo npm run setup-system
+npm run setup-repository
+~~~
 
-Run the NPM installation script:
+
+Finally, run the NPM installation script to install NPM package dependencies:
 ```sh
 npm install
 ```
-
-The installation script will install NPM project packages.
 
 Use the following to compile everything or just a single file:
 ```sh

@@ -5,16 +5,15 @@
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject.mjs';
-import Model from 'plur/model/Model';
-import IModeling from 'plur/model/IModeling';
+import PlurObject from '../../plur/PlurObject.mjs';
+import Model from '../../plur/model/Model.mjs';
+import IModeling from '../../plur/model/IModeling.mjs';
 
 /**
  * Base class for all plur framework error classes.
  *
- * @extends Error
  */
-class PlurError extends Error {
+export default class PlurError extends Error {
     static throwIf(testResult, message, data) {
         if (testResult) {
             throw new PlurError(message, data);
@@ -81,5 +80,3 @@ class PlurError extends Error {
 }
 
 PlurObject.plurify('plur/error/Error', PlurError, [ IModeling ]);
-
-export default PlurError;

@@ -13,8 +13,9 @@ import BUILD_META from "../../plur/api/build.meta.mjs";
 /**
  * Bootstrap performs the entry point initializations necessary to properly construct and start the plur API.
  * Essentially, this acts as a builder for the API class. Mutators return this, allowing cascading method calls.
+ *
  */
-class Bootstrap {
+export default class Bootstrap {
     constructor() {
         this._platformType = null;
         this._osType = null;
@@ -46,26 +47,35 @@ class Bootstrap {
         return this._platformType;
     };
 
+    setOSType(os) {
+        this._osType = os;
+        return this;
+    };
+
+    getOSType() {
+        return this._osType;
+    };
+
     boot() {
-        if (typeof API.plur !== 'undefined') {
+        if (API.plur !== null) {
             throw new Error("Plur API has already initialized.");
         }
 
         // This will probably be generated at build time in later versions ...
-        API.plur = new PlurAPI(
-            BUILD_META.name,
+        const plurApi = new PlurAPI(
+            //BUILD_META.name,
             BUILD_META.version,
             BUILD_META.scmUrl,
             BUILD_META.branch,
-            this._platformType,
-            this._osType,
-            this._browserType,
+            this._paths,
+            //this._platformType,
+            //this._osType,
+            //this._browserType,
             true );
 
+        API.api('plur', plurApi);
         API.plur.init();
     };
 }
 
 PlurObject.plurify('plur/Bootstrap', Bootstrap);
-
-export default Bootstrap;

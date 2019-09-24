@@ -1,29 +1,29 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject plur/file/ISystem
+ * @module plur/file/System
  */
-define([
-    'plur/PlurObject',
-    'plur/file/ISystem' ],
-function (
-    PlurObject,
-    IFileSystem ) {
+'use strict';
+
+import PlurObject from "../../plur/PlurObject.mjs";
+import IFileSystem from "../../plur/file/ISystem.mjs";
 
 /**
  * A simple abstract base class for all file systems, both local and remote.
  *
- * @constructor plur/file/System
  * @abstract
  */
-var FileSystem = function() {
-	this._configPath = this.joinPaths(this._getHomePath(), FileSystem.DirNames.config);
-	this._binPath = this.joinPaths(this._getHomePath(), FileSystem.DirNames.bin);
+export default class FileSystem {
+    constructor(pathSeparator, realHomePath) {
+        this.pathSeparator = pathSeparator;
+
+        this._homePath = realHomePath;
+        this._configPath = this.joinPaths(realHomePath, FileSystem.DirNames.config);
+        this._binPath = this.joinPaths(realHomePath, FileSystem.DirNames.bin);
+    }
 };
 
-FileSystem.prototype = PlurObject.create('plur/file/System', FileSystem);
-
-PlurObject.implement(FileSystem, IFileSystem);
+PlurObject.plurify('plur/file/System', FileSystem, [IFileSystem]);
 
 FileSystem.DirNames = {
     bin: 'bin',
@@ -49,10 +49,10 @@ FileSystem.initLocal = function(localFileSystem) {
  * @returns string
  */
 FileSystem.prototype.joinPaths = function(/* ... */) {
-    var pathSeparator = this.getPathSeparator();
-    var path = arguments[0]; // base path
+    const pathSeparator = this.pathSeparator;
+    let path = arguments[0]; // base path
 
-    for (var i = 0; i < arguments.length; ++i) {
+    for (let i = 1; i < arguments.length; ++i) {
         // any absolute path is automatically accepted (other than the base path)
         if (arguments[i].charAt(0) === pathSeparator) {
             // throw an error if there are more paths after this one as that's unexpected
@@ -70,13 +70,12 @@ FileSystem.prototype.joinPaths = function(/* ... */) {
 /**
  * Retrieves the home path for thie Plur software, appending all provided paths.
  *
- * @function plur/file/System.prototype.getHomePath
  * @param ... string[] paths
  * @returns string
  */
 FileSystem.prototype.getHomePath = function (/* ... */) {
     if (arguments.length === 0) {
-        return this._getHomePath();
+        return this._homePath;
     }
 
 	return this.joinPaths.apply(this, ([this._homePath].concat(arguments)));
@@ -85,7 +84,6 @@ FileSystem.prototype.getHomePath = function (/* ... */) {
 /**
  * Retrieves the config path for this node instance, appending all provided paths.
  *
- * @function plur/file/System.prototype.getConfigPath
  * @param ... string[] paths
  * @returns string
  */
@@ -96,7 +94,6 @@ FileSystem.prototype.getConfigPath = function(/* ... */) {
 /**
  * Retrieves the bin path for the Plur software appending all provided paths.
  *
- * @function plur/file/System.prototype.getBinPath
  * @param ... string[] paths
  * @returns string
  */
@@ -104,24 +101,3 @@ FileSystem.prototype.getBinPath = function(/* ... */) {
 	return this.joinPaths.apply(this, [this._binPath].concat(arguments));
 };
 
-/**
- * Retrieves the home path for thie Plur software.
- *
- * @function plur/file/System.prototype._getHomePath
- * @abstract
- * @param ... string[] paths
- * @returns string
- */
-FileSystem.prototype._getHomePath = PlurObject.abstractMethod;
-
-/**
- * Retrieves the path separator.
- *
- * @function plur/file/System.prototype.getPathSeparator
- * @abstract
- * @returns string
- */
-FileSystem.prototype.getPathSeparator = PlurObject.abstractMethod;
-
-return FileSystem;
-});

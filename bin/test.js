@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import NodeJSBootstrap from '../js/plur/api/bootstraps/nodejs'
-import TestApp from '../js/plur-bin/test/App';
+import NodeJSBootstrap from '../js/plur/api/bootstraps/nodejs.js'
+import TestApp from '../js/plur-bin/test/App.mjs';
 
 new TestApp().start();

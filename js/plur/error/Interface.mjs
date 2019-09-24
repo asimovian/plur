@@ -3,18 +3,15 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/error/Interface
  */
+'use strict';
 
-import PlurObject from 'plur/PlurObject.mjs';
-import PlurError from 'plur/error/Error';
+import PlurObject from '../../plur/PlurObject.mjs';
+import PlurError from '../../plur/error/Error.mjs';
 
 /**
  * Thrown on an attempt to instantiate an interface prototype.
- *
- * @class InterfaceError
- * @alias {plur/error/Interface}
- * @extends {plur/error/Error}
  */
-class InterfaceError extends PlurError {
+export default class InterfaceError extends PlurError {
     /**
      * @param {string=} message
      * @param {*=} data
@@ -32,5 +29,3 @@ class InterfaceError extends PlurError {
 }
 
 PlurObject.plurify('plur/error/Interface', InterfaceError);
-
-export default InterfaceError;

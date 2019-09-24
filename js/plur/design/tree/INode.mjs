@@ -1,27 +1,26 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @module plur/design/tree/INode
  */
- 'use strict';
+'use strict';
 
-define([
-    'plur/PlurObject',
-    'plur/error/Interface' ],
-function(
-    PlurObject,
-    InterfaceError ) {
+import PlurObject from '../../../plur/PlurObject.mjs';
+import InterfaceError from '../../../plur/error/Interface.mjs';
 
 /**
  * Tree Node Interface
  *
- * @constructor plur/design/tree/INode
  * @interface
- **
+ * @implements {IPurified}
  */
-var ITreeNode = function() { throw new InterfaceError({'this': this}); };
+export default class ITreeNode {
+    constructor() {
+        throw new InterfaceError({'this': this});
+    };
+}
 
-ITreeNode.prototype = PlurObject.create('plur/design/tree/INode', ITreeNode);
+PlurObject.plurify('plur/design/tree/INode', ITreeNode);
 
 /**
  * Gets the value for this node.
@@ -131,5 +130,3 @@ ITreeNode.prototype.isLeaf = PlurObject.abstractMethod;
  */
 ITreeNode.prototype.expand = PlurObject.abstractMethod;
 
-return ITreeNode;
-});

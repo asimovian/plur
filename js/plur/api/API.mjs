@@ -12,7 +12,7 @@ import PlurObject from '../../plur/PlurObject.mjs';
  *
  * @implements {IPlurified}
  */
-class API {
+export default class API {
     /**
      * Retrieves an API object by name. Without parameters, retrieves plur. With an API object, registers the API.
      *
@@ -47,9 +47,10 @@ class API {
      * @param {string} version
      * @param {string} scmUrl
      * @param {string} branch
+     * @param {Object<string,string>} importPathsMap
      * @param {boolean|undefined} debug Enable framework-wide debugging.
      */
-    constructor(name, version, scmUrl, branch, debug) {
+    constructor(name, version, scmUrl, branch, importPathsMap, debug) {
         PlurObject.constProperty(this, 'name', name);
         PlurObject.constProperty(this, 'version', version);
         PlurObject.constProperty(this, 'scmUrl', scmUrl);
@@ -57,6 +58,7 @@ class API {
         PlurObject.constProperty(this, 'debug', !!debug); // framework-wide debugging, overrides runtime debug
 
         this._debug = this.debug;
+        this._importPathMap = importPathsMap || {};
     };
 
     /**
@@ -72,6 +74,18 @@ class API {
         }
 
         return this._debug;
+    };
+
+    getImportPaths() {
+        return PlurObject.values(this._importPathMap);
+    };
+
+    getImportPathMap() {
+        return this._importPathMap;
+    };
+
+    init() {
+
     };
 }
 
@@ -101,5 +115,3 @@ API.BrowserType = {
 API._apis = [];
 /** @type {API} **/
 API.plur = null;
-
-export default API;

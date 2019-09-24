@@ -1,24 +1,20 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject plur/test/Tester
+ * @module plur-bin/test/App
  */
- 'use strict';
+'use strict';
 
-define([
-    'path',
-    'glob',
-    'plur/PlurObject',
-    'plur/nodejs/Bootstrap',
-    'plur/test/Tester',
-    'plur/file/System' ],
-function(
-    path,
-    glob,
-    PlurObject,
-    Bootstrap,
-    Tester,
-    FileSystem ) {
+import path from 'path';
+import glob from 'glob';
+
+import PlurObject from "../../plur/PlurObject.mjs";
+import API from "../../plur/api/API.mjs";
+import Bootstrap from "../../plur/api/Bootstrap.mjs";
+import IApplication from "../../plur/app/IApplication.mjs";
+import FileSystem from "../../plur/file/System.mjs";
+
+import Tester from "../../plur/test/Tester.mjs";
 
 /**
  * Performs tests against either a provided set of test classes / test methods or against all available tests.
@@ -27,31 +23,31 @@ function(
  * Only modules with the word "test" in their name will be included.
  * Only JS files that end with "Test" will be targeted.
  *
- * @constructor plur-bin/plur/test/test
- **
+ * @implements {IPlurified}
  */
-var TestApp = function() {
-    this._targets = [];
+export default class TestApp {
+    constructor() {
+        this._targets = [];
 
-    // load targets from the commandline, if available. searching will be performed by start() if necessary
-    for (var i = 2; i < process.argv.length; ++i) {
-        this._targets.push(process.argv[i]);
-    }
-};
+        // load targets from the commandline, if available. searching will be performed by start() if necessary
+        for (let i = 2; i < process.argv.length; ++i) {
+            this._targets.push(process.argv[i]);
+        }
+    };
+}
 
-TestApp.prototype = PlurObject.create('plur-bin/plur/test', TestApp);
-PlurObject.implement(TestApp, IApplication);
+PlurObject.plurify('plur-bin/test/App', TestApp, [IApplication]);
 
 TestApp.prototype._findTargets = function(callback) {
     var targets = [];
     var numPathsGlobbed = 0;
-    var requireConfig = Bootstrap.get().getRequireConfig();
     var homePath = FileSystem.local().getHomePath();
+    const importPathMap = API.plur.getImportPathMap();
 
-    // create an array of potential test targets, skipping any paths that do not include the word "test" in their name
+    // create an array of potential test targets, skipping any paths that do not include the word "tests" in their name
     var pathNames = [];
-    for (var key in requireConfig.paths) {
-        if (key.match(/test/)) {
+    for (const key in importPathMap) {
+        if (key.match(/tests/)) {
             pathNames.push(key);
         }
     }
@@ -59,7 +55,7 @@ TestApp.prototype._findTargets = function(callback) {
     // pathNames.length will be used by the glob handler to identify when all operations have been completed
     for (var i = 0; i < pathNames.length; ++i) {
         var key = pathNames[i];
-        var jsPath = homePath + '/' + requireConfig.paths[key];
+        var jsPath = homePath + '/' + importPathMap[key];
 
         // scope jsPath value into callback as it will change value on the next iteration
         glob(jsPath + '/**/*Test.js', (function(jsPath) {
@@ -135,6 +131,3 @@ TestApp.prototype.stop = function(success) {
 TestApp.prototype.heartbeat = function() {
     return true;
 };
-
-return TestApp;
-});
