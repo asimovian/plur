@@ -18,7 +18,7 @@
     "plur",
     "asimovian",
     "network",
-    "framework", 
+    "framework",
     "platform",
     "service",
     "application",
@@ -33,11 +33,10 @@
     "url": "https://github.com/asimovian/plur/issues"
   },
   "dependencies": {
-    "requirejs": "~2.2.0",
-    "node-json-rpc": "0.0.1",
     "glob": "~7.1.4",
-    "web3": "~1.2.1",
-    "google-closure-compiler": "~20190909.0.0"
-
+    "google-closure-compiler": "^20190909.0.0",
+    "node-json-rpc": "0.0.1",
+    "requirejs": "~2.2.0",
+    "web3": "~1.2.1"
   }
 }

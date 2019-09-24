@@ -21,4 +21,3 @@ const bootstrap = new NodeJsBootstrap()
 bootstrap.boot();
 
 export default bootstrap;
-

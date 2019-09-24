@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import IPlurified from './IPlurified';
+import IPlurified from '../plur/IPlurified.mjs';
 
 /**
  * Utility for prototype object construction.
@@ -137,8 +137,8 @@ export default class PlurObject {
 
     /**
      *
-     * @param {{}} object
-     * @returns {{}[]}
+     * @param {Object} object
+     * @returns {Object[]}
      */
     static values(object) {
         let values = [];
