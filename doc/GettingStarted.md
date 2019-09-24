@@ -1,5 +1,5 @@
-Development Workstation
-=======================
+Getting Started
+===============
 
 OS
 : Linux Mint 19.2
