@@ -18,13 +18,13 @@ sudo apt-get install build-essential git snapd
 
 SnapD Packages
 --------------
-~~~sh
+```sh
 # Installs snap package for Node.js v12
 sudo snap install node --classic --channel=12
 # Installs the preferred IDE for plur development (30 day trial)
 # Skip this for non-dev work
 sudo snap install webstorm --classic
-~~~
+```
 
 NPM Project Packages
 --------------------
@@ -50,18 +50,18 @@ git clean -f ; git pull
 ```
 
 Run the NPM installation script:
-~~~~
+```sh
 npm install
-~~~~
+```
 
 The installation script will install NPM project packages.
 
 Use the following to compile everything or just a single file:
-~~~~
+```sh
 ./bin/compile.bash path/to/File.mjs
 # or
 npm run compile path/to/File.mjs
-~~~~
+```
 
 How to Test
 ===========
@@ -79,7 +79,7 @@ Use the script tag and filename as such:
 ```html
 <script type="modle" src="module/path/File.js"></script>
 <!-- Note the type and file extension for a Browser entry-point. -->
-````
+```
 
 NodeJS
 ------
@@ -91,9 +91,9 @@ Source
 
 Use the following command:
 
-~~~~
+```sh
 node --experimental_module ...
-~~~~
+```
 
 Google Closure Compiler
 -----------------------
@@ -105,7 +105,7 @@ Source
 
 Compile individual modules by providing their dependencies as well, one per --js tag:
 
-~~~~
+```sh
 ./node_modules/google-closure-compiler/linux/compiler --language_in=ECMASCRIPT_2019 --js js/plur/IPlurified.mjs --js js/plur/PlurObject.mjs
-~~~~
+```
 
