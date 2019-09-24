@@ -4,6 +4,9 @@ Getting Started
 OS
 : Linux Mint 19.2
 
+Arch
+: x86_64
+
 Plur API
 : v0.1.0
 
