@@ -1,26 +1,24 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @module plur/api/bootstraps/browser
  */
 'use strict';
 
-/**
- * Expects requirejs.js to have been pre-loaded by a <script> reference or dynamically.
- */
-var plurbootstrap = (function() {
-    var platformBoostrap = {};
-    platformBoostrap.require = requirejs;
+import API from '../../../plur/api/API.mjs';
+import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.mjs';
 
-    platformBoostrap.require.config({
-        baseUrl: '.',
-        paths: {
-            'plur': 'plur/js/plur',
-            'plur-test': 'plur/plur-tests/js/plur-tests'
-        },
-        nodeRequire: require,
-        enforceDefine: true
-    });
+const bootstrap = new NodeJsBootstrap()
+    .setOSType(API.OSType.Linux)
+    .setBrowserType(API.BrowserType.Chrome)
+    .importPath({
+        'plur': 'plur/js/plur',
+        'plur-lib': 'plur/extern/js',
+        'plur-cfg': '~/.plur/cfg/plur',
+        'plur-bin': 'plur/js/plur-bin',
+        'plur-tests': 'plur/js/plur-tests' });
 
-    platformBoostrap.platformType = 'browser';
-    return platformBoostrap;
-})();
+bootstrap.boot();
+
+export default bootstrap;
+

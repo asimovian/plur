@@ -4,7 +4,7 @@
  * @module plur/error/Interface
  */
 
-import PlurObject from 'plur/PlurObject';
+import PlurObject from 'plur/PlurObject.mjs';
 import PlurError from 'plur/error/Error';
 
 /**

@@ -6,11 +6,10 @@
 'use strict';
 
 import API from '../../../plur/api/API.mjs';
-import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.js';
+import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.mjs';
 
 const bootstrap = new NodeJsBootstrap()
-    .setOSType(API.OSType.Other)
-    .setBrowserType(API.BrowserType.Other)
+    .setOSType(API.OSType.Linux)
     .importPath({
         'plur': 'plur/js/plur',
         'plur-lib': 'plur/extern/js',
@@ -21,4 +20,3 @@ const bootstrap = new NodeJsBootstrap()
 bootstrap.boot();
 
 export default bootstrap;
-

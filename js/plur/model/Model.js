@@ -4,7 +4,7 @@
  * @module plur/model/Model
  */
 
-import PlurObject from 'plur/PlurObject';
+import PlurObject from 'plur/PlurObject.mjs';
 
 /**
  * Converts an object to / from a simple data model.

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject';
+import PlurObject from 'plur/PlurObject.mjs';
 import InterfaceError from 'plur/error/Interface';
 
 /**

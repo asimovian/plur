@@ -5,8 +5,8 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject';
-import API from '../../plur/api/API';
+import PlurObject from '../../plur/PlurObject.mjs';
+import API from '../../plur/api/API.mjs';
 
 /**
  * Plur Framework API information.

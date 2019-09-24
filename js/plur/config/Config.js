@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject';
+import PlurObject from 'plur/PlurObject.mjs';
 
 /**
  * Maintains key/value configuration for a subject object, typically for a prototype.

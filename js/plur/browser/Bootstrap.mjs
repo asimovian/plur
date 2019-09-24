@@ -1,15 +1,13 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/nodejs/Bootstrap
+ * @module plur/browser/Bootstrap
  */
 'use strict';
 
-import PlurObject from "../../plur/PlurObject";
-import API from "../../plur/api/API";
-import Bootstrap from "../../plur/api/Bootstrap";
-import FileSystem from "../../plur/file/System";
-import NodeJsFileSystem from "../../plur/nodejs/file/System";
+import PlurObject from "../../plur/PlurObject.mjs";
+import API from "../../plur/api/API.mjs";
+import Bootstrap from "../../plur/api/Bootstrap.mjs";
 
 /**
  * Initializes plur API for use with NodeJS.

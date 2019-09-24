@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject';
+import PlurObject from '../../plur/PlurObject.mjs';
 
 /**
  * Plur Framework API information. Version, debugging, etc.

@@ -6,7 +6,7 @@
 'use strict';
 
 import API from '../../../plur/api/API.mjs';
-import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.js';
+import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.mjs';
 
 const bootstrap = new NodeJsBootstrap()
     .setOSType(API.OSType.Other)
