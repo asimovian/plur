@@ -9,22 +9,22 @@ Plur API
 
 System Packages
 ---------------
-~~~~
+~~~sh
 ## Removes the default nodejs package, if installed.
 sudo apt-get remove nodejs
 # Installs build tools required for later steps. SnapD package manager.
 sudo apt-get install build-essential git snapd
-~~~~
+~~~
 
 SnapD Packages
 --------------
-~~~~
+~~~sh
 # Installs snap package for Node.js v12
 sudo snap install node --classic --channel=12
 # Installs the preferred IDE for plur development (30 day trial)
 # Skip this for non-dev work
 sudo snap install webstorm --classic
-~~~~
+~~~
 
 NPM Project Packages
 --------------------
