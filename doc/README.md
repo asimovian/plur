@@ -1,6 +1,6 @@
 Documentation
 =============
 
-* [GettingStarted](/doc/GettingStarted.md)
+* [Getting Started](/doc/Getting-Started.md)
 * [Roadmap](/doc/TODO.md)
 * [Licensing](/doc/license)
