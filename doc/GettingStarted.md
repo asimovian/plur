@@ -41,7 +41,13 @@ NPM Project Packages
 How to Configure the Project
 ============================
 
-Clone the plur.git repository and work from that directory.
+Clone the plur.git repository and work from that directory:
+```sh
+mkdir -p ~/project/asimovian-plur ; cd ~/project/asimovian-plur
+git clone git@github.com:asimovian/plur.git
+git checkout roylaurie/unstable
+git clean -f ; git pull
+```
 
 Run the NPM installation script:
 ~~~~
@@ -52,7 +58,7 @@ The installation script will install NPM project packages.
 
 Use the following to compile everything or just a single file:
 ~~~~
-./bin/compile path/to/File.mjs
+./bin/compile.bash path/to/File.mjs
 # or
 npm run compile path/to/File.mjs
 ~~~~
