@@ -2,11 +2,9 @@ Getting Started
 ===============
 
 OS
-: Linux Mint 19.2
-
+: Linux Mint 19.2<br/>
 Arch
-: x86_64
-
+: x86_64<br/>
 Plur API
 : v0.1.0
 
@@ -72,8 +70,7 @@ How to Test
 Chrome
 ------
 Build
-: 76.0.3809
-
+: 76.0.3809<br/>
 Source
 : OOB system package "chromium-browser"
 
@@ -87,8 +84,7 @@ Use the script tag and filename as such:
 NodeJS
 ------
 Version
-: 12.10.0
-
+: 12.10.0<br/>
 Source
 : SnapD package "node" with --classic --channel=12
 
@@ -101,8 +97,7 @@ node --experimental_module ...
 Google Closure Compiler
 -----------------------
 Version
-: 20190909
-
+: 20190909<br/>
 Source
 : NPM package "google-closure-compiler"
 
