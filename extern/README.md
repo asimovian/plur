@@ -1,4 +1,4 @@
-extern
-======
+External Software
+=================
 
-External libraries. See plur/doc/license for licenses.
+See plur/doc/license for licenses.
