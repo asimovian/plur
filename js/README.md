@@ -24,6 +24,8 @@ myteam/myproject/shape/Square
 ~~~js
 /** @file Square.mjs **/
 import Shape from '../../../myteam/myproject/Shape.mjs';
+// ^ Note that the relative path was purposely recursed enough to
+// show the full namepath intact, per plur framework standard.
 ~~~
 
 As the class is always the default export in plur class files.
