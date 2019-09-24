@@ -72,7 +72,7 @@ Build
 : 76.0.3809
 
 Source
-: OOB system package
+: OOB system package "chromium-browser"
 
 Use the script tag and filename as such:
 
