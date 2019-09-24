@@ -1,46 +1,31 @@
-# Javascript Source #
+Javascript Source
+=================
 
-All JS source files are stored here, organized by namespace.
+All JS library source files are stored here, organized by namespace. This is the base-path for JS module imports.
 
 The term **"namepath"** is used in plur to designate the relative path of a JS file, not including its extension.
 
-For example ...
-> js / myproject / Script.js
+Example
+-------
 
-... would have a namepath of:
-> 'myproject/Script'
+Author "myteam" is working on package "myproject". Where Square extends Shape ...
+~~~~
+plur/js/myteam/myproject/Shape.mjs
+plur/js/myteam/myproject/shape/Square.mjs
+~~~~
 
+... would have namepaths of ...
+~~~~
+myteam/myproject/Shape
+myteam/myproject/shape/Square
+~~~~
 
-## JS Directory Structure Standard ##
+... and Square imports Shape like so ...
+~~~js
+/** @file Square.mjs **/
+import Shape from '../../../myteam/myproject/Shape.mjs';
+~~~
 
-For **core** libraries that are universal to all related sub-projects:  
-> js / **name/space** / foo.js
+As the class is always the default export in plur class files.
 
-For all other projects, include the project name:
-> js / **project-name** / **name/space** / foo.js
-
-For example, consider a web-based app named Meo that has:
-* a core library project for common data models,
-* a www project for the web-based gui,
-* a bin project for server-side request/response from the gui.
-
-The core project file structure might look like:
-> meo / js / meo / stuff / Script.js
-
-The corresponding namepath for the above Script.js would be:
-> 'meo/stuff/Script'
-
-The www and bin project file structures would look like:
-> meo-www / js / meo-www / meo / urls / Script2.js  
-> meo-bin / js / meo-bin / meo / database / Script3.js
-
-The corresponding namepaths for the above www and bin scripts above would be:
-> 'meo-www/meo/urls/Script2'  
-> 'meo-bin/meo/database/Script3'
-
-
-
-
-
-
-
+The only namepaths that are not required to prefix with an author/team name are official "plur" modules.
