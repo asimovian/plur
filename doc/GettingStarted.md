@@ -1,7 +1,70 @@
-NPM
-===
+Development Workstation
+=======================
 
-> sudo npm install glob  
-> sudo npm install google-code-closure  
-> sudo npm install requirejs  
-> sudo npm install web3
+OS
+: Linux Mint 19.2
+
+System Packages
+---------------
+~~~~
+## Removes the default nodejs package, if installed.
+sudo apt-get remove nodejs
+# Installs build tools required for later steps. SnapD package manager.
+sudo apt-get install build-essential git snapd
+~~~~
+
+SnapD Packages
+--------------
+~~~~
+# Installs snap package for Node.js v12
+sudo snap install node --classic --channel=12
+# Installs the preferred IDE for plur development (30 day trial)
+# Skip this for non-dev work
+sudo snap install webstorm --classic
+~~~~
+
+How to Run
+==========
+
+Chrome
+------
+Build
+: 76.0.3809
+
+Source
+: OOB system package
+
+Use the script tag and filename as such:
+
+```html
+<script type="modle" src="module/path/File.js"></script>
+<!-- Note the type and file extension for a Browser entry-point. -->
+````
+
+NodeJS
+------
+Version
+: 12.10.0
+
+Source
+: SnapD package "node" with --classic --channel=12
+
+Use the following command:
+
+~~~~
+node --experimental_module ...
+~~~~
+
+Google Closure Compiler
+-----------------------
+Version
+: 20190909
+
+Source
+: NPM package "google-closure-compiler"
+
+Compile individual modules by providing their dependencies as well, one per --js tag:
+
+~~~~
+./node_modules/google-closure-compiler/linux/compiler --language_in=ECMASCRIPT_2019 --js js/plur/IPlurified.mjs --js js/plur/PlurObject.mjs
+~~~~
