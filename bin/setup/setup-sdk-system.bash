@@ -22,12 +22,30 @@ snap install webstorm --classic
 # Install the Google Closure Compiler as a system-wide tool
 npm install --global google-closure-compiler
 
-
-# there is no longer a nodejs executable, just node. the installed script simply redirects to the snap executable.
-# the silver lining is that, on this system, there's now a clear distinction between legacy (node) and es6m (nodejs).
+# There is no longer a nodejs executable, just node. The installed script simply redirects to the snap executable.
+# On this system, there's now a NodeJS option for both legacy JS (node) and es6m JS (nodejs).
 if [[ ! -f /usr/local/bin/nodejs ]]; then
-    cp bin/setup/nodejs /usr/local/bin
+    cp bin/setup/assets/nodejs /usr/local/bin
     chown root:root /usr/local/bin/nodejs ; chmod 755 /usr/local/bin/nodejs
 fi
+
+# Configure system MIME types in /etc/mime.types to understand .mjs files
+echo /etc/mime.types | xargs grep -lE 'javascript\s+js\s*$' | xargs sed -iE 's/\/javascript(\s+)js;\s*$/\/javascript\1js mjs/'
+
+# Configure nginx ...
+
+# Configure nginx MIME types to understand .mjs files
+echo /etc/nginx/mime.types | xargs grep -lE 'javascript\s+js;\s*$' | xargs sed -iE 's/\/javascript(\s+)js;\s*$/\/javascript\1js mjs;/'
+
+# Install the plur-tests site configuration and chown it to the user
+cp bin/setup/assets/plur-tests /etc/nginx/sites-available
+chown $USER:$USER /etc/nginx/sites-available/plur-tests
+
+# Create the html root and
+mkdir /var/www/plur-tests
+chown $USER:$USER /var/www/plur-tests
+
+
+
 
 exit 0
