@@ -30,22 +30,20 @@ if [[ ! -f /usr/local/bin/nodejs ]]; then
 fi
 
 # Configure system MIME types in /etc/mime.types to understand .mjs files
-echo /etc/mime.types | xargs grep -lE 'javascript\s+js\s*$' | xargs sed -iE 's/\/javascript(\s+)js;\s*$/\/javascript\1js mjs/'
+echo /etc/mime.types | xargs grep -lE 'javascript\s+js\s*$' | xargs sed -i -E 's/\/javascript(\s+)js\s*$/\/javascript\1js mjs/'
 
 # Configure nginx ...
 
 # Configure nginx MIME types to understand .mjs files
-echo /etc/nginx/mime.types | xargs grep -lE 'javascript\s+js;\s*$' | xargs sed -iE 's/\/javascript(\s+)js;\s*$/\/javascript\1js mjs;/'
+echo /etc/nginx/mime.types | xargs grep -lE 'javascript\s+js;\s*$' | xargs sed -i -E 's/\/javascript(\s+)js;\s*$/\/javascript\1js mjs;/'
 
 # Install the plur-tests site configuration and chown it to the user
 cp bin/setup/assets/plur-tests /etc/nginx/sites-available
-chown $USER:$USER /etc/nginx/sites-available/plur-tests
+chown $USER:$USER /etc/nginx/sites-available/plur-tests ; chmod 644 /etc/nginx/sites-available/plur-tests
 
 # Create the html root and
 mkdir /var/www/plur-tests
-chown $USER:$USER /var/www/plur-tests
-
-
+chown $USER:$USER /var/www/plur-tests ; chmod 755 /var/www/plur-tests
 
 
 exit 0
