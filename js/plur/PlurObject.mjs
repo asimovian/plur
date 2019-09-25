@@ -84,6 +84,9 @@ export default class PlurObject {
         PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
         classObject.implemented = { 'plur/IPlurified' : IPlurified };
 
+        // kept for runtime metrics
+        PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
+
         if (typeof ifaces === 'undefined') { // all done then
             return namepath;
         }
@@ -155,9 +158,20 @@ export default class PlurObject {
         Object.defineProperty(object, key, { value: value, writable: false, enumerable: true, configurable: false });
     };
 
+    /**
+     * Returns an array of records { namepath: string, datetime: 'string' }.
+     * @returns {!Array<!Object<string, string>>}
+     */
+    static getPlurified() {
+        return PlurObject._plurified;
+    };
+
     constructor() {
         throw new Error('Cannot instantiate private constructor of PlurObject');
     };
 }
+
+/** @type {!Array<!Object<string,string>>} Runtime information about each class that has been plurify()'d. **/
+PlurObject._plurified = [];
 
 PlurObject.plurify('plur/PlurObject', PlurObject);

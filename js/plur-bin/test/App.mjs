@@ -124,6 +124,13 @@ TestApp._onTesterPromiseRejected = function(self, error) {
 };
 
 TestApp.prototype.stop = function(success) {
+    if (true) {
+        const plurified = PlurObject.getPlurified();
+        const namepaths = [];
+        console.log('plurifed(): ', plurified.map(i => { return i.namepath; }));
+        console.log('plurified load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
+    }
+
     process.exit(success ? 0 : 1 );
 };
 
