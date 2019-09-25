@@ -8,7 +8,7 @@
 import API from '../../../plur/api/API.mjs';
 import BrowserBootstrap from '../../../plur/browser/Bootstrap.mjs';
 
-const bootstrap = new NodeJsBootstrap()
+const bootstrap = new BrowserBootstrap()
     .setOSType(API.OSType.Linux)
     //.setBrowserType(API.BrowserType.Chrome)
     .importPath({

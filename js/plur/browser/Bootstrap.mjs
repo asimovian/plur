@@ -14,7 +14,7 @@ import Bootstrap from "../../plur/api/Bootstrap.mjs";
  *
  * @implements {IPlurified}
  */
-class BrowserBootstrap extends Bootstrap {
+export default class BrowserBootstrap extends Bootstrap {
     constructor() {
         super();
         this.setPlatformType(API.PlatformType.Browser)
@@ -25,4 +25,4 @@ class BrowserBootstrap extends Bootstrap {
     };
 }
 
-PlurObject.plurify('plur/browser/Bootstrap', BrowserBootstrap, Bootstrap);
+PlurObject.plurify('plur/browser/Bootstrap', BrowserBootstrap);
