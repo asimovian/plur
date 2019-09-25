@@ -1,38 +1,32 @@
 /**
- * @copyright 2015 Asimovian LLC
+ * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @module plur-test/unit/plur/api/APITest
  */
- 'use strict';
+'use strict';
 
-define([
-    'plur/PlurObject',
-    'plur/test/Test',
-    'plur/API' ],
-function(
-    PlurObject,
-    Test,
-    API ) {
+import PlurObject from '../../../../plur/PlurObject.mjs';
+import Test from '../../../../plur/test/Test.mjs';
+import API from '../../../../plur/api/API.mjs';
 
 /**
  * Test
  *
- * @constructor plur-tests/unit/plur/APITest
- * @extends plur/test/Test
  * @tests plur/API
- **
  */
-var APITest = function() {
-    Test.call(this);
-};
+export default class APITest extends Test {
+    constructor() {
+        super();
+    };
 
-APITest.prototype = PlurObject.create('plur-tests/unit/plur/APITest', APITest, Test);
+   testValues() {
+       this.assertHas(API, 'name', 'plur');
+       this.assertHas(API, 'version', '0.0.2');
+       this.assertHas(API, 'scmUrl', 'git://github.com/asimovian/plur.git');
+       this.assertHas(API, 'branch', 'roylaurie/unstable');
+    };
+}
 
-APITest.prototype.testValues = function() {
-    this.assertHas(API, 'version', '0.0.0');
-    this.assertHas(API, 'scmUrl', 'git://github.com/asimovian/plur.git');
-    this.assertHas(API, 'branch', 'master');
-};
+PlurObject.plurify('plur-tests/unit/plur/api/APITest', APITest);
 
-return APITest;
-});
+

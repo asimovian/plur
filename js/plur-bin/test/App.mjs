@@ -7,13 +7,10 @@
 
 import path from 'path';
 import glob from 'glob';
-
 import PlurObject from "../../plur/PlurObject.mjs";
 import API from "../../plur/api/API.mjs";
-import Bootstrap from "../../plur/api/Bootstrap.mjs";
 import IApplication from "../../plur/app/IApplication.mjs";
 import FileSystem from "../../plur/file/System.mjs";
-
 import Tester from "../../plur/test/Tester.mjs";
 
 /**
@@ -124,11 +121,10 @@ TestApp._onTesterPromiseRejected = function(self, error) {
 };
 
 TestApp.prototype.stop = function(success) {
-    if (true) {
+    if (API.plur.debug()) {
         const plurified = PlurObject.getPlurified();
-        const namepaths = [];
-        console.log('plurifed(): ', plurified.map(i => { return i.namepath; }));
-        console.log('plurified load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
+        //console.log('plurifed(): ', plurified.map(i => { return i.namepath; }));
+        console.log('load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
     }
 
     process.exit(success ? 0 : 1 );

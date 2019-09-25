@@ -16,6 +16,7 @@ import InterfaceError from "../../plur/error/Interface.mjs";
  * logic.
  *
  * @interface
+ * @implements {IPlurified}
  */
 export default class IApplication {
     constructor() {
@@ -60,23 +61,6 @@ IApplication.prototype.start = PlurObject.abstractMethod;
  * @type {function}
  * @abstract
  */
-IApplication.prototype.stop = PlurObject.abstractMethod,
+IApplication.prototype.stop = PlurObject.abstractMethod;
 
-/**
- * Retrieves the plur node attached to this application.
- *
- * @type {function}
- * @abstract
- * @returns {module:plur/node/INode}
- */
-IApplication.prototype.plurNode = PlurObject.abstractMethod;
-
-/**
- * Retrieves the application's main service.
- *
- * @type {function}
- * @abstract
- * @returns {module:plur/service/IService}
- */
-IApplication.prototype.service = PlurObject.abstractMethod;
 

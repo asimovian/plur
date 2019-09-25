@@ -6,11 +6,11 @@
 'use strict';
 
 import API from '../../../plur/api/API.mjs';
-import NodeJsBootstrap from '../../../plur/nodejs/Bootstrap.mjs';
+import BrowserBootstrap from '../../../plur/browser/Bootstrap.mjs';
 
 const bootstrap = new NodeJsBootstrap()
     .setOSType(API.OSType.Linux)
-    .setBrowserType(API.BrowserType.Chrome)
+    //.setBrowserType(API.BrowserType.Chrome)
     .importPath({
         'plur': 'plur/js/plur',
         'plur-lib': 'plur/extern/js',

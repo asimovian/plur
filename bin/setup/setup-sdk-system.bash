@@ -22,13 +22,8 @@ snap install webstorm --classic
 # Install the Google Closure Compiler as a system-wide tool
 npm install --global google-closure-compiler
 
-# Removing the 'nodejs' package removed the 'nodejs' alias, but the 'node' snap package doesn't recreate it...
-# Add an 'nodejs' alias to the system's bashrc
-out=$(cat /etc/bash.bashrc | grep '#plur:')
-if [[ $? -ne 0 ]]; then
-    cat bin/setup/system.bashrc >> /etc/bash.bashrc
-fi
-
+# there is no longer a nodejs executable, just node. the installed script simply redirects to the snap executable.
+# the silver lining is that, on this system, there's now a clear distinction between legacy (node) and es6m (nodejs).
 if [[ ! -f /usr/local/bin/nodejs ]]; then
     cp bin/setup/nodejs /usr/local/bin
     chown root:root /usr/local/bin/nodejs ; chmod 755 /usr/local/bin/nodejs

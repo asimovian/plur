@@ -10,24 +10,19 @@ import API from "../../plur/api/API.mjs";
 import Bootstrap from "../../plur/api/Bootstrap.mjs";
 
 /**
- * Initializes plur API for use with NodeJS.
+ * Initializes plur API for use with browser.
  *
  * @implements {IPlurified}
  */
-class NodeJsBootstrap extends Bootstrap {
+class BrowserBootstrap extends Bootstrap {
     constructor() {
         super();
-        this.setPlatformType(API.PlatformType.NodeJS)
+        this.setPlatformType(API.PlatformType.Browser)
     };
 
     boot() {
         super.boot();
-
-        // initialize the local file system api
-        FileSystem.initLocal(new NodeJsFileSystem());
     };
-};
+}
 
-PlurObject.plurify('plur/nodejs/Bootstrap', NodeJsBootstrap, Bootstrap);
-
-export default NodeJsBootstrap;
+PlurObject.plurify('plur/browser/Bootstrap', BrowserBootstrap, Bootstrap);
