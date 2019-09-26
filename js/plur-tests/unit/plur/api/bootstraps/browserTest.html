@@ -13,9 +13,23 @@
         import TestApp from '../../../../../plur-bin/test/App.mjs';
         import BrowserTerminal from "../../../../../plur/terminal/Browser.mjs";
 
-        new TestApp(new BrowserTerminal()).start();
+        const app = new TestApp(new BrowserTerminal()).start();
     </script>
+    <style>
+    body {
+        background-color: cornflowerblue;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 256pt;
+        color: ghostwhite;
+        text-shadow: 6px 6px lightblue;
+    }
+    </style>
+    <link rel="icon" type="image/png" href="../../../../../../doc/media/image/favico.png">
 </head>
 <body>
+<h1>p l u r</h1>
 </body>
 </html>
