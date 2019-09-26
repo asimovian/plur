@@ -5,9 +5,9 @@
  */
 'use strict';
 
-import PlurObject from '../../PlurObject.mjs';
-import Singleton from '../../design/singleton/ASingleton.mjs';
-import IFileSystem from '../ISystem.mjs';
+import PlurObject from '../../../plur/PlurObject.mjs';
+import Singleton from '../../../plur/design/singleton/ASingleton.mjs';
+import IFileSystem from '../../../plur/file/ISystem.mjs';
 
 /**
  *

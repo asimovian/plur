@@ -6,8 +6,8 @@
  */
 'use strict';
 
-import PlurObject from '../PlurObject.mjs';
-import ITerminal from './ITerminal.mjs';
+import PlurObject from '../../plur/PlurObject.mjs';
+import ITerminal from '../../plur/terminal/ITerminal.mjs';
 
 /**
  * Represents a means of interacting with a user/client via shell / console.

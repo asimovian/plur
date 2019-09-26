@@ -25,7 +25,7 @@ import PlurObject from '../../../plur/PlurObject.mjs';
  */
 export default class ASingleton {
     constructor(object) {
-        this._object = object;
+        this._object = !!object ? object : null;
     };
 }
 

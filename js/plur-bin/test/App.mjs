@@ -124,7 +124,7 @@ TestApp._onTesterPromiseRejected = function(self, error) {
 };
 
 TestApp.prototype.stop = function(success) {
-    if (API.plur.debug()) {
+    if (false) {
         const plurified = PlurObject.getPlurified();
         //console.log('plurifed(): ', plurified.map(i => { return i.namepath; }));
         console.log('load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
