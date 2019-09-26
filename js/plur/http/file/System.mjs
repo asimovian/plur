@@ -13,15 +13,25 @@ import AFileSystem from '../../../plur/file/ASystem.mjs';
  *
  */
 export default class HttpFileSystem extends AFileSystem {
-    constructor(paths) {
+    constructor(host, paths) {
         super('/', '/');
 
         this._paths = paths;
     };
 
     find(glob, pattern) {
+        const foundpaths = [];
+
+        const paths = this._paths;
+        for (let i = 0; i < paths.length; ++i) {
+            if (paths[i].match(pattern)) {
+                foundpaths.push(paths[i]);
+            }
+
+        }
+
         const promise = new Promise(function(resolve, reject) {
-            resolve(this._paths.map(i => { if (i.matches(pattern)) { return i; } }));
+            resolve(foundpaths);
         });
 
         return promise;

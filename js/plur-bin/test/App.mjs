@@ -69,9 +69,10 @@ TestApp.prototype._findTargets = function(callback) {
                 }
 
                 // remove the module path root from the filepath, making it relative (like the namepath is)
-                const relativeFilepath = filepath.substring(jsPath.length - filesystem.basename(jsPath).length);
+                const relativeFilepath = filepath;//filepath.substring(jsPath.length - filesystem.basename(jsPath).length);
                 // remove the extension from the name to form a valid namepath
                 const namepath = relativeFilepath.match(/^(.*)\.[^.]+$/)[1];
+                console.log(namepath);
                 targets.push(namepath);
             }
 

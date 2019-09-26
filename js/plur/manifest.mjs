@@ -38,5 +38,4 @@ export default [
     "plur/event/Emitter.mjs",
     "plur/event/Event.mjs",
     "plur-tests/unit/plur/PlurObjectTest.mjs",
-    "plur-tests/unit/plur/api/APITest.mjs",
 ];

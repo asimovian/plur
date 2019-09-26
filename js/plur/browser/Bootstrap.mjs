@@ -9,9 +9,11 @@ import PlurObject from '../../plur/PlurObject.mjs';
 import API from '../../plur/api/API.mjs';
 import Bootstrap from '../../plur/api/Bootstrap.mjs';
 import BrowserFileSystem from '../../plur/browser/file/System.mjs';
+import HttpFileSystem from '../../plur/http/file/System.mjs';
 import { singleton as LocalFileSystem} from '../../plur/file/system/Local.mjs';
 import { singleton as ApiFileSystem} from '../../plur/file/system/API.mjs';
-import PLUR_MANIFEST from '../../plur-manifest.txt'
+import { singleton as SystemLog } from '../../plur/log/System.mjs';
+import PLUR_MANIFEST from '../../plur/manifest.mjs'
 
 /**
  * Initializes plur API for use with browser.
@@ -29,8 +31,6 @@ export default class BrowserBootstrap extends Bootstrap {
         super.boot();
 
         LocalFileSystem.set(new BrowserFileSystem());
-
-        const paths = PLUR_MANIFEST.split('\n').map(i => { return '/' + i; });
         ApiFileSystem.set(new HttpFileSystem('http://localhost/plur', PLUR_MANIFEST));
     };
 }

@@ -12,9 +12,9 @@ import AFileSystem from '../../../plur/file/ASystem.mjs';
  * Represents a
  *
  */
-export default class NodeJsFileSystem extends AFileSystem {
+export default class BrowserFileSystem extends AFileSystem {
     constructor() {
-        super('/', fs.realpathSync('../'));
+        super('/', '/');
     };
 
     glob(pattern) {
@@ -31,4 +31,4 @@ export default class NodeJsFileSystem extends AFileSystem {
 
 };
 
-PlurObject.plurify('plur/nodejs/file/System', NodeJsFileSystem);
+PlurObject.plurify('plur/browser/file/System', BrowserFileSystem);

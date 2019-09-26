@@ -20,20 +20,25 @@ export default class SystemLog extends Singleton {
         // add listeners that output to console
         const emitter = this.get().emitter();
 
+        const infoFunc = ( typeof console.info === 'undefined' ? console.log : console.info );
+        const errorFunc = ( typeof console.info === 'undefined' ? console.log : console.error );
+
         emitter.on('info', function (event) {
             const data = event.data();
-            if (typeof data.logEntry.data !== 'undefined')
-                console.info(data.logEntry.message, data.logEntry.data);
-            else
-                console.info(data.logEntry.message);
+            if (typeof data.logEntry.data !== 'undefined') {
+                infoFunc(data.logEntry.message, data.logEntry.data);
+            } else {
+                infoFunc(data.logEntry.message);
+            }
         });
 
         emitter.on('error', function (event) {
             const data = event.data();
-            if (typeof data.logEntry.data !== 'undefined')
-                console.error(data.logEntry.message, data.logEntry.data);
-            else
-                console.error(data.logEntry.message);
+            if (typeof data.logEntry.data !== 'undefined') {
+                errorFunc(data.logEntry.message, data.logEntry.data);
+            } else {
+                errorFunc(data.logEntry.message);
+            }
         });
     };
 }
