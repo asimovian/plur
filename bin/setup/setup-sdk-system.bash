@@ -7,17 +7,26 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 ## Removes the default nodejs package, if installed.
-apt-get remove nodejs
+apt-get --yes update
+apt-get --yes remove nodejs
+apt-get --yes upgrade
+apt-get --yes update
+apt-get --yes dist-upgrade
+apt-get --yes update
+apt-get --yes upgrade
+apt-get --yes autoremove
 
 # Installs build tools required for later steps. SnapD package manager. nginx for testing.
-apt-get install build-essential git snapd nginx
+apt-get --yes install build-essential git snapd nginx
 
 # Installs snap package for Node.js v12
 snap install node --classic --channel=12
+snap refresh node
 
 # Installs the preferred IDE for plur development (30 day trial)
 # Skip this for non-dev work
 snap install webstorm --classic
+snap refresh webstorm
 
 # Install the Google Closure Compiler as a system-wide tool
 npm install --global google-closure-compiler

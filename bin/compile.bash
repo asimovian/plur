@@ -6,7 +6,7 @@
 #
 # Requres (npm install):
 # > sudo apt-get install build-essential
-# > npm install google-closure-compiler
+# > sudo npm install -g google-closure-compiler
 
 set -oue pipefail
 IFS=$'\n\t'
@@ -16,7 +16,7 @@ NC='\033[0m'
 echo -e "${GRN}+---------------------------- plur // compile --------------------------------+${NC}"
 echo -e "${GRN}|                                                                             |${NC}"
 
-closureCompiler="./node_modules/google-closure-compiler-linux/compiler"
+closureCompiler='bin/compiler'
 src=''
 err=0
 

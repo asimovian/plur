@@ -1,6 +1,6 @@
 {
-  "name": "@asimovian/plur",
-  "version": "0.1.0",
+  "name": "@plur/plur",
+  "version": "0.0.2",
   "type": "module",
   "description": "An application framework and nodal network platform.",
   "main": "",

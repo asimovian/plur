@@ -1,8 +1,14 @@
 #!/bin/bash
 
-manifestFile='./build/plur-manifest.txt'
-jsManifestFile='./js/plur/manifest.mjs'
-findDir='./js'
+source ./bin/plur.lib.bash
+
+homedir=$(realpath $(pwd))
+
+manifestFile="${homedir}/build/plur-manifest.txt"
+jsManifestFile="${homedir}/js/plur/manifest.mjs"
+findDir="./js"
+
+[ -d "${homedir}/build" ] || mkdir "${homedir}/build"
 
 # Build the text manifest first, in /build
 find $findDir -name '*.mjs' | sed -E 's/^.\/js\///g' > $manifestFile
@@ -13,6 +19,6 @@ find $findDir -name '*.mjs' | sed -E 's/^.\/js\///g' | sed -E 's/^/    "/g' | se
 
 echo '];' >> $jsManifestFile
 
-cat manifestFile
+cat $manifestFile
 
 exit 0
