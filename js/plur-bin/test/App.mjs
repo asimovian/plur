@@ -5,13 +5,12 @@
  */
 'use strict';
 
-import path from 'path';
-import glob from 'glob';
 import PlurObject from "../../plur/PlurObject.mjs";
 import API from "../../plur/api/API.mjs";
 import IApplication from "../../plur/app/IApplication.mjs";
-import FileSystem from "../../plur/file/System.mjs";
+import ITerminal from "../../plur/terminal/ITerminal.mjs";
 import Tester from "../../plur/test/Tester.mjs";
+import { singleton as ApiFileSystem } from "../../plur/file/system/API.mjs";
 
 /**
  * Performs tests against either a provided set of test classes / test methods or against all available tests.
@@ -23,12 +22,17 @@ import Tester from "../../plur/test/Tester.mjs";
  * @implements {IPlurified}
  */
 export default class TestApp {
-    constructor() {
+    /**
+     * @param {!ITerminal} terminal
+     */
+    constructor(terminal) {
+        this._terminal = terminal;
         this._targets = [];
 
         // load targets from the commandline, if available. searching will be performed by start() if necessary
-        for (let i = 2; i < process.argv.length; ++i) {
-            this._targets.push(process.argv[i]);
+        let parameters = terminal.getParameters();
+        for (let i = 0; i < parameters.length; ++i) {
+            this._targets.push(parameters[i]);
         }
     };
 }
@@ -36,10 +40,11 @@ export default class TestApp {
 PlurObject.plurify('plur-bin/test/App', TestApp, [IApplication]);
 
 TestApp.prototype._findTargets = function(callback) {
+    const importPathMap = API.plur.getImportPathMap();
+    const filesystem = ApiFileSystem.get();
+    const homePath = filesystem.getHomePath();
     var targets = [];
     var numPathsGlobbed = 0;
-    var homePath = FileSystem.local().getHomePath();
-    const importPathMap = API.plur.getImportPathMap();
 
     // create an array of potential test targets, skipping any paths that do not include the word "tests" in their name
     var pathNames = [];
@@ -55,28 +60,26 @@ TestApp.prototype._findTargets = function(callback) {
         var jsPath = homePath + '/' + importPathMap[key];
 
         // scope jsPath value into callback as it will change value on the next iteration
-        glob(jsPath + '/**/*Test.mjs', (function(jsPath) {
-            return function(err, files) {
-                for (var i = 0; i < files.length; ++i) {
-                    var filepath = files[i];
-                    // skip any files that do not end in "Test.js"
-                    if (!path.basename(filepath).match(/^[a-zA-Z0-9_\-]+Test\.mjs$/)) {
-                        continue;
-                    }
-
-                    // remove the module path root from the filepath, making it relative (like the namepath is)
-                    var relativeFilepath = filepath.substring(jsPath.length - path.basename(jsPath).length);
-                    // remove the extension from the name to form a valid namepath
-                    var namepath = relativeFilepath.match(/^(.*)\.[^.]+$/)[1];
-                    targets.push(namepath);
+        filesystem.find(jsPath + '/**/*Test.mjs', /^[a-z]+-tests.+Test\.mjs$/).then(function(filepaths) {
+            for (let i = 0; i < filepaths.length; ++i) {
+                const filepath = filepaths[i];
+                // skip any files that do not end in "Test.js"
+                if (!filesystem.basename(filepath).match(/^[a-zA-Z0-9_\-]+Test\.mjs$/)) {
+                    continue;
                 }
 
-                // check if we've finished globbing every path yet, callback if we have
-                if (++numPathsGlobbed === pathNames.length) {
-                    callback(targets);
-                }
-            };
-        })(jsPath));
+                // remove the module path root from the filepath, making it relative (like the namepath is)
+                const relativeFilepath = filepath.substring(jsPath.length - filesystem.basename(jsPath).length);
+                // remove the extension from the name to form a valid namepath
+                const namepath = relativeFilepath.match(/^(.*)\.[^.]+$/)[1];
+                targets.push(namepath);
+            }
+
+            // check if we've finished globbing every path yet, callback if we have
+            if (++numPathsGlobbed === pathNames.length) {
+                callback(targets);
+            }
+        });
     }
 };
 

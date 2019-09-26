@@ -1,17 +1,15 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/nodejs/file/System
+ * @module plur/browser/file/System
  */
 'use strict';
 
-import fs from 'fs';
-import glob from 'glob';
 import PlurObject from '../../../plur/PlurObject.mjs';
 import AFileSystem from '../../../plur/file/ASystem.mjs';
 
 /**
- * Represents the underlying File System through Node.JS.
+ * Represents a
  *
  */
 export default class NodeJsFileSystem extends AFileSystem {
@@ -19,7 +17,7 @@ export default class NodeJsFileSystem extends AFileSystem {
         super('/', fs.realpathSync('../'));
     };
 
-    find(pattern) {
+    glob(pattern) {
         const promise = new Promise(function(resolve, reject) {
             glob(pattern, function(err, files) {
                 if (err) {
@@ -29,9 +27,8 @@ export default class NodeJsFileSystem extends AFileSystem {
                 }
             })
         });
-
-        return promise;
     };
+
 };
 
 PlurObject.plurify('plur/nodejs/file/System', NodeJsFileSystem);

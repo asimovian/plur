@@ -40,5 +40,5 @@ export default class SystemLog extends Singleton {
 
 PlurObject.plurify('plur/log/System', SystemLog);
 
-const singleton = new SystemLog;
+const singleton = new SystemLog();
 export {singleton};

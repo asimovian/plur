@@ -37,7 +37,7 @@ PlurObject.plurify('plur/design/ASingleton', ASingleton);
  * @param {} object
  * @throws plur/error/State If the singleton object has already bee initialized
  */
-ASingleton.prototype._set = function(object) {
+ASingleton.prototype.set = function(object) {
     if (this._object !== null) {
         throw new Error('Singleton for ' + this.namepath + ' has already been initialized');
     }

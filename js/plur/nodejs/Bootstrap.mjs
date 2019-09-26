@@ -8,8 +8,9 @@
 import PlurObject from "../../plur/PlurObject.mjs";
 import API from "../../plur/api/API.mjs";
 import Bootstrap from "../../plur/api/Bootstrap.mjs";
-import FileSystem from "../../plur/file/System.mjs";
 import NodeJsFileSystem from "../../plur/nodejs/file/System.mjs";
+import { singleton as LocalFileSystem } from '../../plur/file/system/Local.mjs';
+import { singleton as ApiFileSystem } from '../../plur/file/system/API.mjs';
 
 /**
  * Initializes plur API for use with NodeJS.
@@ -25,8 +26,9 @@ class NodeJsBootstrap extends Bootstrap {
     boot() {
         super.boot();
 
-        // initialize the local file system api
-        FileSystem.initLocal(new NodeJsFileSystem());
+        // initialize the two main file system apis
+        LocalFileSystem.set(new NodeJsFileSystem());
+        ApiFileSystem.set(LocalFileSystem.get());
     };
 };
 

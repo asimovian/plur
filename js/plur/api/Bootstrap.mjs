@@ -8,7 +8,7 @@
 import PlurObject from '../../plur/PlurObject.mjs';
 import API from "../../plur/api/API.mjs";
 import PlurAPI from "../../plur/api/PlurAPI.mjs";
-import BUILD_META from "../../plur/api/build.meta.mjs";
+import BUILD_META from "../../plur/build-meta.mjs";
 
 /**
  * Bootstrap performs the entry point initializations necessary to properly construct and start the plur API.

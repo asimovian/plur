@@ -60,3 +60,23 @@ IFileSystem.prototype.getConfigPath = PlurObject.abstractMethod;
  * @returns string
  */
 IFileSystem.prototype.getBinPath = PlurObject.abstractMethod;
+
+/**
+ * Retrieves only the last portion of a path.
+ *
+ * @type {function}
+ * @abstract
+ * @param {string} filepath
+ * @returns {Promise}
+ */
+IFileSystem.prototype.glob = PlurObject.abstractMethod;
+
+/**
+ * Globs a path for a pattern, returning paths that match.
+ *
+ * @type {function}
+ * @abstract
+ * @param {string} pattern
+ * @returns {Promise}
+ */
+IFileSystem.prototype.glob = PlurObject.abstractMethod;
