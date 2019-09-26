@@ -1,9 +1,18 @@
 #!/bin/bash
 
-manifest='./build/plur-manifest.txt'
-jsManifest='./js/plur/manifest.mjs'
-echo 'export default [' > $manifest
+manifestFile='./build/plur-manifest.txt'
+jsManifestFile='./js/plur/manifest.mjs'
+findDir='./js'
 
-find ./js -name '*.mjs' | sed -E 's/^.\/js\///g' | sed -E 's/^/    "/g' | sed -E 's/$/",/g' >> $manifest
+# Build the text manifest first, in /build
+find $findDir -name '*.mjs' | sed -E 's/^.\/js\///g' > $manifestFile
 
-echo '];' >> $manifest
+echo 'export default [' > $jsManifestFile
+
+find $findDir -name '*.mjs' | sed -E 's/^.\/js\///g' | sed -E 's/^/    "/g' | sed -E 's/$/",/g' >> $jsManifestFile
+
+echo '];' >> $jsManifestFile
+
+cat manifestFile
+
+exit 0
