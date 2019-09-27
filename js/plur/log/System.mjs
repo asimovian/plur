@@ -40,6 +40,9 @@ export default class SystemLog extends Singleton {
                 errorFunc(data.logEntry.message);
             }
         });
+
+        // initial message ... the blinkies
+        console.log('(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)');
     };
 }
 
