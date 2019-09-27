@@ -13,6 +13,15 @@
     <script type="module">
         import TestApp from '../../../../../plur-bin/test/App.mjs';
         import BrowserTerminal from "../../../../../plur/terminal/Browser.mjs";
+        import {singleton as SystemLog } from "../../../../../plur/log/System.mjs";
+
+        SystemLog.get().emitter().on('info', function(event) {
+            document.getElementById('log').innerText += event.data().logEntry.message + "\r\n";
+        });
+
+        SystemLog.get().emitter().on('error', function(event) {
+            document.getElementById('log').innerText += event.data().logEntry.message + "\r\n";
+        });
 
         const app = new TestApp(new BrowserTerminal()).start();
     </script>
@@ -21,13 +30,11 @@
         background-color: cornflowerblue;
         overflow: hidden;
     }
-
     h1 {
         font-size: 256pt;
         color: ghostwhite;
         text-shadow: 6px 6px lightblue;
     }
-
     @keyframes blinky {
         0%   { color: lightblue; }
         25%  { color: lightblue; }
@@ -35,15 +42,28 @@
         75%  { color: lightblue; }
         100% { color: lightblue; }
     }
-
     h1 span {
         text-shadow: none;
         animation: blinky 3.0s infinite;
+    }
+    #log {
+        position: fixed;
+        height: 100%;
+        width: 37%;
+        background-color: lightblue;
+        top: 0px;
+        right: 0px;
+        overflow: hidden;
+        font-family: monospace;
+        font-size: 8pt;
+        padding-left: 10px;
+        padding-top: 5px;
     }
     </style>
     <link rel="icon" type="image/png" href="../../../../../../doc/media/image/favico.png">
 </head>
 <body>
 <h1>p l u r <span>.</span></h1>
+<div id="log"></div>
 </body>
 </html>

@@ -11,6 +11,7 @@ import IApplication from "../../plur/app/IApplication.mjs";
 import ITerminal from "../../plur/terminal/ITerminal.mjs";
 import Tester from "../../plur/test/Tester.mjs";
 import { singleton as ApiFileSystem } from "../../plur/file/system/API.mjs";
+import { singleton as SystemLog } from '../../plur/log/System.mjs';
 
 /**
  * Performs tests against either a provided set of test classes / test methods or against all available tests.
@@ -96,6 +97,9 @@ TestApp.prototype.start = function() {
         var tester = new Tester(this._targets);
         this._start(tester);
     }
+
+    // initial message ... the blinkies
+    SystemLog.get().info('(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)');
 };
 
 TestApp.prototype._start = function(tester) {
@@ -110,7 +114,7 @@ TestApp.prototype._start = function(tester) {
  * Expects variable "self" to exist in calling closure.
  */
 TestApp._onTesterPromiseFulfilled = function(self) {
-    console.log('Tests passed.');
+    SystemLog.get().info('Tests passed.');
     self.stop(true);
 };
 
@@ -118,8 +122,8 @@ TestApp._onTesterPromiseFulfilled = function(self) {
  * Expects variable "self" to exist in calling closure.
  */
 TestApp._onTesterPromiseRejected = function(self, error) {
-    console.error('Tests failed');
-    console.error(error.stack)
+    SystemLog.get().error('Tests failed');
+    SystemLog.get().error(error.stack)
     self.stop(false);
 };
 
@@ -127,7 +131,7 @@ TestApp.prototype.stop = function(success) {
     if (false) {
         const plurified = PlurObject.getPlurified();
         //console.log('plurifed(): ', plurified.map(i => { return i.namepath; }));
-        console.log('load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
+        SystemLog.get().info('load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
     }
 
     if (typeof process !== 'undefined') { // nodejs
