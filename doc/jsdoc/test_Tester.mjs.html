@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: test/Tester.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: test/Tester.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @copyright 2019 Asimovian LLC
+ * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @module plur/test/Tester
+ */
+'use strict';
+
+import PlurObject from '../../plur/PlurObject.mjs';
+import PlurError from '../../plur/error/Error.mjs';
+import {singleton as SystemLog} from '../../plur/log/System.mjs';
+
+/**
+ *
+ */
+export default class Tester {
+	constructor(testTargets) {
+        this._log = SystemLog.get();
+        this._testTargets = testTargets;
+        this._testTargetIndex = -1;
+        this._testTarget = null;
+        this._promise = null;
+        this._promiseResolve = null;
+        this._promiseReject = null;
+    };
+}
+
+PlurObject.plurify('plur/test/Tester', Tester);
+
+Tester._TEST_CONSTRUCTOR = /^[a-zA-Z0-9_\-\/]+$/;
+
+Tester.prototype.test = function() {
+    var self = this;
+
+    // pass a noop function that writes the resolve and reject methods to state for use by test callbacks
+    this._promise = new Promise(function(resolve, reject) {
+        self._promiseResolve = resolve;
+        self._promiseReject = reject;
+    });
+
+    if (this._testTargets.length === 0) {
+        this._promiseResolve();
+    } else {
+        this._testNextTarget();
+    }
+
+    return this._promise;
+};
+
+Tester.prototype._rejected = function(error) {
+    this._log.error('Test failed: ' + this._testTarget + ': ' + error);
+    this._promiseReject(error);
+};
+
+Tester.prototype._resolved = function() {
+    this._log.info('Tests passed: ' + this._testTarget);
+    this._promiseResolve();
+};
+
+Tester.prototype._testNextTarget = function() {
+    var self = this;
+
+    // if this was the last target prototype, resolve to pass the test entirely
+    if (this._testTargetIndex+1 === this._testTargets.length) {
+        this._resolved();
+        return;
+    }
+
+    this._testTarget = this._testTargets[++this._testTargetIndex];
+
+    if (!this._testTarget.match(Tester._TEST_CONSTRUCTOR)) {
+        throw new PlurError('Invalid test target', { target: testTarget });
+    }
+
+    this._log.info('Testing object: ' + this._testTarget + ' ...');
+
+    var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
+        import('../../' + [self._testTarget] + '.mjs').then(function(module) {
+            var test = new module.default();
+
+            var methodPromiseResolve = null;
+            var methodPromise = new Promise(function(resolve, reject) {
+                methodPromiseResolve = resolve;
+            });
+
+            var testMethodNames = [];
+
+            for (var methodName in test) {
+                if (!methodName.match(/^test/) || !test[methodName] instanceof Function || methodName === 'test') {
+                    continue;
+                }
+
+                testMethodNames.push(methodName);
+            }
+
+            self._testNextMethod(methodPromise, test, 0, testMethodNames, targetPromiseResolve, targetPromiseReject);
+
+            methodPromiseResolve();
+        });
+    });
+
+    targetPromise.then(function() { self._testNextTarget() }, function(errors) { self._rejected(errors); });
+};
+
+Tester.prototype._testNextMethod = function(prevMethodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject) {
+    var self = this;
+
+    prevMethodPromise.then(
+        function() {
+            var methodPromise = self._testMethod(test, testMethodNames[testMethodIndex]);
+            methodPromise.then(
+                function() {
+                    self._log.info('Test passed: ' + test.namepath + '.prototype.' + testMethodNames[testMethodIndex] + '()');
+
+                    if (++testMethodIndex &lt; testMethodNames.length) {
+                            self._testNextMethod(methodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject);
+                    } else {
+                        targetPromiseResolve();
+                    }
+                },
+                targetPromiseReject
+            );
+        },
+        targetPromiseReject
+    );
+};
+
+Tester.prototype._testMethod = function(test, methodName) {
+    var self = this;
+
+    var methodTestPromise = new Promise(function(resolve, reject) {
+        self._log.info('Testing method: ' + test.namepath + '.prototype.' + methodName + '()');
+        test[methodName]();
+        resolve();
+
+        /*var promises = test.popPromises();
+        if (promises.length === 0)  {
+            if (targetPromiseResolve !== null) {
+                targetPromiseResolve();
+            } else {
+                resolve();
+            }
+        } else {
+            promises = promises.concat(new PlurPromise(Tester._timeoutPromiseExecutor));
+            PlurPromise.all(promises, ( targetResolve !== null ? targetResolve : methodResolve ), reject);
+        }*/
+    });
+
+    return methodTestPromise;
+};
+
+Tester._timeoutPromiseExecutor = function(resolve, reject) {
+    setTimeout(2000, function(resolve, reject) {
+        reject('Test timed out after 2000 ms');
+    });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI.html">plur/api/PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap.html">plur/nodejs/Bootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li><li><a href="plur_api_build.module_meta.html">meta</a></li></ul><h3>Classes</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI-PlurAPI.html">PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._Listener%250A_.html">plur/event/Emitter._Listener
+*</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._ListenerTreeValue%250A_.html">plur/event/Emitter._ListenerTreeValue
+*</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap-NodeJsBootstrap.html">NodeJsBootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li></ul><h3>Interfaces</h3><ul><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 26 2019 19:03:47 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

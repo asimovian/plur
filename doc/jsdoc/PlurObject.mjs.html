@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PlurObject.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PlurObject.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @copyright 2019 Asimovian LLC
+ * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @module plur/PlurObject
+ * @version 0.1.0
+ */
+'use strict';
+
+import IPlurified from '../plur/IPlurified.mjs';
+
+/**
+ * Utility for prototype object construction.
+ *
+ * @implements {plur/IPlurified}
+ * @final
+ */
+export default class PlurObject {
+    static hasPlurPrototype(object) {
+        return ( typeof object.namepath === 'string' );
+    };
+
+    /**
+     * Determines whether the given function is a valid PlurObject constructor.
+     *
+     * @param {Function} constructor
+     * @returns {boolean} TRUE if constructor FALSE if not
+     */
+    static isConstructor(constructor) {
+        return ( constructor instanceof Function &amp;&amp; typeof constructor.namepath === 'string'
+            &amp;&amp; typeof constructor.prototype === 'object' );
+    };
+
+    /**
+     *
+     * @param {plur/IPlurified} object
+     * @param {function(new: plur/IPlurified)} interfaceConstructor
+     * @returns {boolean}
+     */
+    static implementing(object, interfaceConstructor) {
+        let constructor = Object.getPrototypeOf(object).constructor;
+        if (typeof constructor.implemented === 'undefined') {
+            return false;
+        } else if (typeof interfaceConstructor === 'string') {
+            return ( typeof constructor.implemented[interfaceConstructor] !== 'undefined' );
+        } else {
+            return ( typeof constructor.implemented[interfaceConstructor.namepath] !== 'undefined' );
+        }
+    };
+
+    /**
+     * Meant to be assigned to abstract prototype functions that require overriding in child classes.
+     *
+     * @throws Error
+     */
+    static abstractMethod() {
+        throw new Error('plur: Cannot call abstract method.');
+    };
+
+    /**
+     * Initializes a class as a Plur Object.
+     *
+     * Designed to be used from within a ES6+ class declaration. Always assigned to a static property "namepath".
+     *
+     *** Example usage:
+     * class Foo {
+     *   ...
+     * };
+     *
+     * PlurObject.plurify('myproject/foobars/Foo', Foo);
+     ***
+     *
+     * Sets the provided "namepath" property into the prototype of the provided constructor.
+     *
+     * Sets the "implemented" property into the constructor that maps implemented interface namepaths
+     * to their constructors.
+     *
+     * @param {string} namepath The namepath to set both statically and on the prototype.
+     * @param {!IPlurified} classObject The class to be plurified
+     * @param {Array&lt;IPlurified>=} ifaces Interfaces to be implemented.
+     */
+    static plurify(namepath, classObject, ifaces) {
+        // inject namepath on the prototype.
+        PlurObject.constProperty(classObject, 'namepath', namepath);
+        PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
+        classObject.implemented = { 'plur/IPlurified' : IPlurified };
+
+        // kept for runtime metrics
+        PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
+
+        if (typeof ifaces === 'undefined') { // all done then
+            return namepath;
+        }
+
+        // implement interfaces
+        if (!Array.isArray(ifaces)) {
+            ifaces = [ifaces];
+        }
+
+        for (let i = 0; i &lt; ifaces.length; ++i) {
+            PlurObject.implement(classObject, ifaces[i]);
+        }
+    };
+
+    /**
+     * Define a subject constructor/prototype as implementing a given interface constructor.
+     * Copies the interface prototype's abstract methods in to the subject prototype.
+     * Adds the interface pathname to the subject constructor.implemented variable.
+     *
+     * @param {IPlurified} constructor
+     * @param {IPlurified} interfaceConstructor
+     * @throws {Error}
+     */
+    static implement(constructor, interfaceConstructor) {
+        if (typeof constructor.implemented[interfaceConstructor.namepath] !== 'undefined') {
+            throw new Error('Not a valid plur Object.');
+        }
+
+        let interfacePrototype = interfaceConstructor.prototype;
+        let prototype = constructor.prototype;
+
+        for (let propertyName in interfacePrototype) {
+            // make sure that the interface property is assigned to PlurObject.abstractMethod
+            if (interfacePrototype.hasOwnProperty(propertyName) &amp;&amp; interfacePrototype[propertyName] === PlurObject.abstractMethod) {
+                // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
+                switch (typeof prototype[propertyName]) {
+                    case 'undefined':
+                        prototype[propertyName] = interfacePrototype[propertyName];
+                        break;
+                    default:
+                        if (prototype[propertyName] === PlurObject.abstractMethod) {
+                            throw new Error('Unimplemented method in ' + prototype.namepath + ' for ' +
+                                interfaceConstructor.namepath + '.prototype.' + propertyName);
+                        }
+                }
+            }
+        }
+
+        constructor.implemented[interfaceConstructor.namepath] = interfaceConstructor;
+    };
+
+    /**
+     *
+     * @param {Object} object
+     * @returns {Object[]}
+     */
+    static values(object) {
+        let values = [];
+        for (let key in object) {
+            if (object.hasOwnProperty(key)) {
+                values.push(object[key]);
+            }
+        }
+
+        return values;
+    };
+
+    static constProperty(object, key, value) {
+        Object.defineProperty(object, key, { value: value, writable: false, enumerable: true, configurable: false });
+    };
+
+    /**
+     * Returns an array of records { namepath: string, datetime: 'string' }.
+     * @returns {!Array&lt;!Object&lt;string, string>>}
+     */
+    static getPlurified() {
+        return PlurObject._plurified;
+    };
+
+    constructor() {
+        throw new Error('Cannot instantiate private constructor of PlurObject');
+    };
+}
+
+/** @type {!Array&lt;!Object&lt;string,string>>} Runtime information about each class that has been plurify()'d. **/
+PlurObject._plurified = [];
+
+PlurObject.plurify('plur/PlurObject', PlurObject);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI.html">plur/api/PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap.html">plur/nodejs/Bootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li><li><a href="plur_api_build.module_meta.html">meta</a></li></ul><h3>Classes</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI-PlurAPI.html">PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._Listener%250A_.html">plur/event/Emitter._Listener
+*</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._ListenerTreeValue%250A_.html">plur/event/Emitter._ListenerTreeValue
+*</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap-NodeJsBootstrap.html">NodeJsBootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li></ul><h3>Interfaces</h3><ul><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 26 2019 19:03:47 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

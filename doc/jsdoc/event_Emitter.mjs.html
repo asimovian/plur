@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: event/Emitter.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: event/Emitter.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @copyright 2019 Asimovian LLC
+ * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @module plur/event/Emitter
+ */
+'use strict';
+
+import PlurObject from '../../plur/PlurObject.mjs';
+import StateError from '../../plur/error/State.mjs';
+import DestroyedError from '../../plur/error/Destroyed.mjs';
+import Event from '../../plur/event/Event.mjs';
+import MapTreeNode from '../../plur/design/tree/MapNode.mjs';
+
+/**
+ * Provides publish-subscribe functionality for Event objects.
+ *
+ * Event types act as the topic, which are expected to be constructor namepaths followed by a . separated namespace.
+ *   E.g., plur-tests/plur/event/EmitterTest.testCreations.first
+ *
+ * Simple globbing of event types is possible when subscribing to a topic. The wildcard character * will match against
+ * anything prefixed before its use, whole tokens only.
+ *   E.g., example/Foo.* matches example/Foo.1, example/Foo.2, and example/Foo.bar.42. Does not match example/Food.1
+ *
+ * Subscribers are given a subscription id for each eventType pattern they wish to listen for, which they may be used
+ * to unsubscribe from the emitter in the future. The once() method allows for a subscriber to automatically unsubscribe
+ * after the first message is passed.
+ *
+ */
+export default class Emitter {
+    /**
+     * @var string Emitter.WILDCARD The event type wildcard. When used, it will catch any event that has the preceding token
+     * in its path.
+     */
+    static WILDCARD = '*';
+
+    /**
+     * Splits an event type string into a string array of individual tokens. Splits on / and . characters.
+     * E.g., foo/bar.* => [ 'foo', 'bar', '*' ]
+     *
+     * @function plur/event/Emitter.tokenizeEventType
+     * @param string eventType
+     * @returns string[] eventTypeTokens
+     */
+    static tokenizeEventType(eventType) {
+        return eventType.split(/[\/\.]/);
+    };
+
+    constructor() {
+        /* One or more subscribers toggle listening true. Vice versa.*/
+        this._listening = false;
+        /* Destroyed emitters are totally shutdown and cannot resume further operation. */
+        this._destroyed = false;
+        /* An main of subscription Ids currently listening. */
+        this._subscriptionTreeMap = {};
+        /* Used for incrementally assigning subscription ids to new listeners. */
+        this._subscriptionIdIndex = 0;
+        /* Map with event type tokens (words split by . or /) organized as nested branches. Leaf objects with a key
+         * of > represent an array of Listeners subscribed to the containing branch. Leaf objects with a key of * (wildcard)
+         * represent an array of Listeners subscribed to any branch following the containing branch. Very basic globbing.
+         * @var plur/design/tree/MapNode
+         */
+        this._listenerTree = new MapTreeNode();
+        this._persistentEvents = {};
+    };
+
+    /**
+     * Finds all listeners applicable to the provided event type.
+     *
+     * @function plur/event/Emitter.prototype._findListeners
+     * @param string[] eventTypeTokens
+     * @returns plur/event/_Listener[] listeners
+     */
+    _findListeners(eventTypeTokens) {
+        let listeners = [];
+        let branch = this._listenerTree;
+
+        for (let i = 0, n = eventTypeTokens.length; i &lt; n; ++i) {
+            branch = branch.child(eventTypeTokens[i]);
+            if (branch === null) {
+                break;
+            }
+
+            let branchValue = branch.get();
+
+            if (i + 1 === n) { // last node, get exact listeners
+                listeners = listeners.concat(branchValue.getListeners());
+            } else { // preceding node, get child listeners
+                listeners = listeners.concat(branchValue.getChildListeners());
+            }
+        }
+
+        return listeners;
+    };
+
+    /**
+     * Subscribes a listener for the specified event. The provided callback is executed once the event is published.
+     *
+     * The callback will provide the event emitted as well as any event-specific data.
+     *
+     * @function plur/event/Emitter.prototype.on
+     * @param {string} event
+     * @param {Function({string} event, {} data)} callback
+     * @returns int subscriptionId for use with unsubscribe()
+     */
+    on(eventType, callback) {
+        return this._subscribe(eventType, callback, false);
+    };
+
+    /**
+     * Subscribes a listener for the specified event once. The provided callback is executed once the event is published.
+     * The listener is automatically unsubscribed once published, before executing the callback.
+     *
+     * The callback will provide the event emitted as well as any event-specific data.
+     *
+     * @function plur/event/Emitter.prototype.on
+     * @param {string} event
+     * @param {Function({string} event, {} data)} callback
+     * @returns int subscriptionId for use with unsubscribe()
+     */
+    once(eventType, callback) {
+        return this._subscribe(eventType, callback, true);
+    };
+
+    /**
+     * Subscribes a listener callback to an eventType
+     *
+     * @function plur/event/Emitter.prototype._subscribe
+     * @param string eventType
+     * @param Function(plur/event/Event event) callback
+     * @param boolean temporary TRUE for once(), false for on()
+     * @returns int subscriptionId
+     */
+    _subscribe(eventType, callback, temporary) {
+        if (this._destroyed) {
+            throw new DestroyedError('Emitter has been destroyed.');
+        }
+
+        let listener = new _Listener(eventType, callback, this._nextSubscriptionId(), temporary);
+        let eventTypeTokens = Emitter.tokenizeEventType(eventType);
+        let isWildcard = ( eventTypeTokens[eventTypeTokens.length - 1] === Emitter.WILDCARD );
+        let branch = null;
+
+        if (isWildcard) {
+            eventTypeTokens = eventTypeTokens.slice(0, -1); // remove the trailing wildcard token
+            branch = this._listenerTree.expand(eventTypeTokens, _ListenerTreeValue);
+            branch.get().addChildListener(listener);
+        } else {
+            branch = this._listenerTree.expand(eventTypeTokens, _ListenerTreeValue);
+            branch.get().addListener(listener);
+        }
+
+        this._subscriptionTreeMap[listener.subscriptionId] = branch;
+
+        if (!this._listening) {
+            this._listening = true;
+        }
+
+        return listener.subscriptionId;
+    };
+
+    /**
+     * Returns a subscription id that is not currently being used by this emitter.
+     *
+     * @function plur/event/Emitter.prototype._nextSubscriptionId
+     * @returns int
+     */
+    _nextSubscriptionId() {
+        let id = null;
+        while(id === null) {
+            id = ++this._subscriptionIdIndex;
+            if (id &lt; 0) {
+                id = this._subscriptionIdIndex = 1;
+            }
+
+            if (typeof this._subscriptionTreeMap[id] !== 'undefined') {
+                id = null;
+            }
+        }
+
+        return id;
+    };
+
+    /**
+     * If a subscription ID is specified, determines whether the associated listener is subscribed.
+     *
+     * @function plur/event/Emitter.prototype.listening
+     * @returns boolean isListening TRUE if listening, FALSE if not.
+     */
+    listening() {
+        return this._listening;
+    };
+
+    /**
+     * Unsubscribes a listener from this emitter by subscriptionId previously returned by on() or once().
+     *
+     * @function plur/event/Emitter.prototype.unsubscribe
+     * @param {int} subscriptionId
+     */
+    unsubscribe(subscriptionId) {
+        // ignore non-existant subscriptions
+        if (typeof this._subscriptionTreeMap[subscriptionId] === 'undefined') {
+            return;
+        }
+
+        // delete the listener from the tree.
+        let listenerBranch = this._subscriptionTreeMap[subscriptionId];
+        if (listenerBranch === null) {
+            throw new StateError('Listener branch is missing.');
+        }
+
+        listenerBranch.get().removeListener(subscriptionId);
+
+        // prune childless tree nodes.
+        while (!listenerBranch.isRoot() &amp;&amp; listenerBranch.isLeaf() &amp;&amp; !listenerBranch.get().listening()) {
+            let child = listenerBranch;
+            listenerBranch = listenerBranch.parent();
+            listenerBranch.removeChild(child);
+        }
+
+        if (this._listenerTree.isLeaf()) {
+            this._listening = false;
+        }
+    };
+
+    /**
+     * Publishes an event (with data) to this emitter. All listeners subscribed to the event will have their provided
+     * callbacks executed.
+     *
+     * @function plur/event/Emitter.prototype.emit
+     * @param {string} event
+     * @param {{}|undefined} data
+     */
+    emit(eventType, eventData, persistent) {
+        if (this._destroyed) {
+            throw new DestroyedError('Emitter has been destroyed.');
+        } else if (!this._listening) {
+            return;
+        }
+
+        // build event
+        let event = new Event(eventType, eventData);
+
+        // find listeners for event type
+        let listeners = this._findListeners(Emitter.tokenizeEventType(eventType));
+        for (let i = 0, n = listeners.length; i &lt; n; ++i) {
+            let listener = listeners[i];
+
+            // once()
+            if (listener.temporary) {
+                // unsubscribe before callback
+                this.unsubscribe(listener.subscriptionId);
+            }
+
+            listener.callback(event);
+        }
+    };
+
+    /**
+     * Unsubscribes all listeners and prevents further subscriptions to be added as well as further events to be emitted.
+     *
+     * @function plur/event/Emitter.prototype.destroy
+     */
+    destroy() {
+        this._destroyed = true;
+        this._listening = false;
+
+        this.emit(this.namepath + '.destroyed');
+
+        this._listenerTree = null;
+        this._subscriptionTreeMap = {};
+        this._subscriptionIdIndex = 0;
+    };
+}
+
+PlurObject.plurify('plur/event/Emitter', Emitter);
+
+
+/**
+ * Listener entry for use in the listner tree.
+ *
+ * @constructor plur/event/Emitter._Listener
+ **
+ * @param string eventType
+ * @param Function(plur/event/Event event) callback
+ * @param int subscriptionId
+ * @param boolean temporary
+ */
+class _Listener {
+    constructor(eventType, callback, subscriptionId, temporary) {
+        if (this._destroyed) {
+            throw new DestroyedError('Emitter has been destroyed.');
+        };
+
+        this.eventType = eventType;
+        this.subscriptionId = subscriptionId;
+        this.callback = callback;
+        this.temporary = !!temporary;
+    };
+}
+
+PlurObject.plurify('plur/event/Emitter._Listener', _Listener);
+
+/**
+ * The Listener Tree stores every Event Type that is currently being subscribed to by representing each token of each
+ * event type as a Tree Node. Each subsequent token of a given event type is created as a Child Node of the previous
+ * token, and so on, chaining tokens together. Common event types share the same nodes where they initially match.
+ *
+ * Each node stores its own Listeners list as well as a list for Child Listeners that are subscribed to all children
+ * of that node, rather than the node itself.
+ *
+ * Example:
+ * car/wheel => {Node "car"} (parent) -> (child) {Node "wheel"}
+ * car/trunk => {Node "car"} (parent) -> (child) {Node "trunk"}
+ * the tree => {Node "car"} (parent) -> (children) [ {Node "wheel"] , {Node "trunk"} ]
+ *
+ * In the preceding example, a Listener for event type "car/wheel" would be stored in {Node: "wheel"}'s listeners
+ * array, while a Wildcard Listener for event type "car/*" would be stored in {Node: "car"}'s childListeners array. The
+ * former would only receive events for the exact event type of "car/wheel", while the latter listener would receive
+ * events for both "car/wheel" and "car/trunk".
+ *
+ * @constructor plur/event/Emitter._ListenerTreeValue
+ **
+ * @param {}|undefined listeners
+ * @param {}|undefined childListeners
+ */
+class _ListenerTreeValue {
+    constructor(listeners, childListeners) {
+        this.listeners = listeners || {}; // map: subscriptionId => listener
+        this.childListeners = childListeners || {}; // map: subscriptionId => listener
+    };
+
+    /**
+     * Adds a listener.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.appendTree
+     */
+    addListener(listener) {
+        this.listeners[listener.subscriptionId] = listener;
+    };
+
+    /**
+     * Adds a child listener.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.appendTree
+     */
+    addChildListener(listener) {
+        this.childListeners[listener.subscriptionId] = listener;
+    };
+
+    /**
+     * Removes a listener by its subscription id.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.removeListener
+     */
+    removeListener(subscriptionId) {
+        delete this.listeners[subscriptionId];
+        delete this.childListeners[subscriptionId];
+    };
+
+    /**
+     * Retrieves listeners.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.getListeners
+     * @returns plur/event/_ListenerTreeValue[]
+     */
+    getListeners() {
+        return PlurObject.values(this.listeners);
+    };
+
+    /**
+     * Retrieves child listeners.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.getChildListeners
+     * @returns plur/event/_ListenerTreeValue[]
+     */
+    getChildListeners() {
+        return PlurObject.values(this.childListeners);
+    };
+
+    /**
+     * Determines whether this node has children and/or whether it has listeners or not.
+     *
+     * @function plur/event/Emitter._ListenerTreeValue.listening
+     * @returns boolean isEmpty TRUE if listening, FALSE if not
+     */
+    listening() {
+        return ( Object.keys(this.listeners).length !== 0 || Object.keys(this.childListeners).length !== 0 );
+    };
+}
+    
+PlurObject.plurify('plur/event/Emitter._ListenerTreeValue', _ListenerTreeValue);
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI.html">plur/api/PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap.html">plur/nodejs/Bootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li><li><a href="plur_api_build.module_meta.html">meta</a></li></ul><h3>Classes</h3><ul><li><a href="module-plur_api_API.html">plur/api/API</a></li><li><a href="module-plur_api_Bootstrap.html">plur/api/Bootstrap</a></li><li><a href="module-plur_api_PlurAPI-PlurAPI.html">PlurAPI</a></li><li><a href="module-plur_app_IApplication.html">plur/app/IApplication</a></li><li><a href="module-plur_browser_Bootstrap.html">plur/browser/Bootstrap</a></li><li><a href="module-plur_browser_file_System.html">plur/browser/file/System</a></li><li><a href="module-plur_design_singleton_ASingleton.html">plur/design/singleton/ASingleton</a></li><li><a href="module-plur_design_tree_INode.html">plur/design/tree/INode</a></li><li><a href="module-plur_design_tree_MapTreeNode.html">plur/design/tree/MapTreeNode</a></li><li><a href="module-plur_error_Assertion.html">plur/error/Assertion</a></li><li><a href="module-plur_error_Destroyed.html">plur/error/Destroyed</a></li><li><a href="module-plur_error_Error.html">plur/error/Error</a></li><li><a href="module-plur_error_Interface.html">plur/error/Interface</a></li><li><a href="module-plur_error_State.html">plur/error/State</a></li><li><a href="module-plur_error_Type.html">plur/error/Type</a></li><li><a href="module-plur_event_Emitter.html">plur/event/Emitter</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._Listener%250A_.html">plur/event/Emitter._Listener
+*</a></li><li><a href="module-plur_event_Emitter-plur_event_Emitter._ListenerTreeValue%250A_.html">plur/event/Emitter._ListenerTreeValue
+*</a></li><li><a href="module-plur_event_Event.html">plur/event/Event</a></li><li><a href="module-plur_file_ASystem.html">plur/file/ASystem</a></li><li><a href="module-plur_file_ISystem.html">plur/file/ISystem</a></li><li><a href="module-plur_file_system_API.html">plur/file/system/API</a></li><li><a href="module-plur_file_system_Local.html">plur/file/system/Local</a></li><li><a href="module-plur_http_file_System.html">plur/http/file/System</a></li><li><a href="module-plur_IPlurified.html">plur/IPlurified</a></li><li><a href="module-plur_log_Log.html">plur/log/Log</a></li><li><a href="module-plur_log_System.html">plur/log/System</a></li><li><a href="module-plur_model_IModeling.html">plur/model/IModeling</a></li><li><a href="module-plur_model_Model-plur_model_Model.html">plur/model/Model</a></li><li><a href="module-plur_nodejs_Bootstrap-NodeJsBootstrap.html">NodeJsBootstrap</a></li><li><a href="module-plur_nodejs_file_System.html">plur/nodejs/file/System</a></li><li><a href="module-plur_PlurObject.html">plur/PlurObject</a></li><li><a href="module-plur_terminal_HttpBrowser.html">plur/terminal/HttpBrowser</a></li><li><a href="module-plur_test_Test.html">plur/test/Test</a></li><li><a href="module-plur_test_Tester.html">plur/test/Tester</a></li><li><a href="module-plur_user_terminal_Browser.html">plur/user/terminal/Browser</a></li><li><a href="module-plur_user_terminal_Shell.html">plur/user/terminal/Shell</a></li></ul><h3>Interfaces</h3><ul><li><a href="module-plur_user_ITerminal.html">plur/user/ITerminal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 26 2019 19:03:47 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
