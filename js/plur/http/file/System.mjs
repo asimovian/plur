@@ -24,6 +24,7 @@ export default class HttpFileSystem extends AFileSystem {
         const paths = this._paths;
 
         for (let i = 0; i < paths.length; ++i) {
+            console.log(paths[i]);
             if (paths[i].match(pattern)) {
                 foundpaths.push(paths[i]);
             }

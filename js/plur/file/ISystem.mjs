@@ -12,6 +12,7 @@ import InterfaceError from "../../plur/error/Interface.mjs";
  * The interface that all file system prototypes must provide.
  *
  * @interface
+ * @implements {IPlurified}
  */
 export default class IFileSystem {
     constructor() {
@@ -69,14 +70,15 @@ IFileSystem.prototype.getBinPath = PlurObject.abstractMethod;
  * @param {string} filepath
  * @returns {Promise}
  */
-IFileSystem.prototype.glob = PlurObject.abstractMethod;
+IFileSystem.prototype.basename = PlurObject.abstractMethod;
 
 /**
  * Globs a path for a pattern, returning paths that match.
  *
  * @type {function}
  * @abstract
- * @param {string} pattern
+ * @param {string} dir
+ * @param {!RegExp} pattern
  * @returns {Promise}
  */
-IFileSystem.prototype.glob = PlurObject.abstractMethod;
+IFileSystem.prototype.find = PlurObject.abstractMethod;

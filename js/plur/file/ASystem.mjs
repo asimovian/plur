@@ -23,6 +23,11 @@ export default class AFileSystem {
         this._binPath = this.joinPaths(realHomePath, AFileSystem.DirNames.bin);
     };
 
+    /**
+     * @override
+     * @param {string} path
+     * @returns {string}
+     */
     basename(path) {
         return path.replace(/.*\//, '');
     };
@@ -30,9 +35,7 @@ export default class AFileSystem {
     /**
      * Combines the provided paths together into one path.
      *
-     * @function plur/file/System.prototype.joinPaths
-     * @abstract
-     * @param ... string[] paths
+     * @param {...string} path
      * @returns string
      */
     joinPaths(/* ... */) {
@@ -57,7 +60,7 @@ export default class AFileSystem {
     /**
      * Retrieves the home path for thie Plur software, appending all provided paths.
      *
-     * @param ... string[] paths
+     * @param {...Array<string>} paths
      * @returns string
      */
     getHomePath(/* ... */) {
@@ -71,7 +74,7 @@ export default class AFileSystem {
     /**
      * Retrieves the config path for this node instance, appending all provided paths.
      *
-     * @param ... string[] paths
+     * @param {...Array<string>} paths
      * @returns string
      */
     getConfigPath(/* ... */) {
@@ -81,7 +84,7 @@ export default class AFileSystem {
     /**
      * Retrieves the bin path for the Plur software appending all provided paths.
      *
-     * @param ... string[] paths
+     * @param {...Array<string>} paths
      * @returns string
      */
     getBinPath(/* ... */) {
@@ -89,7 +92,7 @@ export default class AFileSystem {
     };
 };
 
-PlurObject.plurify('plur/file/ASystem', AFileSystem, [IFileSystem]);
+PlurObject.plurify('plur/file/ASystem', AFileSystem, [ IFileSystem ]);
 
 AFileSystem.DirNames = {
     bin: 'bin',
