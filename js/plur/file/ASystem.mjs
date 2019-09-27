@@ -17,10 +17,10 @@ import IFileSystem from "../../plur/file/ISystem.mjs";
 export default class AFileSystem {
     constructor(pathSeparator, realHomePath) {
         this.pathSeparator = pathSeparator;
-
         this._homePath = realHomePath;
-        this._configPath = this.joinPaths(realHomePath, AFileSystem.DirNames.config);
-        this._binPath = this.joinPaths(realHomePath, AFileSystem.DirNames.bin);
+
+        this._configPath = this.joinPaths(realHomePath, 'plur', AFileSystem.DirNames.config);
+        this._binPath = this.joinPaths(realHomePath, 'plur', AFileSystem.DirNames.bin);
     };
 
     /**

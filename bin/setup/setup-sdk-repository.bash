@@ -24,5 +24,6 @@ fi
 git clone ${scmurl} ${wwwdir}/plur
 cd ${wwwdir}/plur
 git checkout ${branch}
+npm install
 ./bin/setup/setup-sdk-repository.bash --no-www
 exit $?

@@ -60,7 +60,7 @@ TestApp.prototype._findTargets = function(callback) {
         var jsPath = homePath + '/' + importPathMap[key];
 
         // scope jsPath value into callback as it will change value on the next iteration
-        filesystem.find(jsPath, /^.*\/[a-z0-9_\-]+-tests\/.*[a-zA-Z0-9\-_]+Test\.mjs$/g).then(function(filepaths) {
+        filesystem.find(jsPath, /^(?:|.*\/)[a-z0-9_\-]+-tests\/.*[a-zA-Z0-9\-_]+Test\.mjs$/g).then(function(filepaths) {
             for (let i = 0; i < filepaths.length; ++i) {
                 const filepath = filepaths[i];
                 // skip any files that do not end in "Test.js"
@@ -72,7 +72,6 @@ TestApp.prototype._findTargets = function(callback) {
                 const relativeFilepath = filepath.substring(jsPath.length - filesystem.basename(jsPath).length);
                 // remove the extension from the name to form a valid namepath
                 const namepath = relativeFilepath.match(/^(.*)\.[^.]+$/)[1];
-                console.log(namepath);
                 targets.push(namepath);
             }
 

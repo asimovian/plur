@@ -30,7 +30,9 @@ export default class BrowserBootstrap extends Bootstrap {
         super.boot();
 
         LocalFileSystem.set(new BrowserFileSystem());
-        ApiFileSystem.set(new HttpFileSystem('http://localhost/plur', PLUR_MANIFEST));
+
+        const virtualManifest = PLUR_MANIFEST.map(i => { return '/manifest/plur/js/' + i; });
+        ApiFileSystem.set(new HttpFileSystem('/manifest', virtualManifest));
     };
 }
 

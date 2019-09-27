@@ -33,7 +33,8 @@ PlurObject.plurify('plur/file/ISystem', IFileSystem);
 IFileSystem.prototype.joinPaths = PlurObject.abstractMethod;
 
 /**
- * Retrieves the home path for thie Plur software, appending all provided paths.
+ * Retrieves the home path for all available packages, including plur sdk. Appends var args to the end.
+ * Typeically, this is the parent directory of plur.git.
  *
  * @type {function}
  * @abstract
