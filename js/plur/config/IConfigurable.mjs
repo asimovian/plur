@@ -2,11 +2,12 @@
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/config/IConfigurable
+ * @version 0.0.2
  */
 'use strict';
 
-import PlurObject from 'plur/PlurObject.mjs';
-import InterfaceError from 'plur/error/Interface';
+import PlurObject from '../../plur/PlurObject.mjs';
+import InterfaceError from '../../plur/error/Interface';
 
 /**
  * Implements a configurable class that uses plur/Config to maintain its configuration.
@@ -16,10 +17,9 @@ import InterfaceError from 'plur/error/Interface';
  *   - Provide accessors for the static Config and the instance's Config->config()
  *
  * @interface
- * @implements {plur/IPlurified}
- * @final
+ * @implements {IPlurified}
  */
-class IConfigurable {
+export default class IConfigurable {
     constructor() {
         throw new InterfaceError(this);
     };
@@ -41,6 +41,4 @@ IConfigurable.prototype.config = PlurObject.abstractMethod;
  * @abstract
  * @returns {!plur/Config}
  */
-IConfigurable.getDefaultConfig = PlurObject.abstractMethod;
-
-export default IConfigurable;
+IConfigurable.getConfig = PlurObject.abstractMethod;

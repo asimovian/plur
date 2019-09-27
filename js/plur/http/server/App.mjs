@@ -7,13 +7,10 @@
 
 import express from 'express';
 import PlurObject from '../../../plur/PlurObject.mjs';
-import API from '../../../plur/api/API.mjs';
 import IConfigurable from '../../../plur/config/IConfigurable.mjs';
 import Config from '../../../plur/config/Config.mjs';
 import IApplication from '../../../plur/app/IApplication.mjs';
 import ITerminal from '../../../plur/terminal/ITerminal.mjs';
-import Tester from '../../../plur/test/Tester.mjs';
-import { singleton as ApiFileSystem } from '../../../plur/file/system/API.mjs';
 import { singleton as SystemLog } from '../../../plur/log/System.mjs';
 
 /**
@@ -93,7 +90,7 @@ export default class HttpServerApp {
     };
 }
 
-HttpServerApp.DEFAULT_CONFIG = new Config(this, {
+HttpServerApp.DEFAULT_CONFIG = new Config(HttpServerApp, {
     listenAddress: '127.0.0.1',
     listenPort: 8080
 });
