@@ -131,7 +131,9 @@ TestApp.prototype.stop = function(success) {
         console.log('load time: ', plurified[plurified.length - 1].timestamp - plurified[0].timestamp + 'ms');
     }
 
-    process.exit(success ? 0 : 1 );
+    if (typeof process !== 'undefined') { // nodejs
+        process.exit(success ? 0 : 1);
+    }
 };
 
 TestApp.prototype.heartbeat = function() {
