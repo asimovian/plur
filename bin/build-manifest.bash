@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./bin/plur.lib.bash
+source ./bash/plur/lib.bash
 
 homedir=$(realpath $(pwd))
 
