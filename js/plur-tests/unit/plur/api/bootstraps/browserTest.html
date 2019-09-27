@@ -11,6 +11,7 @@
     <!--                     (-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)                       -->
     <script type="module" src="../../../../../plur/api/bootstraps/browser.js"></script>
     <script type="module">
+        import PlurObject from '../../../../../plur/PlurObject.mjs';
         import TestApp from '../../../../../plur-bin/test/App.mjs';
         import BrowserTerminal from "../../../../../plur/terminal/Browser.mjs";
         import {singleton as SystemLog } from "../../../../../plur/log/System.mjs";
@@ -23,12 +24,18 @@
             document.getElementById('log').innerText += event.data().logEntry.message + "\r\n";
         });
 
+        document.getElementById('blinky').onclick = function(event) {
+            const log = SystemLog.get();
+            log.info('');
+            log.info('Runtime import modules:');
+            PlurObject.getPlurified().map(i => { log.info(i.namepath); })
+        };
+
         const app = new TestApp(new BrowserTerminal()).start();
     </script>
     <style>
     body {
         background-color: cornflowerblue;
-        overflow: hidden;
     }
     h1 {
         font-size: 256pt;
@@ -45,6 +52,9 @@
     h1 span {
         text-shadow: none;
         animation: blinky 3.0s infinite;
+    }
+    h1 span:hover {
+        cursor: pointer;
     }
     #log {
         position: fixed;
@@ -63,7 +73,7 @@
     <link rel="icon" type="image/png" href="../../../../../../doc/media/image/favico.png">
 </head>
 <body>
-<h1>p l u r <span>.</span></h1>
+<h1>p l u r <span id="blinky">.</span></h1>
 <div id="log"></div>
 </body>
 </html>
