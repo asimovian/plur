@@ -12,7 +12,8 @@ import ITerminal from './ITerminal.mjs';
 /**
  * Represents a means of interacting with a user/client via browser client API calls.
  *
- * @implements {IPlurified ITerminal}
+ * @implements {IPlurified}
+ * @implements {ITerminal}
  */
 export default class BrowserTerminal {
 
