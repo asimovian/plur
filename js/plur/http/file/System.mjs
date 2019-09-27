@@ -19,15 +19,14 @@ export default class HttpFileSystem extends AFileSystem {
         this._paths = paths;
     };
 
-    find(glob, pattern) {
+    find(dir, pattern) {
         const foundpaths = [];
-
         const paths = this._paths;
+
         for (let i = 0; i < paths.length; ++i) {
             if (paths[i].match(pattern)) {
                 foundpaths.push(paths[i]);
             }
-
         }
 
         const promise = new Promise(function(resolve, reject) {
