@@ -5,7 +5,7 @@ source ./bin/plur.lib.bash
 homedir=$(realpath $(pwd))
 
 manifestFile="${homedir}/build/plur-manifest.txt"
-jsManifestFile="${homedir}/js/plur/manifest.mjs"
+jsManifestFile="${homedir}/build/manifest.mjs"
 findDir="./js"
 
 [ -d "${homedir}/build" ] || mkdir "${homedir}/build"
