@@ -48,11 +48,10 @@ echo /etc/nginx/mime.types | xargs grep -lE 'javascript\s+js;\s*$' | xargs sed -
 
 # Install the plur-tests site configuration and chown it to the user
 cp bin/setup/assets/plur-tests /etc/nginx/sites-available
-chown $USER:$USER /etc/nginx/sites-available/plur-tests ; chmod 644 /etc/nginx/sites-available/plur-tests
+chown ${SUDO_USER}:${SUDO_USER} /etc/nginx/sites-available/plur-tests ; chmod 644 /etc/nginx/sites-available/plur-tests
 
 # Create the html root and
 mkdir /var/www/plur-tests
-chown $USER:$USER /var/www/plur-tests ; chmod 755 /var/www/plur-tests
-
+chown ${SUDO_USER}:${SUDO_USER} /var/www/plur-tests ; chmod 755 /var/www/plur-tests
 
 exit 0
