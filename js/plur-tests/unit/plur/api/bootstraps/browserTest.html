@@ -26,10 +26,23 @@
         color: ghostwhite;
         text-shadow: 6px 6px lightblue;
     }
+
+    @keyframes blink {
+        0%{     color: lightblue; }
+        25%{    color: lightblue; }
+        50%{    color: transparent; }
+        75%{    color: lightblue; }
+        100%{   color: lightblue; }
+    }
+
+    h1 span {
+        text-shadow: none;
+        animation: blink 5.0s infinite;
+    }
     </style>
     <link rel="icon" type="image/png" href="../../../../../../doc/media/image/favico.png">
 </head>
 <body>
-<h1>p l u r</h1>
+<h1>p l u r <span>.</span></h1>
 </body>
 </html>
