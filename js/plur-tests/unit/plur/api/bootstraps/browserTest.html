@@ -28,10 +28,10 @@
             const log = SystemLog.get();
             log.info('');
             log.info('Runtime import modules:');
-            PlurObject.getPlurified().map(i => { log.info(i.namepath); })
+            PlurObject.getPlurified().map(i => { log.info(i.namepath); });
         };
 
-        const app = new TestApp(new BrowserTerminal()).start();
+        new TestApp(new BrowserTerminal()).start();
     </script>
     <style>
     body {
@@ -61,8 +61,8 @@
         height: 100%;
         width: 37%;
         background-color: lightblue;
-        top: 0px;
-        right: 0px;
+        top: 0;
+        right: 0;
         overflow: hidden;
         font-family: monospace;
         font-size: 8pt;
