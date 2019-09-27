@@ -5,7 +5,7 @@
     },
     "source": {
         "include": "./js/plur",
-        "includePattern": ".js$",
+        "includePattern": ".mjs$",
         "excludePattern": "(node_modules/|docs)"
     },
     "plugins": [
@@ -13,7 +13,7 @@
     ],
     "opts": {
         "encoding": "utf8",
-        "destination": "generated/jsdoc",
+        "destination": "build/jsdoc",
         "recurse": true,
         "verbose": true
     },
