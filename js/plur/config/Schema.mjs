@@ -9,7 +9,7 @@
 import PlurObject from '../../plur/PlurObject.mjs';
 
 /**
- * Represents a primitive JS template and validation scheme for JSON and nested primitive objects.
+ * Represents a JS template and validation scheme for primitives-only objects and JSON.
  *
  * Not implemented yet.
  *
