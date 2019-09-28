@@ -46,6 +46,7 @@ export default class HttpServerApp {
 
     /**
      * @override
+     * @returns {Promise}
      */
     async start() {
         // initial message ... the blinkies
@@ -59,6 +60,7 @@ export default class HttpServerApp {
     /**
      * @override
      * @param success
+     * @returns {Promise}
      */
     async stop(success) {
         if (!(this._terminal instanceof HttpServerApp)) {

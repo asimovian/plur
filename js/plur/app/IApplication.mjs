@@ -52,6 +52,7 @@ IApplication.Status = {
  *
  * @type {function}
  * @abstract
+ * @returns {Promise}
  */
 IApplication.prototype.start = PlurObject.abstractMethod;
 
@@ -60,6 +61,7 @@ IApplication.prototype.start = PlurObject.abstractMethod;
  *
  * @type {function}
  * @abstract
+ * @returns {Promise}
  */
 IApplication.prototype.stop = PlurObject.abstractMethod;
 

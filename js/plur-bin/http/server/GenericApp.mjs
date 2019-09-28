@@ -79,7 +79,7 @@ export default class GenericHttpServerApp extends HttpServerApp {
 
 GenericHttpServerApp.DEFAULT_CONFIG = new Config(this, {
     apps: [
-        //{ namepath: string, config: { listenPort: 8080, listenAddress: '127.0.0.1' },
+        {__: { namepath: {_:String,r:true}, config: HttpServerApp.DEFAULT_CONFIG } }
     ]
 });
 
