@@ -99,7 +99,7 @@ class Config {
             const classConfig = objectClass.getConfig();
 
             if (config instanceof Config) {  // no parent, with a Config. copy the Config.
-                this._config = Config.mergeConfig(classConfig, config);
+                this._config = Config.mergeConfig(classConfig._schema, classConfig, config);
             } else {   // no parent, primitive object. parse and validate. throw error if they try a schema
                 [ this._config ] = Config.compile(config, { errorSchema: true });
             }
