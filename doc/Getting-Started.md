@@ -68,7 +68,8 @@ If this is the first time configuring this system for the Plur SDK, run the sdk 
 ~~~sh
 # Installs and configures necessary system packages and settings for the SDK
 sudo npm run setup-system
-npm run setup-repository
+# or
+sudo npm run setup-repository
 ~~~
 
 
