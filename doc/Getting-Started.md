@@ -68,8 +68,7 @@ If this is the first time configuring this system for the Plur SDK, run the sdk 
 ~~~sh
 # Installs and configures necessary system packages and settings for the SDK
 sudo npm run setup-system
-# or
-sudo npm run setup-repository
+npm run setup-repository
 ~~~
 
 
@@ -80,9 +79,9 @@ npm install
 
 Use the following to compile everything or just a single file:
 ```sh
-./bin/compile.bash path/to/File.mjs
+./bin/compile.bash js/plur/IPlurified.mjs js/plur/PlurObject.mjs
 # or
-npm run compile path/to/File.mjs
+npm run compile js/plur/IPlurified.mjs js/plur/PlurObject.mjs
 ```
 
 How to Test
