@@ -21,7 +21,7 @@ var EncryptedMessageEvent = function(recipientPublicKeyHash, senderPublicKeyHash
 
     this._encryptedMessage = encryptedMessage;
     this._encryptedMessageHash = Hash.get().sha3(this._encryptedMessage);
-    this._nextMessageEventEncryptionKey nextMessageEventEncryptionKey;
+    this._nextMessageEventEncryptionKey.nextMessageEventEncryptionKey;
 };
 
 EncryptedMessageEvent.prototype = PlurObject.create('plur/comm/event/ecnrypted/Message', EncryptedMessageEvent);
@@ -47,7 +47,7 @@ EncryptedMessageEvent.create = function(message, encryptFunction, modelTransform
     dataEncryptionPromise = new PlurPromise(function(resolve, reject) {
         encryptFunction(modelTransformer).then(function(encryptedData) {
             encryptedModel = encryptedData;
-            resolve());
+            resolve();
         });
     });
 

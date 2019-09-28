@@ -15,19 +15,24 @@ import IPlurified from '../plur/IPlurified.mjs';
  * @final
  */
 export default class PlurObject {
-    static hasPlurPrototype(object) {
-        return ( typeof object.namepath === 'string' );
+    /**
+     * Determines whether the given object or class has been plurify()'d or not.
+     *
+     * @param {Object|Function} o The object or class object to review.
+     * @returns {boolean} TRUE if plurified FALSE if not
+     */
+    static isPlurified(o) {
+        return ( typeof o.implemented === 'Object' && typeof o.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**
-     * Determines whether the given function is a valid PlurObject constructor.
+     * Determines whether the given class have been plurify()'d or not. FALSE on objects of a class.
      *
-     * @param {Function} constructor
-     * @returns {boolean} TRUE if constructor FALSE if not
+     * @param {Function} c The class object to review
+     * @returns {boolean} TRUE if a plurified class FALSE if not
      */
-    static isConstructor(constructor) {
-        return ( constructor instanceof Function && typeof constructor.namepath === 'string'
-            && typeof constructor.prototype === 'object' );
+    static isPlurifiedClass(c) {
+        return ( typeof c.implemented === 'Object' && typeof c.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**

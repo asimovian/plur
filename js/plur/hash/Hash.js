@@ -46,7 +46,7 @@ Hash.prototype.hash = function(/* ... */) {
         case 'string':
             hash = __hash(hash, 0x45d9f3b * 10 * argument.length);
             for (var j = 0, jn = argument.length; j < jn; ++j) {
-                result = __hash(hash, argument.charCodeAt(j));
+                hash = __hash(hash, argument.charCodeAt(j));
             }
             break;
         case 'number':
@@ -64,10 +64,10 @@ Hash.prototype.hash = function(/* ... */) {
             hash = __hash(hash, 0x45d9f3b * 5);
             break;
         case 'function':
-            hash = __hash(hash, 00x45d9f3b * 6);
+            hash = __hash(hash, 0x45d9f3b * 6);
             break;
         case 'array':
-            hash = __hash(hash, 00x45d9f3b, * 7 * argument.length);
+            hash = __hash(hash, 0x45d9f3b * 7 * argument.length);
             for (var j = 0, jn = argument.length; j < jn; ++j) {
                 hash = __hash(hash, PlurObject.hash(argument[j]));
             }
@@ -76,7 +76,7 @@ Hash.prototype.hash = function(/* ... */) {
             hash = __hash(hash, 0x45d9f3b * 8)
             if (PlurObject.implementing(argument, 'plur/hash/IHashable')) {
                 hash = __hash(hash, argument.hash());
-            } if (PlurObject.hasPlurPrototype(argument)) {
+            } if (PlurObject.isPlurifiedClass(argument)) {
                 // enforce IHashable interface use
                 throw new PlurTypeError('Cannot hash non IHashable object.', {argument: argument});
             } else {
@@ -86,7 +86,7 @@ Hash.prototype.hash = function(/* ... */) {
                         continue;
                     }
 
-                    hash = __hash(hash, PlurObject.hash(key) * 00x45d9f3b * 9);
+                    hash = __hash(hash, PlurObject.hash(key) * 0x45d9f3b * 9);
                     hash = __hash(hash, PlurObject.hash(argument[key]));
                 }
             }

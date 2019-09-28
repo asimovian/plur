@@ -97,7 +97,7 @@ class Channel {
                     resolve(messageEvent);
                 });
             } else {
-                resolve(new MessageEvent(request());
+                resolve(new MessageEvent(request()));
 
             }
         }).then(function(result) {
@@ -137,7 +137,7 @@ class Channel {
         this._emitter.emit(messageEvent.type(), messageEvent);
     };
 
-    Channel.prototoype._validateMessage(message, expectedConstructor) {
+    _validateMessage(message, expectedConstructor) {
         if (!message instanceof expectedConstructor) {
             throw new TypeError('Invalid message type for method', {message: message});
         } else if (typeof this._connectionMap[message.getSenderPublicKeyHash()] === 'undefined') {
