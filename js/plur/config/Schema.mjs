@@ -2,6 +2,7 @@
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/config/Schema
+ * @version 0.0.2
  */
 'use strict';
 
@@ -9,6 +10,8 @@ import PlurObject from '../../plur/PlurObject.mjs';
 
 /**
  * Represents a primitive JS template and validation scheme for JSON and nested primitive objects.
+ *
+ * Not implemented yet.
  *
  * Schema options:
  *   _s Configures the entire schema.
@@ -51,19 +54,20 @@ import PlurObject from '../../plur/PlurObject.mjs';
  * @final
  * @implements {IPlurified}
  */
-class Schema {
+export default class Schema {
     /**
+     * Not implemented.
+     *
      * @param {Schema} parentSchema
      * @param {Schema} childSchema
-     * @returns {Object} schema
+     * @returns {Schema} schema
      */
     static merge(parentSchema, childSchema) {
-
+        return new Schema(); // todo
     };
 
     constructor() {
-
-    }
+    };
 }
 
 PlurObject.plurify('plur/config/Schema', Schema);

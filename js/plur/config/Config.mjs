@@ -2,10 +2,12 @@
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/config/Config
+ * @version 0.0.2
  */
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
+import Obj from '../../plur/Obj.mjs';
 import Schema from '../../plur/config/Schema.mjs';
 
 /**
@@ -17,6 +19,8 @@ import Schema from '../../plur/config/Schema.mjs';
  */
 class Config {
     /**
+     * Not implemented yet.
+     *
      * @param {Schema} parentSchema
      * @param {Schema} childSchema
      * @returns {Schema} schema
@@ -26,27 +30,29 @@ class Config {
     };
 
     /**
-     * @param {Object} schema
-     * @param {Object} parentConfig
+     * @param {Schema} schema The schema to validate against after merge is complete. This is not implemented yet.
+     * @param {object} parentConfig
      * @param {object} childConfig
-     * @returns {Object} primitiveConfig
+     * @returns {object} configObj
      */
     static mergeConfig(schema, parentConfig, childConfig) {
-
+        // for now: ignore schema. simple two-way merge.
+        return Obj.merge(parentConfig, childConfig);
     };
 
     /**
      * Compiles a primitive data object into a valid primitive config object and schema for use with the Config class.
      * Where not specified, the schema is auto-generated based on values provided as defaults.
      *
-     * @param {Object<string,(string|number|boolean|Object|Array|null)>} primitiveConfig
-     * @param {Object<string,(string|number|boolean)>} options
-     * @returns {Array<Object>} Returns a parsed [ primitive config, schema ]
+     * @param {object} configObj
+     * @param {object} options
+     * @returns {Array<Object>} Returns a parsed [ configObj, schema ]
      * @throws {Error}  On invalid formatting
      */
-    static compile(primitiveConfig, options) {
-
-    }
+    static compile(configObj, options) {
+        // for now: a primitive deep copy
+        return [ Obj.copy(configObj), new Schema() ];
+    };
 
     /**
      * @param {!IConfigurable} configurable
