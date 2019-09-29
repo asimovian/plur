@@ -7,7 +7,7 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
-import Obj from '../../plur/Obj.mjs';
+import PortableObject from '../../plur/Obj.mjs';
 import Schema from '../../plur/config/Schema.mjs';
 
 /**
@@ -37,7 +37,7 @@ class Config {
      */
     static mergeConfig(schema, parentConfig, childConfig) {
         // for now: ignore schema. simple two-way merge.
-        return Obj.merge(parentConfig, childConfig);
+        return PortableObject.merge(parentConfig, childConfig);
     };
 
     /**
@@ -51,7 +51,7 @@ class Config {
      */
     static compile(configObj, options) {
         // for now: a primitive deep copy
-        return [ Obj.copy(configObj), new Schema() ];
+        return [ PortableObject.copy(configObj), new Schema() ];
     };
 
     /**

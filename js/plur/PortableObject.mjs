@@ -81,4 +81,4 @@ export default class Obj {
     };
 }
 
-PlurObject.plurify('plur/Obj', Obj);
+PlurObject.plurify('plur/PortableObject', Obj);

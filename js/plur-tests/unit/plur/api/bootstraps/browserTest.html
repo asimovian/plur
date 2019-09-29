@@ -13,8 +13,8 @@
     <script type="module">
         import PlurObject from '../../../../../plur/PlurObject.mjs';
         import TestApp from '../../../../../plur/test/App.mjs';
-        import BrowserTerminal from "../../../../../plur/terminal/Browser.mjs";
-        import {singleton as SystemLog } from "../../../../../plur/log/System.mjs";
+        import BrowserTerminal from '../../../../../plur/terminal/Browser.mjs';
+        import {singleton as SystemLog } from '../../../../../plur/log/System.mjs';
 
         SystemLog.get().emitter().on('info', function(event) {
             document.getElementById('log').innerText += event.data().logEntry.message + "\r\n";
