@@ -12,7 +12,7 @@ import BrowserFileSystem from '../../plur/browser/file/System.mjs';
 import HttpFileSystem from '../../plur/http/file/System.mjs';
 import { singleton as LocalFileSystem} from '../../plur/file/system/Local.mjs';
 import { singleton as ApiFileSystem} from '../../plur/file/system/API.mjs';
-import PLUR_MANIFEST from '../../plur/manifest.mjs'
+import PLUR_MANIFEST from '../../plur/build/current/manifest.mjs'
 
 /**
  * Initializes plur API for use with browser.
