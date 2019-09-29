@@ -21,15 +21,15 @@ export default class PortableObjectTest extends Test {
     /**
      * @tests plur/Obj.isPortable
      */
-    test_static_isValidType() {
-        this.assert( PortableObject.isPortable('') === false, 'Blank is not a valid type' );
+    test_static_isPortable() {
+        this.assert( PortableObject.isPortable('') === false, 'Blank is not a portable type' );
     };
 
     /**
      * @tests plur/Obj.isPrimitive
      */
     test_static_isPrimitive() {
-        this.assert( PortableObject.isPrimitive('') === false, 'Blank is not a valid type' );
+        this.assert( PortableObject.isPrimitive('') === false, 'Blank is not a portable type' );
     };
 }
 
