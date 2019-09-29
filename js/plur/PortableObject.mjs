@@ -29,7 +29,7 @@ export default class Obj {
             const result = dest || [];
 
             for (let i = 0; i < src.length; ++i) {
-                if (Obj.isValidType(src[i])) {
+                if (Obj.isPortable(src[i])) {
                     result[i] = Obj.copy(src[i]);
                 }
             }
@@ -39,7 +39,7 @@ export default class Obj {
             const result = dest || {};
 
             for (const key in src) {
-                if (Obj.isValidType(src[key])) {
+                if (Obj.isPortable(src[key])) {
                     result[key] = Obj.copy(src[key]);
                 }
             }
@@ -67,7 +67,7 @@ export default class Obj {
         return ( typeof o === 'object' );
     }
 
-    static isValidType(o) {
+    static isPortable(o) {
         switch(typeof o) {
         case 'string': case 'number': case 'boolean': case 'object':
             return true;
@@ -77,7 +77,7 @@ export default class Obj {
     };
 
     constructor() {
-        throw new Error('Cannot instantiate private constructor of Obj.');
+        throw new Error('Cannot instantiate private constructor of PortableObject.');
     };
 }
 

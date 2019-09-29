@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur-tests/unit/plur/ObjTest
+ * @module plur-tests/unit/plur/PortableObjectTest
  * @version 0.0.2
  */
 'use strict';
@@ -11,7 +11,7 @@ import PlurObject from '../../../plur/PlurObject.mjs';
 import PortableObject from '../../../plur/PortableObject.mjs';
 
 /**
- * @tests plur/Obj
+ * @tests plur/PortableObject
  */
 export default class PortableObjectTest extends Test {
     constructor() {
@@ -19,10 +19,10 @@ export default class PortableObjectTest extends Test {
     }
 
     /**
-     * @tests plur/Obj.isValidType
+     * @tests plur/Obj.isPortable
      */
     test_static_isValidType() {
-        this.assert( PortableObject.isValidType('') === false, 'Blank is not a valid type' );
+        this.assert( PortableObject.isPortable('') === false, 'Blank is not a valid type' );
     };
 
     /**

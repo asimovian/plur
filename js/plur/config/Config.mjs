@@ -11,8 +11,9 @@ import PortableObject from '../../plur/Obj.mjs';
 import Schema from '../../plur/config/Schema.mjs';
 
 /**
- * Maintains nested key/value configuration for a subject class.
- * See plur/config/Schema for usage.
+ * Maintains a layered configuration set for a class, backed by a read-only portable object.
+ *
+ * Schemas are unimplemented, but planned. See plur/config/Schema for draft.
  *
  * @final
  * @implements {IPlurified}
