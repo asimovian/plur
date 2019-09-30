@@ -114,7 +114,7 @@ TestApp.prototype._start = function(tester) {
  * Expects variable "self" to exist in calling closure.
  */
 TestApp._onTesterPromiseFulfilled = function(self) {
-    SystemLog.get().info('Tests passed.');
+    SystemLog.get().info('All tests passed.');
     self.stop(true);
 };
 

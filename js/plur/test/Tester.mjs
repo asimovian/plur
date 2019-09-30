@@ -52,7 +52,7 @@ Tester.prototype._rejected = function(error) {
 };
 
 Tester.prototype._resolved = function() {
-    this._log.info('Tests passed: ' + this._testTarget);
+    this._log.info('Tests passed for ' + this._testTarget);
     this._promiseResolve();
 };
 
@@ -71,7 +71,7 @@ Tester.prototype._testNextTarget = function() {
         throw new PlurError('Invalid test target', { target: testTarget });
     }
 
-    this._log.info('Testing with: ' + this._testTarget + ' ...');
+    this._log.info('Testing with ' + this._testTarget + ' ....');
 
     var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
         import('../../' + [self._testTarget] + '.mjs').then(function(module) {
@@ -112,14 +112,14 @@ Tester.prototype._testNextMethod = function(prevMethodPromise, test, testMethodI
         return;
     }
 
-    var self = this;
+    const self = this;
 
     prevMethodPromise.then(
         function() {
             var methodPromise = self._testMethod(test, testMethodNames[testMethodIndex]);
             methodPromise.then(
                 function() {
-                    self._log.info('Test passed: ' + test.namepath + '.prototype.' + testMethodNames[testMethodIndex] + '()');
+                    self._log.info('Test passed.');
 
                     if (++testMethodIndex < testMethodNames.length) {
                             self._testNextMethod(methodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject);
@@ -138,7 +138,7 @@ Tester.prototype._testMethod = function(test, methodName) {
     var self = this;
 
     var methodTestPromise = new Promise(function(resolve, reject) {
-        self._log.info('Testing method: ' + test.namepath + '.prototype.' + methodName + '()');
+        self._log.info('Testing method ' + methodName + '() ...');
         test[methodName]();
         resolve();
 
