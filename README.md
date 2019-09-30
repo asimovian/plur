@@ -7,7 +7,7 @@ The **framework** provides reusable cross-platform JS libraries for rapid develo
 
 The cloud **platform** builds on top of the framework, scaling core API services across a nodal network that we call a plur **cloud**. Each plur _cloud_ operates as simple network appliance that may be started and stopped at will. Internally, the cloud contains plur **nodes** that control VMs, authenticate requests, route messages, and scale any apps or services developed with the plur framework.
 
-The API attempts to use JS as an **enterprise** language by following closely behind the ECMA language standard's progress. The core library is designed to operate normally **without transpilng or compiling**. Traditional enterprise language features not provided by ECMA are implemented by **convention**, using a single coding and documentation standard. Two exceptions are implemented by code; class **namespaces** and **interfaces**.
+The API attempts to use JS as an **enterprise** language by following closely behind the ECMA language standard's progress. The core library is designed to operate normally **without transpilng**. Traditional enterprise language features not provided by ECMA are implemented by **convention**, using a single coding and documentation standard. Two exceptions are implemented by code; class **namespaces** and **interfaces**.
 
 Contributors
 ------------
