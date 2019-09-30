@@ -6,160 +6,79 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
-import PlurError from '../../plur/error/Error.mjs';
 import {singleton as SystemLog} from '../../plur/log/System.mjs';
 
 /**
+ * Imports the test classes specified and runs all valid test methods.
  *
+ * @final
  */
 export default class Tester {
 	constructor(testTargets) {
         this._log = SystemLog.get();
-        this._testTargets = testTargets;
-        this._testTargetIndex = -1;
-        this._testTarget = null;
-        this._promise = null;
-        this._promiseResolve = null;
-        this._promiseReject = null;
+        this._testClasses = testTargets;
     };
-}
 
-PlurObject.plurify('plur/test/Tester', Tester);
+    test() {
+        const self = this;
+        let promise = Promise.resolve();
 
-Tester._TEST_CONSTRUCTOR = /^[a-zA-Z0-9_\-\/]+$/;
-
-Tester.prototype.test = function() {
-    var self = this;
-
-    // pass a noop function that writes the resolve and reject methods to state for use by test callbacks
-    this._promise = new Promise(function(resolve, reject) {
-        self._promiseResolve = resolve;
-        self._promiseReject = reject;
-    });
-
-    if (this._testTargets.length === 0) {
-        this._promiseResolve();
-    } else {
-        this._testNextTarget();
-    }
-
-    return this._promise;
-};
-
-Tester.prototype._rejected = function(error) {
-    this._log.error('Test failed: ' + this._testTarget + ': ' + error);
-    this._promiseReject(error);
-};
-
-Tester.prototype._resolved = function() {
-    this._log.info('Tests passed for ' + this._testTarget);
-    this._promiseResolve();
-};
-
-Tester.prototype._testNextTarget = function() {
-    var self = this;
-
-    // if this was the last target prototype, resolve to pass the test entirely
-    if (this._testTargetIndex+1 === this._testTargets.length) {
-        this._resolved();
-        return;
-    }
-
-    this._testTarget = this._testTargets[++this._testTargetIndex];
-
-    if (!this._testTarget.match(Tester._TEST_CONSTRUCTOR)) {
-        throw new PlurError('Invalid test target', { target: testTarget });
-    }
-
-    this._log.info('Testing with ' + this._testTarget + ' ....');
-
-    var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
-        import('../../' + [self._testTarget] + '.mjs').then(function(module) {
-            const testClass = module.default;
-            const testMethodNames = [];
-            let methodPromiseResolve = null;
-
-            const methodPromise = new Promise(function(resolve, reject) {
-                methodPromiseResolve = resolve;
+        for (let i = 0; i < this._testClasses.length; ++i) {
+            const testClass = this._testClasses[i];
+            promise = promise.then(value => {
+                promise = self.testClass(testClass);
+                return promise;
             });
+        }
 
+        return promise;
+    };
+
+    testClass(namepath) {
+        const self = this;
+        const filepath = '../../' + namepath + '.mjs';
+
+        this._log.info('Testing with ' + namepath + ' ...');
+
+        const promise = import(filepath).then(module => {
+            const testClass = module.default;
             const properties = Object.getOwnPropertyNames(testClass.prototype);
+            const methodTestPromises = [];
+
             for (let i = 0; i < properties.length; ++i) {
                 const property = properties[i];
                 if (!/^test_/.test(property) || typeof testClass.prototype[property] !== 'function') {
                     continue;
                 }
 
-                testMethodNames.push(property);
+
+                const testObject = new testClass();
+                const methodTestPromise = self.testMethod(testObject, property);
+                methodTestPromises.push(methodTestPromise);
             }
 
-            if (testMethodNames.length > 0) {
-                const test = new testClass();
-                self._testNextMethod(methodPromise, test, 0, testMethodNames, targetPromiseResolve, targetPromiseReject);
-            } else {
-                self._log.warn('Test ' + self._testTarget + ' does not provide any test methods.');
-            }
-
-            methodPromiseResolve();
+            return Promise.all(methodTestPromises);
         });
-    });
 
-    targetPromise.then(function() { self._testNextTarget() }, function(errors) { self._rejected(errors); });
-};
+        return promise;
+    };
 
-Tester.prototype._testNextMethod = function(prevMethodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject) {
-    if (testMethodNames.length === 0) {
-        return;
-    }
+    testMethod(testObject, methodName) {
+        const self = this;
 
-    const self = this;
+        const promise = new Promise(function(resolve, reject) {
+            self._log.info('Testing method ' + methodName + '()');
 
-    prevMethodPromise.then(
-        function() {
-            var methodPromise = self._testMethod(test, testMethodNames[testMethodIndex]);
-            methodPromise.then(
-                function() {
-                    self._log.info('Test passed.');
-
-                    if (++testMethodIndex < testMethodNames.length) {
-                            self._testNextMethod(methodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject);
-                    } else {
-                        targetPromiseResolve();
-                    }
-                },
-                targetPromiseReject
-            );
-        },
-        targetPromiseReject
-    );
-};
-
-Tester.prototype._testMethod = function(test, methodName) {
-    var self = this;
-
-    var methodTestPromise = new Promise(function(resolve, reject) {
-        self._log.info('Testing method ' + methodName + '() ...');
-        test[methodName]();
-        resolve();
-
-        /*var promises = test.popPromises();
-        if (promises.length === 0)  {
-            if (targetPromiseResolve !== null) {
-                targetPromiseResolve();
-            } else {
+            try {
+                testObject[methodName]();
                 resolve();
+            } catch (e) {
+                reject(e);
             }
-        } else {
-            promises = promises.concat(new PlurPromise(Tester._timeoutPromiseExecutor));
-            PlurPromise.all(promises, ( targetResolve !== null ? targetResolve : methodResolve ), reject);
-        }*/
-    });
+        });
 
-    return methodTestPromise;
-};
+        return promise;
+    };
+}
 
-Tester._timeoutPromiseExecutor = function(resolve, reject) {
-    setTimeout(2000, function(resolve, reject) {
-        reject('Test timed out after 2000 ms');
-    });
-};
+PlurObject.plurify('plur/test/Tester', Tester);
