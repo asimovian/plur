@@ -6,7 +6,7 @@
 'use strict';
 
 import fs from 'fs';
-import FindFiles from 'file-regex';
+import find_files from 'file-regex';
 import PlurObject from '../../../plur/PlurObject.mjs';
 import AFileSystem from '../../../plur/file/ASystem.mjs';
 
@@ -20,8 +20,12 @@ export default class NodeJsFileSystem extends AFileSystem {
     };
 
     async find(dir, pattern) {
+        if (!pattern.global) {
+            pattern = new RegExp(pattern, 'g');
+        }
+
         const promise = new Promise(function(resolve, reject) {
-           const paths = FindFiles(dir, pattern, 32)
+           find_files(dir, pattern, 32)
            .catch(err => { reject(err); })
            .then(value => {
                const filepaths = value.map(i => { return i.dir + '/' + i.file });

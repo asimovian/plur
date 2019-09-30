@@ -61,7 +61,7 @@ TestApp.prototype._findTargets = function(callback) {
         var jsPath = homePath + '/' + importPathMap[key];
 
         // scope jsPath value into callback as it will change value on the next iteration
-        filesystem.find(jsPath, /^(?:|.*\/)[a-z0-9_\-]+-tests\/.*[a-zA-Z0-9\-_]+Test\.mjs$/g).then(function(filepaths) {
+        filesystem.find(jsPath, /^(?:|.*\/)[a-z0-9_\-]+-tests\/.*[a-zA-Z0-9\-_]+Test\.mjs$/).then(function(filepaths) {
             for (let i = 0; i < filepaths.length; ++i) {
                 const filepath = filepaths[i];
                 // skip any files that do not end in "Test.js"
