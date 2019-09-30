@@ -24,13 +24,11 @@ export default class HttpFileSystem extends AFileSystem {
         const paths = this._paths;
         for (let i = 0; i < paths.length; ++i) {
             if (pattern.test(paths[i])) {
-                console.log('path', paths[i]);
                 foundpaths.push(paths[i]);
             }
         }
 
         const promise = new Promise(function(resolve, reject) {
-            console.log(foundpaths);
             resolve(foundpaths);
         });
 
