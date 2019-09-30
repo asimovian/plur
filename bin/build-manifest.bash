@@ -6,6 +6,7 @@ homedir=$(realpath $(pwd))
 
 manifestFile="${homedir}/build/plur-manifest.txt"
 jsManifestFile="${homedir}/build/manifest.mjs"
+installedJsManifestFile="${homedir}/js/plur/build/current/manifest.mjs"
 findDir="./js"
 
 [ -d "${homedir}/build" ] || mkdir "${homedir}/build"
@@ -20,5 +21,9 @@ find $findDir -name '*.mjs' | sed -E 's/^.\/js\///g' | sed -E 's/^/    "/g' | se
 echo '];' >> $jsManifestFile
 
 cat $manifestFile
+
+if [ "${1-}" == "--install" ]; then
+  cp $jsManifestFile $installedJsManifestFile
+fi
 
 exit 0

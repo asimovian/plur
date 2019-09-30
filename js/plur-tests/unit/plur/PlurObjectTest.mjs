@@ -15,37 +15,38 @@ export default class PlurObjectTest extends Test {
     constructor() {
         super();
     }
+
+    /**
+     * @test plur/PlurObject.implement
+     * @test plur/PlurObject.implementing
+     */
+    test_implement() {
+        let IAlpha = function() {};
+        PlurObject.plurify('plur-tests/IAlpha', IAlpha);
+        IAlpha.prototype.alpha = PlurObject.abstractMethod;
+
+        let Alpha = function() {};
+        PlurObject.plurify('plur-tests/Alpha', Alpha);
+        PlurObject.implement(Alpha, IAlpha);
+
+        this.assertHas(Alpha.prototype, 'alpha', IAlpha.prototype.alpha, 'Did not implement interface method');
+
+        // test implementing
+        this.assert(PlurObject.implementing(new Alpha(), IAlpha));
+    };
+
+    /**
+     * @test plur/PlurObject.abstractMethod
+     */
+    test_pureVirtualFunction() {
+        // this should throw an exception
+        try {
+            PlurObject.abstractMethod();
+            // we should not get here ...
+            this.fail('Abstract function did not throw exception.');
+        } catch (e) {}
+    };
 };
 
-PlurObject.plurify('plur-tests/unit/plur/PlurObjectTest', PlurObjectTest, Test);
+PlurObject.plurify('plur-tests/unit/plur/PlurObjectTest', PlurObjectTest);
 
-/**
- * @test plur/PlurObject.implement
- * @test plur/PlurObject.implementing
- */
-PlurObjectTest.prototype.testImplement = function() {
-    let IAlpha = function() {};
-    PlurObject.plurify('plur-tests/IAlpha', IAlpha);
-    IAlpha.prototype.alpha = PlurObject.abstractMethod;
-
-    let Alpha = function() {};
-    PlurObject.plurify('plur-tests/Alpha', Alpha);
-    PlurObject.implement(Alpha, IAlpha);
-
-    this.assertHas(Alpha.prototype, 'alpha', IAlpha.prototype.alpha, 'Did not implement interface method');
-
-    // test implementing
-    this.assert(PlurObject.implementing(new Alpha(), IAlpha));
-};
-
-/**
- * @test plur/PlurObject.abstractMethod
- */
-PlurObjectTest.prototype.testPureVirtualFunction = function() {
-    // this should throw an exception
-    try {
-        PlurObject.abstractMethod();
-        // we should not get here ...
-        this.fail('Abstract function did not throw exception.');
-    } catch (e) {}
-};

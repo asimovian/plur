@@ -71,28 +71,34 @@ Tester.prototype._testNextTarget = function() {
         throw new PlurError('Invalid test target', { target: testTarget });
     }
 
-    this._log.info('Testing object: ' + this._testTarget + ' ...');
+    this._log.info('Testing with: ' + this._testTarget + ' ...');
 
     var targetPromise = new Promise(function(targetPromiseResolve, targetPromiseReject) {
         import('../../' + [self._testTarget] + '.mjs').then(function(module) {
-            var test = new module.default();
+            const testClass = module.default;
+            const testMethodNames = [];
+            let methodPromiseResolve = null;
 
-            var methodPromiseResolve = null;
-            var methodPromise = new Promise(function(resolve, reject) {
+            const methodPromise = new Promise(function(resolve, reject) {
                 methodPromiseResolve = resolve;
             });
 
-            var testMethodNames = [];
-
-            for (var methodName in test) {
-                if (!methodName.match(/^test/) || !test[methodName] instanceof Function || methodName === 'test') {
+            const properties = Object.getOwnPropertyNames(testClass.prototype);
+            for (let i = 0; i < properties.length; ++i) {
+                const property = properties[i];
+                if (!/^test_/.test(property) || typeof testClass.prototype[property] !== 'function') {
                     continue;
                 }
 
-                testMethodNames.push(methodName);
+                testMethodNames.push(property);
             }
 
-            self._testNextMethod(methodPromise, test, 0, testMethodNames, targetPromiseResolve, targetPromiseReject);
+            if (testMethodNames.length > 0) {
+                const test = new testClass();
+                self._testNextMethod(methodPromise, test, 0, testMethodNames, targetPromiseResolve, targetPromiseReject);
+            } else {
+                self._log.warn('Test ' + self._testTarget + ' does not provide any test methods.');
+            }
 
             methodPromiseResolve();
         });
@@ -102,6 +108,10 @@ Tester.prototype._testNextTarget = function() {
 };
 
 Tester.prototype._testNextMethod = function(prevMethodPromise, test, testMethodIndex, testMethodNames, targetPromiseResolve, targetPromiseReject) {
+    if (testMethodNames.length === 0) {
+        return;
+    }
+
     var self = this;
 
     prevMethodPromise.then(
