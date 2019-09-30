@@ -39,8 +39,8 @@
     "node": ">=12.10.0"
   },
   "dependencies": {
+    "file-regex": "^3.1.0",
     "jsdoc": "^3.6.3",
-    "lib-promise-pool": "^1.0.1",
     "node-json-rpc": "0.0.1",
     "web3": "~1.2.1"
   }

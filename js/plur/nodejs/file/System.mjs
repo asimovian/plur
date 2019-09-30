@@ -6,9 +6,10 @@
 'use strict';
 
 import fs from 'fs';
+import FindFiles from 'file-regex';
 import PlurObject from '../../../plur/PlurObject.mjs';
 import AFileSystem from '../../../plur/file/ASystem.mjs';
-import FindFiles from '../../../../extern/js/akashbabu/file-regex/file-regex.js';
+//import FindFiles from '../../../../extern/js/akashbabu/file-regex/file-regex.js';
 
 /**
  * Represents the underlying File System through Node.JS.
