@@ -24,7 +24,9 @@ export default class ConfigTest extends Test {
     };
 
     /**
-     * @tests plur/ConfigTest.constructor
+     * @tests plur/Config.constructor
+     * @tests plur/Config.prototype.getNamepath
+     * @tests plur/Config.prototype.config
      */
     test_constructor() {
         const a = new this.fixtures.A();
@@ -40,6 +42,11 @@ export default class ConfigTest extends Test {
         this.assert( configAfoo.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Should mirror provided config.');
     };
 
+    /**
+     * @tests plur/Config.prototype.merge
+     * @tests plur/Config.prototype.getNamepath
+     * @tests plur/Config.prototype.config
+     */
     test_merge() {
         const a = new this.fixtures.A();
         const configAfoo = new Config(a, this.fixtures.cfgFoo);
