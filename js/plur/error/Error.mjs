@@ -7,7 +7,7 @@
 
 import PlurObject from '../../plur/PlurObject.mjs';
 import Model from '../../plur/model/Model.mjs';
-import IModeling from '../../plur/model/IModeling.mjs';
+import IPortable from '../../plur/model/IPortable.mjs';
 
 /**
  * Base class for all plur framework error classes.
@@ -25,7 +25,7 @@ export default class PlurError extends Error {
      * @param {!Object<string,(string|number|boolean|null)>} model
      * @returns {PlurError}
      */
-    static fromModel(model) {
+    static fromObj(model) {
         return new PlurError(model.message, model.data);
     };
 
@@ -71,7 +71,7 @@ export default class PlurError extends Error {
      * @override
      * @returns {{message: (string|undefined), data: (*)}}
      */
-    model() {
+    toObj() {
         return {
             message: this.message,
             data: Model.model(this.data)
@@ -79,4 +79,4 @@ export default class PlurError extends Error {
     };
 }
 
-PlurObject.plurify('plur/error/Error', PlurError, [ IModeling ]);
+PlurObject.plurify('plur/error/Error', PlurError, [ IPortable ]);

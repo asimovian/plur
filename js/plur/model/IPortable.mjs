@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/model/IModeling
+ * @module plur/model/IPortable
  */
 'use strict';
 
@@ -19,13 +19,13 @@ import InterfaceError from '../../plur/error/Interface.mjs';
  * @implements {IPlurified}
  * @final
  */
-export default class IModeling {
+export default class IPortable {
     constructor() {
         throw new InterfaceError(this);
     };
 }
 
-PlurObject.plurify('plur/model/IModeling', IModeling);
+PlurObject.plurify('plur/model/IPortable', IPortable);
 
 /**
  * Create an object of the implementing class using the data model provided. Data will be provided in a nested
@@ -36,7 +36,7 @@ PlurObject.plurify('plur/model/IModeling', IModeling);
  * @param {!Object<string,(number|string|Object|null)>}model
  * @returns {Object}
  */
-IModeling.fromModel = PlurObject.abstractMethod;
+IPortable.fromObj = PlurObject.abstractMethod;
 
 /**
  * Create a nested primitive JS object representing class data available to serialize.
@@ -45,4 +45,4 @@ IModeling.fromModel = PlurObject.abstractMethod;
  * @abstract
  * @returns {!Object<string,(number|string|Object|null)>}
  */
-IModeling.prototype.model = PlurObject.abstractMethod;
+IPortable.prototype.toObj = PlurObject.abstractMethod;

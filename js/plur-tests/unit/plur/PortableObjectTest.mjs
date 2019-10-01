@@ -35,15 +35,29 @@ export default class PortableObjectTest extends Test {
      * @tests plur/Obj.copy
      */
     test_static_copy() {
-        const objE2 = PortableObject.copy(this.fixtures.objE);
-        this.assert(objE2 !== this.fixtures.objE, 'Should not be identity equal to copy');
-        this.assert(PortableObject.equal(objE2, this.fixtures.objE), 'Should be equal to copy');
+        const objF2 = PortableObject.copy(this.fixtures.objF);
+        this.assert(objF2 !== this.fixtures.objF, 'Should not be identity equal to copy');
+        this.assert(PortableObject.equal(objF2, this.fixtures.objF), 'Should be equal to copy');
 
         const objA2 = PortableObject.copy(this.fixtures.objA);
         this.assert(objA2 !== this.fixtures.objA, 'Should not be identity equal to copy');
         this.assert(PortableObject.equal(objA2, this.fixtures.objA), 'Should be equal to copy');
         objA2.B.numb = 1971;
         this.assert(this.fixtures.objA.B.numb !== 1971, 'Original object property should not be changed')
+    };
+
+    /**
+     * @tests plur/Obj.merge
+     */
+    test_static_merge() {
+        const objFE = PortableObject.merge(this.fixtures.objF, this.fixtures.objE);
+        this.assert(PortableObject.equal(objFE, this.fixtures.objFE), 'Result should match fixture');
+
+        const objANotA = PortableObject.merge(this.fixtures.objA, this.fixtures.objNotA);
+        this.assert(PortableObject.equal(objANotA, this.fixtures.objNotA), 'Complex result should match second fixture');
+
+        const objNotAA = PortableObject.merge(this.fixtures.objNotA, this.fixtures.objA);
+        this.assert(PortableObject.equal(objNotAA, this.fixtures.objA), 'Reverse complex result should match second fixture');
     };
 
     /**
@@ -57,7 +71,7 @@ export default class PortableObjectTest extends Test {
         this.assert( PortableObject.isPrimitiveType(null) === true, 'Null should be primitive' );
 
         this.assert( PortableObject.isPrimitiveType(['a',42]) === false, 'Simple array should not be primitive' );
-        this.assert( PortableObject.isPrimitiveType(this.fixtures.objE) === false, 'Simple object should not be primitive' );
+        this.assert( PortableObject.isPrimitiveType(this.fixtures.objF) === false, 'Simple object should not be primitive' );
     };
 
     /**
@@ -150,6 +164,16 @@ export default class PortableObjectTest extends Test {
         },
         objF: {
             tree: 'fity'
+        },
+        objFE: {
+            str: 'fun bar',
+            tree: 'fity',
+            B: {
+                numb: -5,
+                C: {
+                    append: 'appended?'
+                }
+            }
         },
     };
 }
