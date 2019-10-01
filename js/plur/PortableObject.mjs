@@ -43,9 +43,11 @@ export default class Obj {
                     result[key] = Obj.copy(src[key]);
                 }
             }
+
+            return result;
         }
 
-        throw new Error(); // should not be here
+        throw new Error('LogicError: PortableObject.copy()'); // shouldn't be here
     };
 
     static merge(a, b) {
@@ -53,6 +55,44 @@ export default class Obj {
         Obj.copy(b, result);
         return result;
     }
+
+    static equal(a, b) {
+        if (Obj.isPrimitive(a)) {
+           return ( a === b );
+        } else if (Array.isArray(a)) {
+           if (!Array.isArray(b) || a.length !== b.length) {
+               return false;
+           }
+
+           for (let i = 0; i < a.length; ++i) {
+               if (!Obj.equal(a[i], b[i])) {
+                   return false;
+               }
+           }
+
+           return true;
+        } else if (typeof a === 'object') {
+           if (typeof b !== 'object') {
+               return false;
+           }
+
+           const aProps = Object.getOwnPropertyNames(a);
+           if (aProps.length !== Object.getOwnPropertyNames(b).length) {
+               return false;
+           }
+
+           for (let i = 0; i < aProps.length; ++i) {
+               const prop = aProps[i];
+               if (!Obj.equal(a[prop], b[prop])) {
+                   return false;
+               }
+           }
+
+           return true;
+        }
+
+        throw new Error('LogicError: PortableObject.equal()'); // shouldn't be here
+    };
 
     static isPrimitive(o) {
         switch (typeof o) {

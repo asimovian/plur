@@ -5,12 +5,12 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/PlurObject.mjs";
-import API from "../../plur/api/API.mjs";
-import IApplication from "../../plur/app/IApplication.mjs";
-import ITerminal from "../../plur/terminal/ITerminal.mjs";
-import Tester from "../../plur/test/Tester.mjs";
-import { singleton as ApiFileSystem } from "../../plur/file/system/API.mjs";
+import PlurObject from '../../plur/PlurObject.mjs';
+import API from '../../plur/api/API.mjs';
+import IApplication from '../../plur/app/IApplication.mjs';
+import ITerminal from '../../plur/terminal/ITerminal.mjs';
+import Tester from '../../plur/test/Tester.mjs';
+import { singleton as ApiFileSystem } from '../../plur/file/system/API.mjs';
 import { singleton as SystemLog } from '../../plur/log/System.mjs';
 
 /**
@@ -21,6 +21,7 @@ import { singleton as SystemLog } from '../../plur/log/System.mjs';
  * Only JS files that end with "Test" will be targeted.
  *
  * @implements {IPlurified}
+ * @implements {IApplication}
  */
 export default class TestApp {
     /**

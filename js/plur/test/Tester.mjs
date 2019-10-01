@@ -12,22 +12,22 @@ import {singleton as SystemLog} from '../../plur/log/System.mjs';
  * Imports the test classes specified and runs all valid test methods.
  *
  * @final
+ * @implements {IPlurified}
  */
 export default class Tester {
-	constructor(testTargets) {
+	constructor(testClassNamepaths) {
         this._log = SystemLog.get();
-        this._testClasses = testTargets;
+        this._testClassNamepaths = testClassNamepaths;
     };
 
     test() {
         const self = this;
         let promise = Promise.resolve();
 
-        for (let i = 0; i < this._testClasses.length; ++i) {
-            const testClass = this._testClasses[i];
+        for (let i = 0; i < this._testClassNamepaths.length; ++i) {
+            const testClass = this._testClassNamepaths[i];
             promise = promise.then(value => {
-                promise = self.testClass(testClass);
-                return promise;
+                return self.testClass(testClass);
             });
         }
 
@@ -41,9 +41,9 @@ export default class Tester {
         this._log.info('Testing with ' + namepath + ' ...');
 
         const promise = import(filepath).then(module => {
+            let currentPromise = Promise.resolve();
             const testClass = module.default;
             const properties = Object.getOwnPropertyNames(testClass.prototype);
-            const methodTestPromises = [];
 
             for (let i = 0; i < properties.length; ++i) {
                 const property = properties[i];
@@ -51,13 +51,13 @@ export default class Tester {
                     continue;
                 }
 
-
                 const testObject = new testClass();
-                const methodTestPromise = self.testMethod(testObject, property);
-                methodTestPromises.push(methodTestPromise);
+                currentPromise = currentPromise.then(value => {
+                    return self.testMethod(testObject, property);
+                });
             }
 
-            return Promise.all(methodTestPromises);
+            return currentPromise;
         });
 
         return promise;
