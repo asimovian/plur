@@ -101,6 +101,7 @@ class Config {
      * @returns {Object<string,(string|number|boolean|Object|Array|null)>}
      */
     config() {
+        return this._config;
     };
 
     /**
