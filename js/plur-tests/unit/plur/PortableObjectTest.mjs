@@ -47,32 +47,44 @@ export default class PortableObjectTest extends Test {
     };
 
     /**
-     * @tests plur/Obj.isPrimitive
+     * @tests plur/Obj.isPrimitiveType
      */
-    test_static_isPrimitive() {
-        this.assert( PortableObject.isPrimitive() === false, 'Undefined is not a portable type' );
-        this.assert( PortableObject.isPrimitive('foo') === true, 'Simple string should be primitive' );
-        this.assert( PortableObject.isPrimitive(32) === true, 'Simple number should be primitive' );
-        this.assert( PortableObject.isPrimitive(false) === true, 'Simple boolean should be primitive' );
+    test_static_isPrimitiveType() {
+        this.assert( PortableObject.isPrimitiveType() === false, 'Undefined should not a portable type' );
+        this.assert( PortableObject.isPrimitiveType('foo') === true, 'String should be primitive' );
+        this.assert( PortableObject.isPrimitiveType(32) === true, 'Number should be primitive' );
+        this.assert( PortableObject.isPrimitiveType(false) === true, 'Boolean should be primitive' );
+        this.assert( PortableObject.isPrimitiveType(null) === true, 'Null should be primitive' );
 
-        this.assert( PortableObject.isPrimitive(null) === true, 'Simple null should be primitive' );
-
-        this.assert( PortableObject.isPrimitive(['a',42]) === false, 'Simple array should be primitive' );
-        this.assert( PortableObject.isPrimitive(this.fixtures.objE) === false, 'Simple object should be primitive' );
+        this.assert( PortableObject.isPrimitiveType(['a',42]) === false, 'Simple array should not be primitive' );
+        this.assert( PortableObject.isPrimitiveType(this.fixtures.objE) === false, 'Simple object should not be primitive' );
     };
 
     /**
-     * @tests plur/Obj.isCompound
+     * @tests plur/Obj.isCompoundType
      */
-    test_static_isCompound() {
-        this.assert( PortableObject.isCompound() === false, 'Undefined is not a portable type' );
+    test_static_isCompoundType() {
+        this.assert( PortableObject.isCompoundType() === false, 'Undefined should not be a compound' );
+        this.assert( PortableObject.isCompoundType({}) === true, 'Simple object should be a compound' );
+        this.assert( PortableObject.isCompoundType([]) === true, 'Simple array should be a compound' );
+        this.assert( PortableObject.isCompoundType(null) === false, 'Null should not be a compound' );
+        this.assert( PortableObject.isCompoundType('l') === false, 'String should not be a compound' );
+        this.assert( PortableObject.isCompoundType(44) === false, 'Number should not be a compound' );
+        this.assert( PortableObject.isCompoundType(true) === false, 'Boolean should not be a compound' );
     };
 
     /**
-     * @tests plur/Obj.isPortable
+     * @tests plur/Obj.isPortableType
      */
-    test_static_isPortable() {
-        this.assert( PortableObject.isPortable() === false, 'Undefined is not a portable type' );
+    test_static_isPortableType() {
+        this.assert( PortableObject.isPortableType() === false, 'Undefined should not be a portable type' );
+        this.assert( PortableObject.isPortableType({}) === true, 'Simple object should be portable' );
+        this.assert( PortableObject.isPortableType([]) === true, 'Simple array should be portable' );
+        this.assert( PortableObject.isPortableType(null) === true, 'Null should be portable' );
+        this.assert( PortableObject.isPortableType('l') === true, 'String should be portable' );
+        this.assert( PortableObject.isPortableType(44) === true, 'Number should be portable' );
+        this.assert( PortableObject.isPortableType(0.22) === true, 'Float number should be portable' );
+        this.assert( PortableObject.isPortableType(true) === true, 'Boolean should be portable' );
     };
 
     fixtures = {

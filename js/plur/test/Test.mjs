@@ -93,9 +93,9 @@ Test.prototype.onPromises = function(timeout, onFulfilled, onRejected) {
 /**
  * Determines whether a value is strictly equal.
  */
-Test.prototype.assert = function(actual, message) {
-    if (!actual)
-        throw new AssertionError(message || 'Assertion failed', { actual: actual });
+Test.prototype.assert = function(test, message) {
+    if (!test)
+        throw new AssertionError(message || 'Assertion failed', { result: test});
 };
 
 /**

@@ -10,7 +10,7 @@ import PlurObject from '../plur/PlurObject.mjs';
 
 /**
  * Utility for dealing with the concept of a plur "Obj". Objects with only basic primitives and non-function compounds.
- * Compounds can only contain basic primitives or Obj compounds.
+ * CompoundTypes can only contain basic primitives or Obj compounds.
  * [ string, number, boolean, Array, object, null ]
  *
  * @implements {IPlurified}
@@ -23,13 +23,13 @@ export default class Obj {
      * @returns {*}
      */
     static copy(src, dest) {
-        if (Obj.isPrimitive(src)) {
+        if (Obj.isPrimitiveType(src)) {
             return src;
         } else if (Array.isArray(src)) {
             const result = dest || [];
 
             for (let i = 0; i < src.length; ++i) {
-                if (Obj.isPortable(src[i])) {
+                if (Obj.isPortableType(src[i])) {
                     result[i] = Obj.copy(src[i]);
                 }
             }
@@ -39,7 +39,7 @@ export default class Obj {
             const result = dest || {};
 
             for (const key in src) {
-                if (Obj.isPortable(src[key])) {
+                if (Obj.isPortableType(src[key])) {
                     result[key] = Obj.copy(src[key]);
                 }
             }
@@ -57,7 +57,7 @@ export default class Obj {
     }
 
     static equal(a, b) {
-        if (Obj.isPrimitive(a)) {
+        if (Obj.isPrimitiveType(a)) {
            return ( a === b );
         } else if (Array.isArray(a)) {
            if (!Array.isArray(b) || a.length !== b.length) {
@@ -94,20 +94,22 @@ export default class Obj {
         throw new Error('LogicError: PortableObject.equal()'); // shouldn't be here
     };
 
-    static isPrimitive(o) {
+    static isPrimitiveType(o) {
         switch (typeof o) {
-            case 'string': case 'number': case 'boolean':
-                return true;
+        case 'string': case 'number': case 'boolean':
+            return true;
+        case 'object':
+            return (o === null);
         }
 
         return false;
     };
 
-    static isCompound(o) {
-        return ( typeof o === 'object' );
+    static isCompoundType(o) {
+        return ( typeof o === 'object' && o !== null );
     }
 
-    static isPortable(o) {
+    static isPortableType(o) {
         switch(typeof o) {
         case 'string': case 'number': case 'boolean': case 'object':
             return true;
