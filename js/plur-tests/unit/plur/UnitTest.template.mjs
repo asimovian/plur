@@ -9,7 +9,7 @@ import PlurObject from '../../../plur/PlurObject.mjs';
 import Test from '../../../plur/test/Test.mjs';
 
 /**
- * @tests plur/PlurObject
+ * @tests plur/Unit
  * @final
  */
 export default class UnitTest extends Test {

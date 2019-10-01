@@ -7,7 +7,7 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
-import InterfaceError from '../../plur/error/Interface';
+import InterfaceError from '../../plur/error/Interface.mjs';
 
 /**
  * Implements a configurable class that uses plur/Config to maintain its configuration.

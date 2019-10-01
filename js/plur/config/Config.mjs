@@ -7,7 +7,8 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
-import PortableObject from '../../plur/Obj.mjs';
+import PortableObject from '../../plur/PortableObject.mjs';
+import IConfigurable from '../../plur/config/IConfigurable.mjs';
 import Schema from '../../plur/config/Schema.mjs';
 
 /**
@@ -18,7 +19,7 @@ import Schema from '../../plur/config/Schema.mjs';
  * @final
  * @implements {IPlurified}
  */
-class Config {
+export default class Config {
     /**
      * Not implemented yet.
      *
@@ -62,7 +63,7 @@ class Config {
     constructor(configurable, config) {
         /** @type {string} **/
         this._configurableNamepath = configurable.namepath;
-        /** @type {Object<string,(string|number|boolean|Object|Array|null)>} **/
+        /** @type {Schema} **/
         this._schema = null;  // classes only
         /** @type {Object<string,(string|number|boolean|Object|Array|null)>} **/
         this._config = null;
@@ -103,6 +104,13 @@ class Config {
     config() {
         return this._config;
     };
+
+    /**
+     * @returns {Schema}
+     */
+    getSchema() {
+        return this._schema;
+    }
 
     /**
      * Retrieves the configurable's namepath;

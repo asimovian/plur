@@ -3,6 +3,8 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/PlurObject
  * @version 0.0.2
+ *
+ * @typedef {Object<string,(string,number,boolean,null,Array<obj>,obj)>} obj
  */
 'use strict';
 
