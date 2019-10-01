@@ -38,7 +38,6 @@ export default class Config {
      * @returns {obj} configObj
      */
     static mergeConfig(schema, parentConfig, childConfig) {
-        // for now: ignore schema. simple two-way merge.
         return PortableObject.merge(parentConfig, childConfig, true);
     };
 
@@ -52,7 +51,6 @@ export default class Config {
      * @throws {Error}  On invalid formatting
      */
     static compile(configObj, schema) {
-        // for now: a primitive deep copy
         return [ PortableObject.copy(configObj), new Schema(configObj, schema) ];
     };
 
@@ -90,9 +88,9 @@ export default class Config {
             const classConfig = objectClass.getConfig();
 
             if (config instanceof Config) {  // no parent, with a Config. copy the Config.
-                this._config = Config.mergeConfig(classConfig._schema, classConfig, config);
+                [ this._config, this._schema ] = Config.compile(config.config(), config.getSchema());
             } else {   // no parent, primitive object. parse and validate. throw error if they try a schema
-                [ this._config ] = Config.compile(config, { errorSchema: true });
+                [ this._config, this._schema ] = Config.compile(config, { errorSchema: true });
             }
         }
     };
