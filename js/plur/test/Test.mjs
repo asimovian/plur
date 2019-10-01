@@ -21,7 +21,29 @@ export default class Test {
         this._expectedEmissions = {};
         this._actualEmissions = {};
         this.namepathPrefix = this.namepath + '.';
-    }
+    };
+
+    /**
+     * @param {Function} callback
+     * @param {string} message
+     * @throws {AssertionError}
+     */
+    assertTry(callback, message) {
+       try {
+           return callback();
+       } catch (e) {
+          throw new AssertionError(message, e);
+       }
+    };
+
+    assertCatch(callback, message) {
+       try {
+           callback();
+           throw new AssertionError(message);
+       } catch (e) {
+           return;
+       }
+    };
 };
 
 PlurObject.plurify('plur/test/Test', Test);

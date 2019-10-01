@@ -47,11 +47,21 @@ export default class Obj {
             return result;
         }
 
-        throw new Error('LogicError: PortableObject.copy()'); // shouldn't be here
+        throw new Error('Non-portable type: ' + typeof src);
     };
 
+    /**
+     *
+     * @param {obj} a
+     * @param {obj=} b
+     * @returns {obj}
+     */
     static merge(a, b) {
         const result = Obj.copy(a);
+        if (typeof b === 'undefined') {
+            return result;
+        }
+
         Obj.copy(b, result);
         return result;
     }
@@ -91,7 +101,7 @@ export default class Obj {
            return true;
         }
 
-        throw new Error('LogicError: PortableObject.equal()'); // shouldn't be here
+        throw new Error('Non-portable type: ' + typeof a);
     };
 
     static isPrimitiveType(o) {

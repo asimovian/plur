@@ -33,9 +33,9 @@ export default class Config {
 
     /**
      * @param {Schema} schema The schema to validate against after merge is complete. This is not implemented yet.
-     * @param {object} parentConfig
-     * @param {object} childConfig
-     * @returns {object} configObj
+     * @param {obj} parentConfig
+     * @param {obj} childConfig
+     * @returns {obj} configObj
      */
     static mergeConfig(schema, parentConfig, childConfig) {
         // for now: ignore schema. simple two-way merge.
@@ -46,8 +46,8 @@ export default class Config {
      * Compiles a primitive data object into a valid primitive config object and schema for use with the Config class.
      * Where not specified, the schema is auto-generated based on values provided as defaults.
      *
-     * @param {object} configObj
-     * @param {object} options
+     * @param {obj} configObj
+     * @param {obj} options
      * @returns {Array<Object>} Returns a parsed [ configObj, schema ]
      * @throws {Error}  On invalid formatting
      */
@@ -58,14 +58,14 @@ export default class Config {
 
     /**
      * @param {!IConfigurable} configurable
-     * @param {!Object|!Config} config
+     * @param {!obj|!Config} config
      */
     constructor(configurable, config) {
         /** @type {string} **/
         this._configurableNamepath = configurable.namepath;
         /** @type {Schema} **/
         this._schema = null;  // classes only
-        /** @type {Object<string,(string|number|boolean|Object|Array|null)>} **/
+        /** @type {obj} **/
         this._config = null;
 
         if (!PlurObject.implementing(configurable, IConfigurable)) {
@@ -118,6 +118,19 @@ export default class Config {
      */
     getNamepath() {
         return this._configurableNamepath;
+    };
+
+    /**
+     * @param {obj} rh
+     * @param {IConfigurable=} configurable
+     * @returns {obj|Config} Returns obj if configurable is omitted, Config if provided.
+     */
+    merge(rh, configurable) {
+        if (!!configurable) {
+            return new Config(configurable, this.constructor.mergeConfig(this._schema, this._config, rh));
+        } else {
+            return this.constructor.mergeConfig(this._schema, this._config, rh);
+        }
     };
 }
 

@@ -20,31 +20,32 @@ export default class PlurObject {
     /**
      * Determines whether the given object or class has been plurify()'d or not.
      *
-     * @param {Object|Function} o The object or class object to review.
+     * @param {Object|Function|IPlurified} o The object or class object to review.
      * @returns {boolean} TRUE if plurified FALSE if not
      */
     static isPlurified(o) {
-        return ( typeof o.implemented === 'Object' && typeof o.implemented['plur/IPlurified'] !== 'undefined');
+        return ( typeof o.implemented === 'object' && typeof o.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**
      * Determines whether the given class have been plurify()'d or not. FALSE on objects of a class.
      *
-     * @param {Function} c The class object to review
+     * @param {Function|IPlurified} c The class object to review
      * @returns {boolean} TRUE if a plurified class FALSE if not
      */
     static isPlurifiedClass(c) {
-        return ( typeof c.implemented === 'Object' && typeof c.implemented['plur/IPlurified'] !== 'undefined');
+        return ( typeof c.implemented === 'object' && typeof c.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**
      *
-     * @param {plur/IPlurified} object
-     * @param {function(new: plur/IPlurified)} interfaceConstructor
+     * @param {IPlurified} object
+     * @param {IPlurified} interfaceConstructor
      * @returns {boolean}
      */
     static implementing(object, interfaceConstructor) {
-        let constructor = Object.getPrototypeOf(object).constructor;
+        const constructor = ( object instanceof Function ? object : Object.getPrototypeOf(object).constructor );
+
         if (typeof constructor.implemented === 'undefined') {
             return false;
         } else if (typeof interfaceConstructor === 'string') {
