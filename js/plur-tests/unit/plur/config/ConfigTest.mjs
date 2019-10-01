@@ -9,6 +9,7 @@ import PlurObject from '../../../../plur/PlurObject.mjs';
 import Test from '../../../../plur/test/Test.mjs';
 import IConfigurable from '../../../../plur/config/IConfigurable.mjs';
 import Config from '../../../../plur/config/Config.mjs';
+import PortableObject from '../../../../plur/PortableObject.mjs';
 
 /**
  * @tests plur/config/Config
@@ -43,16 +44,13 @@ export default class ConfigTest extends Test {
         const a = new this.fixtures.A();
         const configAfoo = new Config(a, this.fixtures.cfgFoo);
 
-        const configAnewKey = configAfoo.merge(this.fixtures.cfgZip, a);
-        this.assert( configAnewKey.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
-        this.assert( configAnewKey.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Should include original config.');
-        this.assert( configAnewKey.config().zip.tar === this.fixtures.cfgZip.zip.tar, 'Should include new config.');
+        const configAval = configAfoo.merge(this.fixtures.cfgZip, a);
+        this.assert( configAval.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
+        this.assert( PortableObject.equal(configAval.config(), this.fixtures.cfgFooZip), 'Should match fixture');
 
-        const configAnotherKey = configAfoo.merge(this.fixtures.cfgFooTar, a);
+        const configAnotherKey = configAfoo.merge(this.fixtures.cfgTar, a);
         this.assert( configAnotherKey.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
-        console.log(configAnotherKey);
-        this.assert( configAnotherKey.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Should include original config.');
-        this.assert( configAnotherKey.config().foo.tar === this.fixtures.cfgFoo.foo.tar, 'Should include new config.');
+        this.assert( PortableObject.equal(configAnotherKey.config(), this.fixtures.cfgFooTar), 'Should match fixture');
     };
 
     fixtures = {
@@ -83,16 +81,26 @@ export default class ConfigTest extends Test {
                'bar': 'text'
            }
         },
+        cfgTar: {
+            'foo': {
+                'tar': 10
+            }
+        },
         cfgFooTar: {
             'foo': {
-                'tar': true
+                'bar': 'text'
             }
         },
         cfgZip: {
-            'zip': {
-                'tar': 33
-            }
+            'foo': {
+                'bar': 'zip'
+            },
         },
+        cfgFooZip: {
+            'foo': {
+                'bar': 'zip'
+            }
+        }
     };
 };
 

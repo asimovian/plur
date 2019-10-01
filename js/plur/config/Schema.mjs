@@ -7,6 +7,7 @@
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
+import PortableObject from '../../plur/PortableObject.mjs';
 
 /**
  * Represents a JS template and validation scheme for primitives-only objects and JSON.
@@ -66,7 +67,12 @@ export default class Schema {
         return new Schema(); // todo
     };
 
-    constructor() {
+    /**
+     * @param {obj} cfg
+     * @param {Schema} parentSchema
+     */
+    constructor(cfg, parentSchema) {
+
     };
 }
 

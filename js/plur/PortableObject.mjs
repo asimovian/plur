@@ -20,9 +20,10 @@ export default class Obj {
     /**
      * @param {*} src
      * @param {*=} dest Optional destintion object / array to store result in. Not applicable to primitives.
+     * @param {boolean=} fillOnly If fillOnly is TRUE, new keys will not be created in dest when provided.
      * @returns {*}
      */
-    static copy(src, dest) {
+    static copy(src, dest, fillOnly) {
         if (Obj.isPrimitiveType(src)) {
             return src;
         } else if (Array.isArray(src)) {
@@ -39,8 +40,8 @@ export default class Obj {
             const result = dest || {};
 
             for (const key in src) {
-                if (Obj.isPortableType(src[key])) {
-                    result[key] = Obj.copy(src[key]);
+                if (Obj.isPortableType(src[key]) && (!fillOnly || typeof result[key] !== 'undefined')) {
+                    result[key] = Obj.copy(src[key], result[key], fillOnly);
                 }
             }
 
@@ -54,15 +55,16 @@ export default class Obj {
      *
      * @param {obj} a
      * @param {obj=} b
+     * @param {boolean=} fillOnly If fillOnly is TRUE, only keys existing in "a" will be copied.
      * @returns {obj}
      */
-    static merge(a, b) {
+    static merge(a, b, fillOnly) {
         const result = Obj.copy(a);
         if (typeof b === 'undefined') {
             return result;
         }
 
-        Obj.copy(b, result);
+        Obj.copy(b, result, fillOnly);
         return result;
     }
 

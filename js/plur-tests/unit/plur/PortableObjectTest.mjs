@@ -58,6 +58,12 @@ export default class PortableObjectTest extends Test {
 
         const objNotAA = PortableObject.merge(this.fixtures.objNotA, this.fixtures.objA);
         this.assert(PortableObject.equal(objNotAA, this.fixtures.objA), 'Reverse complex result should match second fixture');
+
+        const objGH = PortableObject.merge(this.fixtures.objG, this.fixtures.objH);
+        this.assert(PortableObject.equal(objGH, this.fixtures.objGH), 'Result should match');
+
+        const objGHfill = PortableObject.merge(this.fixtures.objG, this.fixtures.objH, true);
+        this.assert(PortableObject.equal(objGHfill, this.fixtures.objGHfill), 'Fill-only result should match');
     };
 
     /**
@@ -175,6 +181,18 @@ export default class PortableObjectTest extends Test {
                 }
             }
         },
+        objG: {
+            io: { in: 'g' }
+        },
+        objH: {
+            io: { out: 'h' }
+        },
+        objGH: {
+            io: { in: 'g', out: 'h' }
+        },
+        objGHfill: {
+            io: { in: 'g' }
+        }
     };
 }
 

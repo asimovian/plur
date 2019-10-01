@@ -39,7 +39,7 @@ export default class Config {
      */
     static mergeConfig(schema, parentConfig, childConfig) {
         // for now: ignore schema. simple two-way merge.
-        return PortableObject.merge(parentConfig, childConfig);
+        return PortableObject.merge(parentConfig, childConfig, true);
     };
 
     /**
@@ -47,13 +47,13 @@ export default class Config {
      * Where not specified, the schema is auto-generated based on values provided as defaults.
      *
      * @param {obj} configObj
-     * @param {obj} options
+     * @param {Schema=} schema
      * @returns {Array<Object>} Returns a parsed [ configObj, schema ]
      * @throws {Error}  On invalid formatting
      */
-    static compile(configObj, options) {
+    static compile(configObj, schema) {
         // for now: a primitive deep copy
-        return [ PortableObject.copy(configObj), new Schema() ];
+        return [ PortableObject.copy(configObj), new Schema(configObj, schema) ];
     };
 
     /**
@@ -127,9 +127,9 @@ export default class Config {
      */
     merge(rh, configurable) {
         if (!!configurable) {
-            return new Config(configurable, this.constructor.mergeConfig(this._schema, this._config, rh));
+            return new Config(configurable, Config.mergeConfig(this._schema, this._config, rh));
         } else {
-            return this.constructor.mergeConfig(this._schema, this._config, rh);
+            return Config.mergeConfig(this._schema, this._config, rh);
         }
     };
 }
