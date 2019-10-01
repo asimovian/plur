@@ -35,10 +35,11 @@ export default class Config {
      * @param {Schema} schema The schema to validate against after merge is complete. This is not implemented yet.
      * @param {obj} parentConfig
      * @param {obj} childConfig
+     * @param {boolean=} extend If TRUE, do not fill-only when merging. Will probably go away when Schema is done.
      * @returns {obj} configObj
      */
-    static mergeConfig(schema, parentConfig, childConfig) {
-        return PortableObject.merge(parentConfig, childConfig, true);
+    static mergeConfig(schema, parentConfig, childConfig, extend) {
+        return PortableObject.merge(parentConfig, childConfig, !extend);
     };
 
     /**
@@ -72,16 +73,17 @@ export default class Config {
 
         if (typeof configurable === 'function') {  // it's a class
             const parentClass = Object.getPrototypeOf(configurable);
+            const cfg = ( config instanceof Config ? config.config() : config );
 
             if (PlurObject.implementing(parentClass, IConfigurable)) {  // it has a parent config. make a merge copy.
                 const parentConfig = parentClass.getConfig();
-                this._schema = Config.mergeSchema(parentConfig, config);
-                this._config = Config.mergeConfig(this._schema, parentConfig, config);
+                this._schema = new Schema(cfg, parentConfig.getSchema());
+                this._config = Config.mergeConfig(this._schema, parentConfig.config(), cfg, true);
             } else if (config instanceof Config) {  // no parent, with a Config. copy the Config.
                 this._schema = config.getSchema();
-                this._config = config.config();
+                this._config = cfg;
             } else {   // no parent, primitive object. parse and validate.
-               [ this._config, this._schema ] = Config.compile(config);
+               [ this._config, this._schema ] = Config.compile(cfg);
             }
         } else {  // it's an object. no schema.
             const objectClass = configurable.constructor;

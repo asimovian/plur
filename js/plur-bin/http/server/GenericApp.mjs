@@ -77,10 +77,12 @@ export default class GenericHttpServerApp extends HttpServerApp {
     };
 }
 
-GenericHttpServerApp.DEFAULT_CONFIG = new Config(this, {
+PlurObject.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [IConfigurable]);
+
+GenericHttpServerApp.DEFAULT_CONFIG = new Config(GenericHttpServerApp, {
     apps: [
-        {__: { namepath: {_:String,r:true}, config: HttpServerApp.DEFAULT_CONFIG } }
+        //schema {__: { namepath: {_:String,r:true}, config: HttpServerApp.DEFAULT_CONFIG } }
     ]
 });
 
-PlurObject.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [IConfigurable]);
+console.log(GenericHttpServerApp.DEFAULT_CONFIG._config);

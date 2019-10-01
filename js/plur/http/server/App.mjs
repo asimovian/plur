@@ -92,10 +92,10 @@ export default class HttpServerApp {
     };
 }
 
+PlurObject.plurify('plur/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
+
 HttpServerApp.DEFAULT_CONFIG = new Config(HttpServerApp, {
     listenAddress: '127.0.0.1',
     listenPort: 8080
 });
-
-PlurObject.plurify('plur/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
 
