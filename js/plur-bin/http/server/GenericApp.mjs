@@ -79,9 +79,14 @@ export default class GenericHttpServerApp extends HttpServerApp {
 
 PlurObject.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [IConfigurable]);
 
+/**
+ * @typedef {Object} GenericHttpServerAppCfg plur-bin/http/server/GenericAppCfg
+ * @property {Array<HttpServerAppCfg>} httpApps
+ *
+ * @type {Config<GenericHttpServerAppCfg>}
+ */
 GenericHttpServerApp.DEFAULT_CONFIG = new Config(GenericHttpServerApp, {
-    apps: [
-        //schema {__: { namepath: {_:String,r:true}, config: HttpServerApp.DEFAULT_CONFIG } }
+    httpApps: [
     ]
 });
 

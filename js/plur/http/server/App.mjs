@@ -94,7 +94,14 @@ export default class HttpServerApp {
 
 PlurObject.plurify('plur/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
 
-HttpServerApp.DEFAULT_CONFIG = new Config(HttpServerApp, {
+/**
+ * @typedef {Object} HttpServerAppCfg plur/http/server/AppCfg
+ * @property {string} listenAddress '127.0.0.1'
+ * @property {number} listenPort 8080
+ *
+ * @type {Config<GenericHttpServerAppCfg>}
+ */
+HttpServerApp.DEFAULT_CONFIG = new Config(HttpServerApp, /** @type {HttpServerAppCfg} **/ {
     listenAddress: '127.0.0.1',
     listenPort: 8080
 });

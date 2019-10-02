@@ -37,9 +37,19 @@ export default class ConfigTest extends Test {
         this.assert( configEmpty.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
         this.assert( Object.getOwnPropertyNames(configEmpty.config()).length === 0, 'Should be empty.');
 
+        // use case: for a baseclass
         const configAfoo = new Config(a, this.fixtures.cfgFoo);
         this.assert( configAfoo.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
         this.assert( configAfoo.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Should mirror provided config.');
+
+        // use case: for a child class without a configurable parent
+
+        // use case: for a child class with a configurable parent
+
+        // use case: from constructor
+
+        // use case: against object in wild
+
     };
 
     /**
