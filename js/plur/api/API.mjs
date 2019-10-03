@@ -47,18 +47,17 @@ export default class API {
      * @param {string} version
      * @param {string} scmUrl
      * @param {string} branch
-     * @param {Object<string,string>} importPathsMap
-     * @param {boolean|undefined} debug Enable framework-wide debugging.
+     * @param {Object<string,string>} importPathMap
+     * @param {boolean=} debug Enable framework-wide debugging.
      */
-    constructor(name, version, scmUrl, branch, importPathsMap, debug) {
+    constructor(name, version, scmUrl, branch, importPathMap, debug) {
         PlurObject.constProperty(this, 'name', name);
         PlurObject.constProperty(this, 'version', version);
         PlurObject.constProperty(this, 'scmUrl', scmUrl);
         PlurObject.constProperty(this, 'branch', branch);
-        PlurObject.constProperty(this, 'debug', !!debug); // framework-wide debugging, overrides runtime debug
 
-        this._debug = this.debug;
-        this._importPathMap = importPathsMap || {};
+        this._debug = !!debug;
+        this._importPathMap = importPathMap || {};
     };
 
     /**
@@ -67,9 +66,7 @@ export default class API {
      * @returns {boolean} Whether the framework is in debugging mode (true) or not (false).
      */
     debug(toggle) {
-        if (this.debug || API.plur.debug) { // framework-wide overrides everything
-            return this.debug;
-        } else if (typeof toggle === 'boolean') {
+        if (typeof toggle === 'boolean') {
             this._debug = toggle;
         }
 

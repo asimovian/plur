@@ -18,10 +18,6 @@ import PortableObject from '../../../../plur/PortableObject.mjs';
 export default class ConfigTest extends Test {
     constructor() {
         super();
-
-        // finalize fixtures
-        PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadConfigurable', this.fixtures.LazyLoadConfigurable, [IConfigurable]);
-        PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadChildConfigurable', this.fixtures.LazyLoadChildConfigurable, [IConfigurable]);
     };
 
     /**
@@ -30,7 +26,7 @@ export default class ConfigTest extends Test {
      * @tests plur/Config.prototype.config
      */
     test_constructor() {
-        const a = new this.fixtures.LazyLoadConfigurable();
+        const a = new LazyLoadConfigurable();
 
         this.assertCatch(()=>{ new Config(a); }, 'Should throw error if cfg not provided');
 
@@ -39,70 +35,28 @@ export default class ConfigTest extends Test {
         this.assert( Object.getOwnPropertyNames(configEmpty.config()).length === 0, 'Should be empty.');
 
         // use case: for a baseclass
+        // use case: from constructor
         const configAfoo = new Config(a, this.fixtures.cfgFoo);
         this.assert( configAfoo.getNamepath() === a.namepath, 'Should be configurable\'s namepath.' );
-        this.assert( configAfoo.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Should mirror provided config.');
+        this.assert( configAfoo.config().foo.bar === this.fixtures.cfgFoo.foo.bar, 'Cfg in baseclass should match fixture');
 
         // use case: for a child class with a configurable parent
-        /**
-         * @implements {IPlurified}
-         * @implements {IConfigurable}
-         */
-        class A {
-            /** @override **/
-            static getConfig() {
-                if (!this.hasOwnProperty('_config')) {  // lazy load via injection
-                    this._config = new Config(this, {
-                        foo: 'star'
-                    });
-                }
-
-                return this._config;
-            };
-
-            /** @param {obj=} cfg **/
-            constructor(cfg) {
-                this._cfg = this.constructor.getConfig().merge(cfg);
-            };
-
-
-            config() {
-                return this._cfg;
-            };
-        }
-
-        PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__A', A, [IConfigurable]);
-
-        //A._config = new Config(A, {
-        //    foo: 'star'
-        //});
-
-        const a2 = new A();
-
-        class AA extends A {
-            static getConfig() {
-                if (!this.hasOwnProperty('_config')) {  // lazy load via injection
-                    this._config = new Config(this, {
-                        zip: 'tar'
-                    });
-                }
-
-                return this._config;
-            };
-
-            constructor(cfg) {
-               super(cfg);
-            };
-        }
-
-        const aa = new AA();
+        // use case: from constructor
+        const llchild = new LazyLoadChildConfigurable();
+        this.assert( PortableObject.equal(llchild.config(), this.fixtures.cfgLLchild), 'Cfg with parent should match fixture');
 
         // use case: for a child class without a configurable parent
-
         // use case: from constructor
+        const parentno = new ParentNotConfigurable();
+        this.assert( PortableObject.equal(parentno.config(), this.fixtures.cfgParentNo), 'Cfg without parent config should match fixture')
 
-        // use case: against object in wild
+        // use case: for a configurable object being constructed in the wild
+        // use case: from constructor
+        const b = new LazyLoadChildConfigurable({
+            tar: 'zip'
+        });
 
+        this.assert( PortableObject.equal(b.config(), this.fixtures.cfgb), 'Cfg being constructed should match fixture');
     };
 
     /**
@@ -111,7 +65,7 @@ export default class ConfigTest extends Test {
      * @tests plur/Config.prototype.config
      */
     test_merge() {
-        const a = new this.fixtures.LazyLoadConfigurable();
+        const a = new LazyLoadConfigurable();
         const configAfoo = new Config(a, this.fixtures.cfgFoo);
 
         const configAval = configAfoo.merge(this.fixtures.cfgZip, a);
@@ -123,64 +77,11 @@ export default class ConfigTest extends Test {
         this.assert( PortableObject.equal(configAnotherKey.config(), this.fixtures.cfgFooTar), 'Should match fixture');
     };
 
-    fixtures = {
-        /**
-         * Example of how to build an IConfigurable implementation that lazy loads its static Config.
-         * @implements {IPlurified}
-         * @implements {IConfigurable}
-         */
-        LazyLoadConfigurable:
-        class {
-            /** @property {Config} _config **/
-            /** @override **/
-            static getConfig() {
-                if (!this.hasOwnProperty('_config')) {  // lazy load via injection
-                    this._config = new Config(this, {
-                        foo: 'bar'
-                    });
-                }
-
-                return this._config;
-            };
-
-            /** @param {obj=} cfg **/
-            constructor(cfg) {
-                this._cfg = this.constructor.getConfig().merge(cfg);
-            };
-
-            /** @override **/
-            config() {
-                return this._cfg;
-            };
-        },
-        /**
-         * Example of how to build an IConfigurable implementation that lazy loads its static Config.
-         * @implements {IPlurified}
-         * @implements {IConfigurable}
-         */
-        LazyLoadChildConfigurable:
-        class {
-            /** @property {Config} _config **/
-            /** @override **/
-            static getConfig() {
-                if (!this.hasOwnProperty('_config')) {  // lazy load via injection
-                    this._config = new Config(this, {
-                        tar: 'gz'
-                    });
-                }
-
-                return this._config;
-            };
-
-            /** @param {obj=} cfg **/
-            constructor(cfg) {
-                this._cfg = this.constructor.getConfig().merge(cfg);
-            };
-
-            /** @override **/
-            config() {
-                return this._cfg;
-            };
+    /** @todo ESnext instance class fields**/
+    get fixtures() { return {
+        cfgLLchild: {
+            foo: 'bar',
+            tar: 'gz'
         },
         cfgFoo: {
            'foo': {
@@ -206,9 +107,105 @@ export default class ConfigTest extends Test {
             'foo': {
                 'bar': 'zip'
             }
-        }
-    };
+        },
+        cfgParentNo: {
+            'sing': 'song'
+        },
+        cfgb: {
+            foo: 'bar',
+            tar: 'zip'
+        },
+    }; }
 };
 
 PlurObject.plurify('plur-tests/unit/plur/ConfigTest', ConfigTest);
+
+/**
+ * Example of how to build an IConfigurable implementation that lazy loads its static Config.
+ * @implements {IPlurified}
+ * @implements {IConfigurable}
+ */
+class LazyLoadConfigurable {
+    /** @property {Config} _config **/
+    /** @override **/
+    static getConfig() {
+        if (!this.hasOwnProperty('_config')) {  // lazy load via injection
+            this._config = new Config(this, {
+                foo: 'bar'
+            });
+        }
+
+        return this._config;
+    };
+
+    /** @param {obj=} cfg **/
+    constructor(cfg) {
+        // use this construction pattern in base classes. child classes just pass their cfg to super.
+        this._cfg = this.constructor.getConfig().merge(cfg);
+    };
+
+    /** @override **/
+    config() {
+        return this._cfg;
+    };
+}
+
+PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadConfigurable', LazyLoadConfigurable, [IConfigurable]);
+
+/**
+ * Example of how to build an IConfigurable child class implementation that lazy loads its static Config merged from
+ * its parent.
+ * @implements {IPlurified}
+ * @implements {IConfigurable}
+ */
+class LazyLoadChildConfigurable extends LazyLoadConfigurable {
+    /** @property {Config} _config **/
+    /** @override **/
+    static getConfig() {
+        if (!this.hasOwnProperty('_config')) {  // lazy load via injection
+            this._config = new Config(this, {
+                tar: 'gz'
+            });
+        }
+
+        return this._config;
+    };
+
+    /** @param {obj=} cfg **/
+    constructor(cfg) {
+        super(cfg);
+    };
+}
+
+PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadChildConfigurable', LazyLoadChildConfigurable, [IConfigurable]);
+
+class NotConfigurable {};
+
+class ParentNotConfigurable extends NotConfigurable {
+    /** @property {Config} _config **/
+    /** @override **/
+    static getConfig() {
+        if (!this.hasOwnProperty('_config')) {  // lazy load via injection
+            this._config = new Config(this, {
+                sing: 'song'
+            });
+        }
+
+        return this._config;
+    };
+
+    /** @param {obj=} cfg **/
+    constructor(cfg) {
+        super();
+
+        this._cfg = this.constructor.getConfig().merge(cfg);
+    };
+
+    /** @override **/
+    config() {
+        return this._cfg;
+    };
+}
+
+PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__ParentNotConfigurable', ParentNotConfigurable, [IConfigurable]);
 

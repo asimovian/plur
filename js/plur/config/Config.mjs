@@ -62,8 +62,6 @@ export default class Config {
     constructor(configurable, cfg) {
         /** @type {string} **/
         this._cfgurableNamepath = configurable.namepath;
-        /** @type {IConfigurable} configurable **/
-        this._cfgurable = configurable;
         /** @type {Schema} **/
         this._schema = null;  // classes only
         /** @type {obj} **/

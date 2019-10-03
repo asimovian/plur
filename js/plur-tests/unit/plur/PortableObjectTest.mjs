@@ -107,7 +107,8 @@ export default class PortableObjectTest extends Test {
         this.assert( PortableObject.isPortableType(true) === true, 'Boolean should be portable' );
     };
 
-    fixtures = {
+    /** @todo ESnext instance class fields**/
+    get fixtures() { return {
         objA: {
             str: 'foo bar',
             num: 42,
@@ -193,7 +194,7 @@ export default class PortableObjectTest extends Test {
         objGHfill: {
             io: { in: 'g' }
         }
-    };
+    }; }
 }
 
 PlurObject.plurify('plur-tests/unit/plur/PortableObjectTests', PortableObjectTest);

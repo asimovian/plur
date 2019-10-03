@@ -15,15 +15,15 @@ import API from '../../../../plur/api/API.mjs';
  * @tests plur/API
  */
 export default class APITest extends Test {
-    constructor() {
-        super();
-    };
+   test_constructor() {
+       const a = new API('testapi', '3.21.321', 'https://example.tld/git.git', 'master', [], true);
 
-   testValues() {
-       this.assertHas(API, 'name', 'plur');
-       this.assertHas(API, 'version', '0.0.2');
-       this.assertHas(API, 'scmUrl', 'git://github.com/asimovian/plur.git');
-       this.assertHas(API, 'branch', 'roylaurie/unstable');
+       this.assertHas(a, 'name', 'testapi');
+       this.assertHas(a, 'version', '3.21.321');
+       this.assertHas(a, 'scmUrl', 'https://example.tld/git.git');
+       this.assertHas(a, 'branch', 'master');
+
+       this.assertEquals(a.debug(), true, 'debug should be enabled')
     };
 }
 

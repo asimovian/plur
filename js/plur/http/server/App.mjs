@@ -29,18 +29,18 @@ export default class HttpServerApp {
 
     /**
      * @param {!ITerminal} terminal
-     * @param {!config=} config
+     * @param {!obj=} cfg
      */
-    constructor(terminal, config) {
+    constructor(terminal, cfg) {
         this._terminal = terminal;
-        this._config = HttpServerApp.getConfig().merge(config).config();
-        this._listenAddress = this._config.listenAddress;
-        this._listenPort = this._config.listenPort;
+        this._cfg = HttpServerApp.getConfig().merge(cfg);
+        this._listenAddress = this._cfg.listenAddress;
+        this._listenPort = this._cfg.listenPort;
 
         if (this._terminal instanceof HttpServerApp) {
             this._httpd = this._terminal.getExpress();
         } else {
-            this._httpd = express.express();
+            this._httpd = express();
         }
     };
 
@@ -49,26 +49,28 @@ export default class HttpServerApp {
      * @returns {Promise}
      */
     async start() {
-        // initial message ... the blinkies
-        SystemLog.get().info('(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)');
+        const self = this;
 
         return new Promise(function(resolve, reject) {
-            this._httpd.listen(this._listenPort, this._listenAddress, ()=>{ resolve(); });
+            try {
+                self._httpd.listen(self._listenPort, self._listenAddress, ()=>{ resolve(); });
+            } catch(e) {
+                reject(e);
+            }
         });
     };
 
     /**
      * @override
-     * @param success
+     * @param {number=} exitCode
      * @returns {Promise}
      */
-    async stop(success) {
+    async stop(exitCode) {
         if (!(this._terminal instanceof HttpServerApp)) {
-            this._httpd.close();
             this._httpd = null; // gc
-
-            process.exit(success ? 0 : 1);
         }
+
+        return Promise.resolve();
     };
 
     /**
@@ -81,10 +83,10 @@ export default class HttpServerApp {
 
     /**
      * @override
-     *
+     * @returns {obj}
      */
     config() {
-        return this._config;
+        return this._cfg;
     };
 
     getExpress() {

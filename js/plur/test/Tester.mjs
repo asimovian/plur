@@ -70,8 +70,12 @@ export default class Tester {
             self._log.info('Testing method ' + methodName + '()');
 
             try {
-                testObject[methodName]();
-                resolve();
+                const retval = testObject[methodName]();
+                if (retval instanceof Promise) {
+                    retval.then(value => { resolve(); }).catch(e => { reject(e); });
+                } else {
+                    resolve();
+                }
             } catch (e) {
                 reject(e);
             }

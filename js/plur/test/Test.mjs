@@ -85,12 +85,12 @@ Test.prototype.assertExpectedEmissions = function() {
  * Helper method that runs all test methods for this object (methods names that start with "test").
  */
 Test.prototype.test = function() {
-    for (var propertyName in this) {
-        if (!propertyName.match(/^test/) || typeof this[propertyName] !== 'function' || propertyName === 'test') {
+    for (const propertyName in this) {
+        if (!/^test/.test(propertyName) || typeof this[propertyName] !== 'function' || propertyName === 'test') {
             continue;
         }
 
-        this[propertyName]();
+       this[propertyName]();
     }
 };
 
@@ -102,14 +102,15 @@ Test.prototype.hasPromises = function() {
     return ( this._promises.length !== 0 );
 };
 
-Test.prototype.onPromises = function(timeout, onFulfilled, onRejected) {
-    var promises = this._promises.concat(new PlurPromise(function(resolve, reject) {
-        setTimeout(timeout, function() {
+Test.prototype.onPromises = function(timeout) {
+    timeout = timeout || 120000; // default 2 mins
+    const promises = this._promises.concat(new Promise(function(resolve, reject) {
+        setTimeout(timeout, () => {
             reject(new Error('Test promises timed out after ' + timeout + ' ms'));
         });
     }));
 
-    return PlurPromise.all(promises, onFulfilled, onRejected);
+    return Promise.all(promises);
 };
 
 /**

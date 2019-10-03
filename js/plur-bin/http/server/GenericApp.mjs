@@ -90,5 +90,3 @@ GenericHttpServerApp.DEFAULT_CONFIG = new Config(GenericHttpServerApp, /** @type
     httpApps: [
     ]
 });
-
-console.log(GenericHttpServerApp.DEFAULT_CONFIG._config);

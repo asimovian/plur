@@ -17,15 +17,14 @@ export default class UnitTest extends Test {
         super();
     };
 
-    /**
-     * @tests plur/UnitTest.constructor
-     */
+    /** @tests plur/UnitTest.constructor  **/
     test_constructor() {
     };
 
-    fixtures = {
+    /** @todo ESnext instance class fields **/
+    get fixtures() { return {
 
-    };
+    }; }
 };
 
 PlurObject.plurify('plur-tests/unit/plur/UnitTest', UnitTest);
