@@ -1,6 +1,9 @@
 export default [
     "plur-bin/http/server/GenericApp.mjs",
+    "plur-tests/unit/plur-bin/http/server/GenericAppTest.mjs",
+    "plur-tests/unit/plur/config/ConfigTest.mjs",
     "plur-tests/unit/plur/PortableObjectTest.mjs",
+    "plur-tests/unit/plur/UnitTest.template.mjs",
     "plur-tests/unit/plur/PlurObjectTest.mjs",
     "plur/event/Emitter.mjs",
     "plur/event/Event.mjs",
@@ -29,7 +32,7 @@ export default [
     "plur/test/Tester.mjs",
     "plur/test/App.mjs",
     "plur/test/Test.mjs",
-    "plur/model/IModeling.mjs",
+    "plur/model/IPortable.mjs",
     "plur/model/Model.mjs",
     "plur/nodejs/Bootstrap.mjs",
     "plur/nodejs/file/System.mjs",

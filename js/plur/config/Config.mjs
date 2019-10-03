@@ -57,15 +57,17 @@ export default class Config {
 
     /**
      * @param {!IConfigurable} configurable
-     * @param {!obj|!Config} config
+     * @param {!obj} cfg
      */
-    constructor(configurable, config) {
+    constructor(configurable, cfg) {
         /** @type {string} **/
-        this._configurableNamepath = configurable.namepath;
+        this._cfgurableNamepath = configurable.namepath;
+        /** @type {IConfigurable} configurable **/
+        this._cfgurable = configurable;
         /** @type {Schema} **/
         this._schema = null;  // classes only
         /** @type {obj} **/
-        this._config = null;
+        this._cfg = null;
 
         if (!PlurObject.implementing(configurable, IConfigurable)) {
             throw new Error('Cannot configure for a non-configurable class. Implement IConfigurable.');
@@ -73,27 +75,17 @@ export default class Config {
 
         if (typeof configurable === 'function') {  // it's a class
             const parentClass = Object.getPrototypeOf(configurable);
-            const cfg = ( config instanceof Config ? config.config() : config );
 
             if (PlurObject.implementing(parentClass, IConfigurable)) {  // it has a parent config. make a merge copy.
                 const parentConfig = parentClass.getConfig();
                 this._schema = new Schema(cfg, parentConfig.getSchema());
-                this._config = Config.mergeConfig(this._schema, parentConfig.config(), cfg, true);
-            } else if (config instanceof Config) {  // no parent, with a Config. copy the Config.
-                this._schema = config.getSchema();
-                this._config = cfg;
+                this._cfg = Config.mergeConfig(this._schema, parentConfig.config(), cfg, true);
             } else {   // no parent, primitive object. parse and validate.
-               [ this._config, this._schema ] = Config.compile(cfg);
+               [ this._cfg, this._schema ] = Config.compile(cfg);
             }
-        } else {  // it's an object. no schema.
+        } else {  // it's an object
             const objectClass = configurable.constructor;
-            const classConfig = objectClass.getConfig();
-
-            if (config instanceof Config) {  // no parent, with a Config. copy the Config.
-                [ this._config, this._schema ] = Config.compile(config.config(), config.getSchema());
-            } else {   // no parent, primitive object. parse and validate. throw error if they try a schema
-                [ this._config, this._schema ] = Config.compile(config, { errorSchema: true });
-            }
+            [ this._cfg, this._schema ] = Config.compile(cfg);
         }
     };
 
@@ -102,7 +94,7 @@ export default class Config {
      * @returns {Object<string,(string|number|boolean|Object|Array|null)>}
      */
     config() {
-        return this._config;
+        return this._cfg;
     };
 
     /**
@@ -110,14 +102,14 @@ export default class Config {
      */
     getSchema() {
         return this._schema;
-    }
+    };
 
     /**
      * Retrieves the configurable's namepath;
      * @returns {string}
      */
     getNamepath() {
-        return this._configurableNamepath;
+        return this._cfgurableNamepath;
     };
 
     /**
@@ -127,9 +119,9 @@ export default class Config {
      */
     merge(rh, configurable) {
         if (!!configurable) {
-            return new Config(configurable, Config.mergeConfig(this._schema, this._config, rh));
+            return new Config(configurable, Config.mergeConfig(this._schema, this._cfg, rh));
         } else {
-            return Config.mergeConfig(this._schema, this._config, rh);
+            return Config.mergeConfig(this._schema, this._cfg, rh);
         }
     };
 }

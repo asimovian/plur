@@ -85,7 +85,8 @@ PlurObject.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [ICo
  *
  * @type {Config<GenericHttpServerAppCfg>}
  */
-GenericHttpServerApp.DEFAULT_CONFIG = new Config(GenericHttpServerApp, {
+GenericHttpServerApp.DEFAULT_CONFIG = new Config(GenericHttpServerApp, /** @type {GenericHttpServerAppCfg} **/ {
+    // Connection properties will be ignored for the http apps.
     httpApps: [
     ]
 });
