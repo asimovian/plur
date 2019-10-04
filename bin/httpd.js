@@ -6,7 +6,12 @@
 'use strict';
 
 import HttpServerBootstrap from '../js/plur-nodejs/api/bootstrap/httpserver.js'
-import GenericHttpServerApp from '../js/plur-bin/http/server/GenericApp.mjs';
+import GenericHttpServerApp from '../js/plur-nodejs/http/server/GenericApp.mjs';
 import HttpTerminal from '../js/plur/terminal/HTTP.mjs';
 
-new GenericHttpServerApp(new HttpTerminal()).start();
+const app = new GenericHttpServerApp(new HttpTerminal(), {
+    listenPort: 8085,
+    httpApps: ['plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp']
+});
+
+app.start();

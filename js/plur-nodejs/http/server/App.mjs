@@ -24,7 +24,7 @@ export default class HttpServerApp {
      * @returns {!Config}
      */
     static getConfig() {
-        return HttpServerApp.DEFAULT_CONFIG;
+        return this.DEFAULT_CONFIG;
     };
 
     /**
@@ -32,8 +32,8 @@ export default class HttpServerApp {
      * @param {!obj=} cfg
      */
     constructor(terminal, cfg) {
+        this._cfg = this.constructor.getConfig().merge(cfg);
         this._terminal = terminal;
-        this._cfg = HttpServerApp.getConfig().merge(cfg);
         this._listenAddress = this._cfg.listenAddress;
         this._listenPort = this._cfg.listenPort;
 

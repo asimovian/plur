@@ -1,6 +1,6 @@
 export default [
-    "plur-bin/http/server/GenericApp.mjs",
     "plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest.mjs",
+    "plur-nodejs-tests/unit/plur-nodejs/http/server/GenericAppTest.mjs",
     "plur-browser/api/Bootstrap.mjs",
     "plur-browser/file/System.mjs",
     "plur-tests/unit/plur/api/APITest.mjs",
@@ -11,6 +11,7 @@ export default [
     "plur-nodejs/terminal/Shell.mjs",
     "plur-nodejs/api/Bootstrap.mjs",
     "plur-nodejs/http/server/App.mjs",
+    "plur-nodejs/http/server/GenericApp.mjs",
     "plur-nodejs/file/System.mjs",
     "plur/event/Emitter.mjs",
     "plur/event/Event.mjs",
@@ -51,5 +52,4 @@ export default [
     "plur/error/Type.mjs",
     "plur/error/Assertion.mjs",
     "plur/error/Interface.mjs",
-    "plur-bin-tests/unit/plur-bin/http/server/GenericAppTest.mjs",
 ];

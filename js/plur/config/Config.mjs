@@ -61,7 +61,7 @@ export default class Config {
      */
     constructor(configurable, cfg) {
         /** @type {string} **/
-        this._cfgurableNamepath = configurable.namepath;
+        this._configurableNamepath = configurable.namepath;
         /** @type {Schema} **/
         this._schema = null;  // classes only
         /** @type {obj} **/
@@ -82,7 +82,6 @@ export default class Config {
                [ this._cfg, this._schema ] = Config.compile(cfg);
             }
         } else {  // it's an object
-            const objectClass = configurable.constructor;
             [ this._cfg, this._schema ] = Config.compile(cfg);
         }
     };
@@ -107,7 +106,7 @@ export default class Config {
      * @returns {string}
      */
     getNamepath() {
-        return this._cfgurableNamepath;
+        return this._configurableNamepath;
     };
 
     /**

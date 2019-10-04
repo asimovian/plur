@@ -34,7 +34,8 @@ export default class PlurObject {
      * @returns {boolean} TRUE if a plurified class FALSE if not
      */
     static isPlurifiedClass(c) {
-        return ( typeof c.implemented === 'object' && typeof c.implemented['plur/IPlurified'] !== 'undefined');
+        return ( c.hasOwnProperty('implemented') && typeof c.implemented === 'object'
+            && typeof c.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**
@@ -84,28 +85,46 @@ export default class PlurObject {
      *
      * @param {string} namepath The namepath to set both statically and on the prototype.
      * @param {!IPlurified} classObject The class to be plurified
-     * @param {Array<IPlurified>=} ifaces Interfaces to be implemented.
+     * @param {Array<IPlurified>=} interfaces Interfaces to be implemented.
      */
-    static plurify(namepath, classObject, ifaces) {
-        // inject namepath on the prototype.
+    static plurify(namepath, classObject, interfaces) {
+        if (!(classObject instanceof Function) || typeof classObject.prototype === 'undefined') {
+            throw new Error('Non-class passed to plurify()');
+        } else if (this.isPlurifiedClass(classObject)) {
+            return;
+        }
+
+        // inject namepath into the class's static properties and prototype properties
         PlurObject.constProperty(classObject, 'namepath', namepath);
         PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
-        classObject.implemented = { 'plur/IPlurified' : IPlurified };
+
+        // inject the implemented class map into the class's static properties
+        PlurObject.constProperty(classObject, 'implemented', { 'plur/IPlurified' : IPlurified }, false);
+
+        // inherit parent interfaces if any exist
+        const parentClass = Object.getPrototypeOf(classObject.prototype).constructor;
+        if (PlurObject.isPlurifiedClass(parentClass)) {
+            for (const key in parentClass.implemented) {
+                if (typeof classObject.implemented[key] === 'undefined') {
+                    classObject.implemented[key] = parentClass.implemented[key];
+                }
+            }
+        }
 
         // kept for runtime metrics
         PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
 
-        if (typeof ifaces === 'undefined') { // all done then
+        if (typeof interfaces === 'undefined') { // all done then
             return namepath;
         }
 
         // implement interfaces
-        if (!Array.isArray(ifaces)) {
-            ifaces = [ifaces];
+        if (!Array.isArray(interfaces)) {
+            interfaces = [interfaces];
         }
 
-        for (let i = 0; i < ifaces.length; ++i) {
-            PlurObject.implement(classObject, ifaces[i]);
+        for (let i = 0; i < interfaces.length; ++i) {
+            PlurObject.implement(classObject, interfaces[i]);
         }
     };
 
@@ -114,19 +133,21 @@ export default class PlurObject {
      * Copies the interface prototype's abstract methods in to the subject prototype.
      * Adds the interface pathname to the subject constructor.implemented variable.
      *
-     * @param {IPlurified} constructor
-     * @param {IPlurified} interfaceConstructor
+     * @param {IPlurified} classObject
+     * @param {IPlurified} interfaceClass
      * @throws {Error}
      */
-    static implement(constructor, interfaceConstructor) {
-        if (typeof constructor.implemented[interfaceConstructor.namepath] !== 'undefined') {
-            throw new Error('Not a valid plur Object.');
+    static implement(classObject, interfaceClass) {
+        if (typeof classObject.implemented[interfaceClass.namepath] !== 'undefined') {
+            return;  // already implemented
+        } else if (!PlurObject.isPlurifiedClass(classObject) || !PlurObject.isPlurifiedClass(interfaceClass)) {
+            throw new Error('Only plurified classes can implemented plurified class interfaces.')
         }
 
-        let interfacePrototype = interfaceConstructor.prototype;
-        let prototype = constructor.prototype;
+        const interfacePrototype = interfaceClass.prototype;
+        const prototype = classObject.prototype;
 
-        for (let propertyName in interfacePrototype) {
+        for (const propertyName in interfacePrototype) {
             // make sure that the interface property is assigned to PlurObject.abstractMethod
             if (interfacePrototype.hasOwnProperty(propertyName) && interfacePrototype[propertyName] === PlurObject.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
@@ -137,13 +158,13 @@ export default class PlurObject {
                     default:
                         if (prototype[propertyName] === PlurObject.abstractMethod) {
                             throw new Error('Unimplemented method in ' + prototype.namepath + ' for ' +
-                                interfaceConstructor.namepath + '.prototype.' + propertyName);
+                                interfaceClass.namepath + '.prototype.' + propertyName);
                         }
                 }
             }
         }
 
-        constructor.implemented[interfaceConstructor.namepath] = interfaceConstructor;
+        classObject.implemented[interfaceClass.namepath] = interfaceClass;
     };
 
     /**
@@ -162,8 +183,15 @@ export default class PlurObject {
         return values;
     };
 
-    static constProperty(object, key, value) {
-        Object.defineProperty(object, key, { value: value, writable: false, enumerable: true, configurable: false });
+    /**
+     * @param {*} object
+     * @param {string} key
+     * @param {*} value
+     * @param {boolean=} enumerable
+     */
+    static constProperty(object, key, value, enumerable) {
+        Object.defineProperty(object, key, { value: value, writable: false, configurable: false,
+            enumerable: ( typeof enumerable === 'boolean' ? enumerable: true )});
     };
 
     /**
