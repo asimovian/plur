@@ -25,6 +25,17 @@ export default class APITest extends Test {
 
        this.assertEquals(a.debug(), true, 'debug should be enabled')
     };
+
+    test_debug() {
+       const dbg = API.plur.debug();  // warning: temporarily altering api-wide setting ...
+
+       API.plur.debug(true);
+       this.assertEquals(API.plur.debug(), true, 'debug() should be enabled');
+       API.plur.debug(false);
+       this.assertEquals(API.plur.debug(), false, 'debug() should be disabled');
+
+       API.plur.debug(dbg);  // restore
+    };
 }
 
 PlurObject.plurify('plur-tests/unit/plur/api/APITest', APITest);
