@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur-bin/test/App
+ * @module plur/test/App
  */
 'use strict';
 
@@ -39,7 +39,7 @@ export default class TestApp {
     };
 }
 
-PlurObject.plurify('plur-bin/test/App', TestApp, [IApplication]);
+PlurObject.plurify('plur/test/App', TestApp, [IApplication]);
 
 TestApp.prototype._findTargets = function(callback) {
     const importPathMap = API.plur.getImportPathMap();

@@ -9,13 +9,14 @@ import API from '../../../plur/api/API.mjs';
 import BrowserBootstrap from '../../../plur-browser/api/Bootstrap.mjs';
 
 const bootstrap = new BrowserBootstrap()
-    .setOSType(API.OSType.Linux)
-    .importPath({
-        'plur': 'plur/js/plur',
-        'plur-lib': 'plur/extern/js',
-        'plur-cfg': '~/.plur/cfg/plur',
-        'plur-bin': 'plur/js/plur-bin',
-        'plur-tests': 'plur/js/plur-tests' });
+.setOSType(API.OSType.Linux)
+.importPath({
+    'plur': 'plur/js/plur',
+    'plur-tests': 'plur/js/plur-tests',
+    'plur-lib': 'plur/extern/js',
+    'plur-browser': 'plur/js/plur-browser',
+    'plur-browser-tests': 'plur/js/plur-browser-tests',
+});
 
 bootstrap.boot();
 

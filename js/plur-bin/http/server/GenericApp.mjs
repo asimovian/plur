@@ -11,7 +11,7 @@ import API from '../../../plur/api/API.mjs';
 import IConfigurable from '../../../plur/config/IConfigurable.mjs';
 import Config from '../../../plur/config/Config.mjs';
 import IApplication from '../../../plur/app/IApplication.mjs';
-import HttpServerApp from '../../../plur/http/server/App.mjs';
+import HttpServerApp from '../../../plur-nodejs/http/server/App.mjs';
 import ITerminal from '../../../plur/terminal/ITerminal.mjs';
 import Tester from '../../../plur/test/Tester.mjs';
 import { singleton as ApiFileSystem } from '../../../plur/file/system/API.mjs';
