@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur-tests/unit/plur-bin/http/server/GenericAppTest
+ * @module plur-bin-tests/unit/plur-bin/http/server/GenericAppTest
  */
 'use strict';
 
@@ -29,5 +29,5 @@ export default class GenericHttpAppTest extends Test {
     };
 };
 
-PlurObject.plurify('plur-tests/unit/plur-bin/http/server/GenericAppTest', GenericHttpAppTest);
+PlurObject.plurify('plur-bin-tests/unit/plur-bin/http/server/GenericAppTest', GenericHttpAppTest);
 

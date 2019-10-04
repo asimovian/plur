@@ -5,7 +5,6 @@
  */
 'use strict';
 
-import HttpServerBootstrap from '../js/plur/api/bootstraps/nodejs/httpserver.js'
 import GenericHttpServerApp from '../js/plur-bin/http/server/GenericApp.mjs';
 import HttpTerminal from '../js/plur/terminal/HTTP.mjs';
 

@@ -1,14 +1,14 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur-tests/unit/plur/http/server/AppTest
+ * @module plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest
  */
 'use strict';
 
 import http from 'http';
 import PlurObject from '../../../../../plur/PlurObject.mjs';
 import Test from '../../../../../plur/test/Test.mjs';
-import HttpServerApp from '../../../../../plur/http/server/App.mjs';
+import HttpServerApp from '../../../../../plur-nodejs/http/server/App.mjs';
 
 /**
  * @tests plur/http/server/App
@@ -76,5 +76,5 @@ export default class HttpServerAppTest extends Test {
     }; }
 };
 
-PlurObject.plurify('plur-tests/unit/plur/http/server/AppTest', HttpServerAppTest);
+PlurObject.plurify('plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest', HttpServerAppTest);
 

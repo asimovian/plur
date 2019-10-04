@@ -1,14 +1,14 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/browser/Bootstrap
+ * @module plur-browser/api/Bootstrap
  */
 'use strict';
 
 import PlurObject from '../../plur/PlurObject.mjs';
 import API from '../../plur/api/API.mjs';
 import Bootstrap from '../../plur/api/Bootstrap.mjs';
-import BrowserFileSystem from '../../plur/browser/file/System.mjs';
+import BrowserFileSystem from '../../plur-browser/file/System.mjs';
 import HttpFileSystem from '../../plur/http/file/System.mjs';
 import { singleton as LocalFileSystem} from '../../plur/file/system/Local.mjs';
 import { singleton as ApiFileSystem} from '../../plur/file/system/API.mjs';
@@ -36,4 +36,4 @@ export default class BrowserBootstrap extends Bootstrap {
     };
 }
 
-PlurObject.plurify('plur/browser/Bootstrap', BrowserBootstrap);
+PlurObject.plurify('plur-browser/api/Bootstrap', BrowserBootstrap);

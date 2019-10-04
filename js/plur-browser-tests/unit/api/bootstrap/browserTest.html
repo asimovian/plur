@@ -2,19 +2,19 @@
 <!--
  @copyright 2019 Asimovian LLC
  @license MIT https://github.com/asimovian/plur-www/blob/master/LICENSE.txt
- @tests plur/api/bootstraps/browser.js
+ @tests plur-browser/api/bootstrap/browser.js
 -->
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>p l u r  /  t e s t  /  b r o w s e r</title>
     <!--                     (-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)                       -->
-    <script type="module" src="../../../../../plur/api/bootstraps/browser.js"></script>
+    <script type="module" src="../../../../plur-browser/api/bootstrap/browser.js"></script>
     <script type="module">
-        import PlurObject from '../../../../../plur/PlurObject.mjs';
-        import TestApp from '../../../../../plur/test/App.mjs';
-        import BrowserTerminal from '../../../../../plur/terminal/Browser.mjs';
-        import {singleton as SystemLog } from '../../../../../plur/log/System.mjs';
+        import PlurObject from '../../../../plur/PlurObject.mjs';
+        import TestApp from '../../../../plur/test/App.mjs';
+        import BrowserTerminal from '../../../../plur/terminal/Browser.mjs';
+        import {singleton as SystemLog } from '../../../../plur/log/System.mjs';
 
         SystemLog.get().emitter().on('info', function(event) {
             document.getElementById('log').innerText += event.data().logEntry.message + "\r\n";

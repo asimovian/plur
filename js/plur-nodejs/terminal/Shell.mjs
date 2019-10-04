@@ -1,8 +1,8 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/user/terminal/Shell
- * @version 0.1.0
+ * @module plur-nodejs/terminal/Shell
+ * @version 0.0.2
  */
 'use strict';
 
@@ -12,7 +12,8 @@ import ITerminal from '../../plur/terminal/ITerminal.mjs';
 /**
  * Represents a means of interacting with a user/client via shell / console.
  *
- * @implements {IPlurified, ITerminal}
+ * @implements {IPlurified}
+ * @implements {ITerminal}
  */
 export default class ShellTerminal {
     constructor() {
@@ -30,4 +31,4 @@ export default class ShellTerminal {
     };
 };
 
-PlurObject.plurify('plur/user/terminal/Shell', ShellTerminal, [ITerminal]);
+PlurObject.plurify('plur/terminal/Shell', ShellTerminal, [ ITerminal ]);

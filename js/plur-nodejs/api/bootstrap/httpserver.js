@@ -1,16 +1,15 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/api/bootstraps/browser
+ * @module plur-nodejs/api/bootstrap/httpserver
  */
 'use strict';
 
 import API from '../../../plur/api/API.mjs';
-import BrowserBootstrap from '../../../plur/browser/Bootstrap.mjs';
+import NodeJsBootstrap from '../../../plur-nodejs/api/Bootstrap.mjs';
 
-const bootstrap = new BrowserBootstrap()
+const bootstrap = new NodeJsBootstrap()
     .setOSType(API.OSType.Linux)
-    //.setBrowserType(API.BrowserType.Chrome)
     .importPath({
         'plur': 'plur/js/plur',
         'plur-lib': 'plur/extern/js',
@@ -21,4 +20,3 @@ const bootstrap = new BrowserBootstrap()
 bootstrap.boot();
 
 export default bootstrap;
-

@@ -1,14 +1,14 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/nodejs/Bootstrap
+ * @module plur-nodejs/api/Bootstrap
  */
 'use strict';
 
 import PlurObject from "../../plur/PlurObject.mjs";
 import API from "../../plur/api/API.mjs";
 import Bootstrap from "../../plur/api/Bootstrap.mjs";
-import NodeJsFileSystem from "../../plur/nodejs/file/System.mjs";
+import NodeJsFileSystem from "../../plur-nodejs/file/System.mjs";
 import { singleton as LocalFileSystem } from '../../plur/file/system/Local.mjs';
 import { singleton as ApiFileSystem } from '../../plur/file/system/API.mjs';
 
@@ -32,6 +32,6 @@ class NodeJsBootstrap extends Bootstrap {
     };
 };
 
-PlurObject.plurify('plur/nodejs/Bootstrap', NodeJsBootstrap, Bootstrap);
+PlurObject.plurify('plur-nodejs/api/Bootstrap', NodeJsBootstrap, Bootstrap);
 
 export default NodeJsBootstrap;

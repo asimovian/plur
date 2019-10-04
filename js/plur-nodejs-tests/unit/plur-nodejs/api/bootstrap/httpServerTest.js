@@ -7,7 +7,7 @@
  */
 'use strict';
 
-import NodeJSBootstrap from '../../../../../../plur/api/bootstraps/nodejs/httpserver.js'
-import HttpTerminal from '../../../../../../plur/terminal/HTTP.mjs';
+import NodeJSBootstrap from '../../../../../plur-nodejs/api/bootstrap/httpserver.js'
+import HttpTerminal from '../../../../../plur-nodejs/terminal/HTTP.mjs';
 
 new TestApp(new HttpTerminal()).start();

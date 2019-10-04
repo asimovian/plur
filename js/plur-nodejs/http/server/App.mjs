@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/http/server/App
+ * @module plur-nodejs/http/server/App
  */
 'use strict';
 
@@ -94,7 +94,7 @@ export default class HttpServerApp {
     };
 }
 
-PlurObject.plurify('plur/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
+PlurObject.plurify('plur-nodejs/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
 
 /**
  * @typedef {Object} HttpServerAppCfg plur/http/server/AppCfg
