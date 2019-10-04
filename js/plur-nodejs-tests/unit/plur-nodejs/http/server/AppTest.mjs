@@ -27,9 +27,12 @@ export default class HttpServerAppTest extends Test {
         @tests HttpServerApp.prototype.stop **/
     async test_start_stop() {
         const self = this;
-        const app = new HttpServerApp(null, {});
+        const app = new HttpServerApp(null, {
+            listenAddress: this.fixtures.listenAddress,
+            listenPort: this.fixtures.listenPort
+        });
 
-        const promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             app.start().then(value => {
                 app.getExpress().get(self.fixtures.getpath, (req, res) => {
                     res.send(self.fixtures.response)
@@ -45,8 +48,6 @@ export default class HttpServerAppTest extends Test {
         }).then(()=>{
             return app.stop();
         });
-
-        return promise;
     };
 
     _httpGet(url) {
@@ -72,7 +73,9 @@ export default class HttpServerAppTest extends Test {
     get fixtures() { return {
         getpath: '/' + this.namepath,
         response: 'ALL OF THESE WORLDS ARE YOURS--EXCEPT EUROPA. ATTEMPT NO LANDING THERE.',
-        url: 'http://localhost:8080/' + this.namepath
+        url: 'http://localhost:8081/' + this.namepath,
+        listenAddress: 'localhost',
+        listenPort: '8081'
     }; }
 };
 

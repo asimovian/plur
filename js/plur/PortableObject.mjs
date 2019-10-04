@@ -40,7 +40,8 @@ export default class Obj {
             const result = dest || {};
 
             for (const key in src) {
-                if (Obj.isPortableType(src[key]) && (!fillOnly || typeof result[key] !== 'undefined')) {
+                if (src.hasOwnProperty(key) && Obj.isPortableType(src[key])
+                        && (!fillOnly || typeof result[key] !== 'undefined')) {
                     result[key] = Obj.copy(src[key], result[key], fillOnly);
                 }
             }
