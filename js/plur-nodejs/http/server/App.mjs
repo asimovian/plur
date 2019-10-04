@@ -49,6 +49,10 @@ export default class HttpServerApp {
      * @returns {Promise}
      */
     async start() {
+        if (this._terminal instanceof HttpServerApp) {
+            return Promise.resolve();
+        }
+
         const self = this;
 
         return new Promise(function(resolve, reject) {

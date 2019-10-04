@@ -5,6 +5,7 @@
  */
 'use strict';
 
+import fs from 'fs';
 import PlurObject from '../../../../../plur/PlurObject.mjs';
 import HttpServerApp from '../../../../../plur-nodejs/http/server/App.mjs';
 import Config from '../../../../../plur/config/Config.mjs';
@@ -15,7 +16,7 @@ export default class HttpServerTestApp extends HttpServerApp {
         return super.start().then(() => {
             const getcfg = self.config().get;
             for (const key in getcfg) {
-                const path = '/' + key;
+                const path = key;
                 const output = getcfg[key];
                 self.getExpress().get(path, (req,res) => { res.send(output); });
             }
@@ -33,8 +34,9 @@ PlurObject.plurify('plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp', Htt
 HttpServerTestApp.DEFAULT_CONFIG = new Config(HttpServerTestApp, /** @type {HttpServerTestAppCfg} **/ {
     /** @type {obj<string path,string output>} **/
     get: {
-        'tar/gz': 'gzip',
-        'tar/xz': 'lzma',
-        'tar': 'tape'
+        '/tar/gz': 'gzip',
+        '/tar/xz': 'lzma',
+        '/tar': 'tape',
+        '/': fs.readFileSync('js/plur-browser-tests/unit/plur-browser/api/bootstrap/browserTest.html').toString()
     }
 });

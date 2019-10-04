@@ -1,4 +1,5 @@
 export default [
+    "plur-bin/http/server/NginxApp.mjs",
     "plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp.mjs",
     "plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest.mjs",
     "plur-nodejs-tests/unit/plur-nodejs/http/server/GenericAppTest.mjs",

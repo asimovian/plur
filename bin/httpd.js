@@ -11,7 +11,7 @@ import HttpTerminal from '../js/plur/terminal/HTTP.mjs';
 
 const app = new GenericHttpServerApp(new HttpTerminal(), {
     listenPort: 8085,
-    httpApps: ['plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp']
+    httpApps: ['plur-bin/http/server/NginxApp']
 });
 
 app.start();
