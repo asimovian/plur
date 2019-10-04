@@ -29,7 +29,7 @@ PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
 
 /**
  * Returns an immutable copy of the configuration data as a primitive nested JS object.
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {!Object<string,(number|string|Object|null)>}
  */
@@ -37,7 +37,7 @@ IConfigurable.prototype.config = PlurObject.abstractMethod;
 
 /**
  * Returns the default configuration for the configured class.
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {!plur/Config}
  */

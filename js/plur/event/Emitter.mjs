@@ -28,12 +28,6 @@ import MapTreeNode from '../../plur/design/tree/MapNode.mjs';
  */
 export default class Emitter {
     /**
-     * @var string Emitter.WILDCARD The event type wildcard. When used, it will catch any event that has the preceding token
-     * in its path.
-     */
-    static WILDCARD = '*';
-
-    /**
      * Splits an event type string into a string array of individual tokens. Splits on / and . characters.
      * E.g., foo/bar.* => [ 'foo', 'bar', '*' ]
      *
@@ -278,14 +272,15 @@ PlurObject.plurify('plur/event/Emitter', Emitter);
 /**
  * Listener entry for use in the listner tree.
  *
- * @constructor plur/event/Emitter._Listener
  **
- * @param string eventType
- * @param Function(plur/event/Event event) callback
- * @param int subscriptionId
- * @param boolean temporary
- */
+*/
 class _Listener {
+    /**
+     * @param {string} eventType
+     * @param {Function} callback
+     * @param {int} subscriptionId
+     * @param {boolean} temporary
+     */
     constructor(eventType, callback, subscriptionId, temporary) {
         if (this._destroyed) {
             throw new DestroyedError('Emitter has been destroyed.');
@@ -317,11 +312,6 @@ PlurObject.plurify('plur/event/Emitter._Listener', _Listener);
  * array, while a Wildcard Listener for event type "car/*" would be stored in {Node: "car"}'s childListeners array. The
  * former would only receive events for the exact event type of "car/wheel", while the latter listener would receive
  * events for both "car/wheel" and "car/trunk".
- *
- * @constructor plur/event/Emitter._ListenerTreeValue
- **
- * @param {}|undefined listeners
- * @param {}|undefined childListeners
  */
 class _ListenerTreeValue {
     constructor(listeners, childListeners) {
@@ -389,4 +379,10 @@ class _ListenerTreeValue {
 }
     
 PlurObject.plurify('plur/event/Emitter._ListenerTreeValue', _ListenerTreeValue);
+
+/**
+ * @var string Emitter.WILDCARD The event type wildcard. When used, it will catch any event that has the preceding token
+ * in its path.
+ */
+Emitter.WILDCARD = '*';
 

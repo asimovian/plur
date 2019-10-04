@@ -50,7 +50,7 @@ IApplication.Status = {
 /**
  * Starts the plur node, registers and starts the application's main service.
  *
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {Promise}
  */
@@ -59,7 +59,7 @@ IApplication.prototype.start = PlurObject.abstractMethod;
 /**
  * Stops the application, performing any cleanup necessary.
  *
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {Promise}
  */

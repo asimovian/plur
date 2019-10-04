@@ -10,16 +10,12 @@ import PlurObject from '../../plur/PlurObject.mjs';
 /**
  * Converts an object to / from a simple data model.
  *
- * @constructor plur/model/Model
  * @abstract
- **
  */
 export default class Model {
     /**
      * Creates a simple data model of this object.
      *
-     * @function plur/model/Model.prototype.model
-     * @abstract
      * @param {} object
      * @returns {} model
      */
@@ -76,8 +72,6 @@ export default class Model {
     /**
      * Constructs an object from a data model.
      *
-     * @function plur/model/Model.prototype.model
-     * @abstract
      * @param {} model
      * @returns {} object
      */

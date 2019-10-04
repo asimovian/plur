@@ -22,7 +22,7 @@ PlurObject.plurify('plur/user/ITerminal', ITerminal);
 
 /**
  *
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {Array<string>}
  */

@@ -15,8 +15,7 @@ function(
 /**
  * Tree Node
  *
- * @constructor plur/design/tree/Node
- * @implements plur/design/tree/INode
+ * @implements {ITreeNode}
  **
  */
 var ListTreeNode = function(parent, parentIndex, value) {
@@ -32,7 +31,6 @@ PlurObject.implement(ListTreeNode, ITreeNode);
 /**
  * Gets the value for this node.
  *
- * @function plur/design/tree/ListNode.prototype.get
  * @returns mixed|null value
  */
 ListTreeNode.prototype.get = function() {
@@ -42,7 +40,6 @@ ListTreeNode.prototype.get = function() {
 /**
  * Sets the value for this node.
  *
- * @function plur/design/tree/ListNode.prototype.set
  * @param mixed value
  * @returns mixed|null
  */
@@ -54,7 +51,6 @@ ListTreeNode.prototype.set = function(value) {
  * Retrieves children of this node.
  * If a constructor is provided, only children that are instances of such will be returned.
  *
- * @function plur/design/tree/ListNode.prototype.children
  * @param {Function} instanceOfConstructor|undefined Filters out all children that are not derived from this constructor
  * @returns plur/design/tree/ListNode[]
  */
@@ -98,7 +94,7 @@ ListTreeNode.prototype.hasChild = function(childOrIndex) {
 };
 
 ListTreeNode.prototype.addChild = function(child) {
-    if (!child instanceof ListTreeNode) {
+    if (!(child instanceof ListTreeNode)) {
         throw Error('Invalid child node');
     }
 

@@ -31,7 +31,7 @@ PlurObject.plurify('plur/model/IPortable', IPortable);
  * Create an object of the implementing class using the data model provided. Data will be provided in a nested
  * primitive JS object. Static interface.
  *
- * @type {function}
+ * @type {Function}
  * @abstract
  * @param {!Object<string,(number|string|Object|null)>}model
  * @returns {Object}
@@ -41,7 +41,7 @@ IPortable.fromObj = PlurObject.abstractMethod;
 /**
  * Create a nested primitive JS object representing class data available to serialize.
  *
- * @type {function}
+ * @type {Function}
  * @abstract
  * @returns {!Object<string,(number|string|Object|null)>}
  */

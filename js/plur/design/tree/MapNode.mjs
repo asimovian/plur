@@ -88,7 +88,7 @@ MapTreeNode.prototype.parent = function() {
  * @returns plur/design/tree/MapNode child
  */
 MapTreeNode.prototype.addChild = function(child) {
-    if (!child instanceof MapTreeNode) {
+    if (!(child instanceof MapTreeNode)) {
         throw new TypeError('Invalid MapTreeNode child', {child: child});
     }
 
