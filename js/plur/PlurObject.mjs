@@ -114,13 +114,8 @@ export default class PlurObject {
         // kept for runtime metrics
         PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
 
-        if (typeof interfaces === 'undefined') { // all done then
+        if (!Array.isArray(interfaces)) {  // all done then
             return;
-        }
-
-        // implement interfaces
-        if (!Array.isArray(interfaces)) {
-            interfaces = [interfaces];
         }
 
         for (let i = 0; i < interfaces.length; ++i) {
@@ -152,15 +147,8 @@ export default class PlurObject {
             if (interfacePrototype.hasOwnProperty(propertyName) &&
                 interfacePrototype[propertyName] === PlurObject.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
-                switch (typeof prototype[propertyName]) {
-                case 'undefined':
+                if (typeof prototype[propertyName] === 'undefined') {
                     prototype[propertyName] = interfacePrototype[propertyName];
-                    break;
-                default:
-                    if (prototype[propertyName] === PlurObject.abstractMethod) {
-                        throw new Error('Unimplemented method in ' + prototype.namepath + ' for ' +
-                                interfaceClass.namepath + '.prototype.' + propertyName);
-                    }
                 }
             }
         }
