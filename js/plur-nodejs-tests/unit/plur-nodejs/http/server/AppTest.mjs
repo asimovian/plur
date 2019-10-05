@@ -3,22 +3,18 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest
  */
-'use strict';
+"use strict";
 
-import http from 'http';
-import PlurObject from '../../../../../plur/PlurObject.mjs';
-import Test from '../../../../../plur/test/Test.mjs';
-import HttpServerApp from '../../../../../plur-nodejs/http/server/App.mjs';
+import http from "http";
+import PlurObject from "../../../../../plur/PlurObject.mjs";
+import Test from "../../../../../plur/test/Test.mjs";
+import HttpServerApp from "../../../../../plur-nodejs/http/server/App.mjs";
 
 /**
  * @tests plur/http/server/App
  * @final
  */
 export default class HttpServerAppTest extends Test {
-    constructor() {
-        super();
-    };
-
     /** @tests plur/http/server/App.constructor **/
     test_constructor() {
     };
@@ -29,20 +25,22 @@ export default class HttpServerAppTest extends Test {
         const self = this;
         const app = new HttpServerApp(null, {
             listenAddress: this.fixtures.listenAddress,
-            listenPort: this.fixtures.listenPort
+            listenPort: this.fixtures.listenPort,
         });
 
         return new Promise((resolve, reject) => {
-            app.start().then(value => {
+            app.start().then((value) => {
                 app.getExpress().get(self.fixtures.getpath, (req, res) => {
-                    res.send(self.fixtures.response)
+                    res.send(self.fixtures.response);
                 });
 
-                self._httpGet(this.fixtures.url).then(v => {
+                self._httpGet(this.fixtures.url).then((v) => {
                     self.assertEquals(v, self.fixtures.response);
                     resolve(v);
-                }).catch(e => { reject(e); });
-            }).catch(err => {
+                }).catch((e) => {
+                    reject(e);
+                });
+            }).catch((err) => {
                 reject(err);
             });
         }).then(()=>{
@@ -50,34 +48,42 @@ export default class HttpServerAppTest extends Test {
         });
     };
 
+    /**
+     * @param {string} url
+     * @return {Promise}
+     */
     _httpGet(url) {
         return new Promise((resolve, reject) => {
-            http.get(url, res => {
+            http.get(url, (res) => {
                 if (res.statusCode !== 200) {
                     reject(new Error(`HTTP ${res.statusCode}: ` + res.statusMessage));
                 }
 
-                res.setEncoding('utf8');
-                let rawData = '';
-                res.on('data', chunk => { rawData += chunk; });
-                res.on('end', () => {
+                res.setEncoding("utf8");
+                let rawData = "";
+                res.on("data", (chunk) => {
+                    rawData += chunk;
+                });
+                res.on("end", () => {
                     resolve(rawData);
                 });
-            }).on('error', e => {
+            }).on("error", (e) => {
                 reject(e);
             });
         });
     };
 
     /** @todo ESnext instance class fields**/
-    get fixtures() { return {
-        getpath: '/' + this.namepath,
-        response: 'ALL OF THESE WORLDS ARE YOURS--EXCEPT EUROPA. ATTEMPT NO LANDING THERE.',
-        url: 'http://localhost:8081/' + this.namepath,
-        listenAddress: 'localhost',
-        listenPort: '8081'
-    }; }
+    get fixtures() {
+        return {
+            getpath: "/" + this.namepath,
+            response: "ALL OF THESE WORLDS ARE YOURS--EXCEPT EUROPA. ATTEMPT NO LANDING THERE.",
+            url: "http://localhost:8081/" + this.namepath,
+            listenAddress: "localhost",
+            listenPort: "8081",
+        };
+    }
 };
 
-PlurObject.plurify('plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest', HttpServerAppTest);
+PlurObject.plurify("plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest", HttpServerAppTest);
 
