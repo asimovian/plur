@@ -115,7 +115,7 @@ export default class PlurObject {
         PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
 
         if (typeof interfaces === 'undefined') { // all done then
-            return namepath;
+            return;
         }
 
         // implement interfaces
@@ -149,7 +149,8 @@ export default class PlurObject {
 
         for (const propertyName in interfacePrototype) {
             // make sure that the interface property is assigned to PlurObject.abstractMethod
-            if (interfacePrototype.hasOwnProperty(propertyName) && interfacePrototype[propertyName] === PlurObject.abstractMethod) {
+            if (interfacePrototype.hasOwnProperty(propertyName) &&
+                interfacePrototype[propertyName] === PlurObject.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
                 switch (typeof prototype[propertyName]) {
                 case 'undefined':
@@ -202,6 +203,9 @@ export default class PlurObject {
         return PlurObject._plurified;
     };
 
+    /**
+     * @throws {Error}
+     */
     constructor() {
         throw new Error('Cannot instantiate private constructor of PlurObject');
     };
