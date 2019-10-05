@@ -1,3 +1,5 @@
+const OFF = 0, WARN = 1, ERROR = 2;
+
 module.exports = {
   'env': {
     'browser': true,
@@ -16,9 +18,13 @@ module.exports = {
     'sourceType': 'module',
   },
   'rules': {
-    'indent': ['error', 4],
-    'linebreak-style': ['error', 'unix'],
-    'quotes': ['error', 'double'],
-    'semi': ['error', 'always']
+    'indent': [ERROR, 4],
+    'linebreak-style': [ERROR, 'unix'],
+    'quotes': [ERROR, 'single'],
+    'semi': [ERROR, 'always'],
+    'max-len': [ERROR, 120 ],
+    'no-multi-spaces': [ERROR, { ignoreEOLComments: true } ],
+    'object-curly-spacing': [OFF],
+    'key-spacing': [OFF]
   },
 };

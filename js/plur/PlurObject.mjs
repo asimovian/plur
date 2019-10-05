@@ -21,7 +21,7 @@ export default class PlurObject {
      * Determines whether the given object or class has been plurify()'d or not.
      *
      * @param {Object|Function|IPlurified} o The object or class object to review.
-     * @returns {boolean} TRUE if plurified FALSE if not
+     * @return {boolean} TRUE if plurified FALSE if not
      */
     static isPlurified(o) {
         return ( typeof o.implemented === 'object' && typeof o.implemented['plur/IPlurified'] !== 'undefined');
@@ -31,18 +31,18 @@ export default class PlurObject {
      * Determines whether the given class have been plurify()'d or not. FALSE on objects of a class.
      *
      * @param {Function|IPlurified} c The class object to review
-     * @returns {boolean} TRUE if a plurified class FALSE if not
+     * @return {boolean} TRUE if a plurified class FALSE if not
      */
     static isPlurifiedClass(c) {
-        return ( c.hasOwnProperty('implemented') && typeof c.implemented === 'object'
-            && typeof c.implemented['plur/IPlurified'] !== 'undefined');
+        return ( c.hasOwnProperty('implemented') && typeof c.implemented === 'object' &&
+            typeof c.implemented['plur/IPlurified'] !== 'undefined');
     };
 
     /**
      *
      * @param {IPlurified} object
      * @param {IPlurified} interfaceConstructor
-     * @returns {boolean}
+     * @return {boolean}
      */
     static implementing(object, interfaceConstructor) {
         const constructor = ( object instanceof Function ? object : Object.getPrototypeOf(object).constructor );
@@ -141,7 +141,7 @@ export default class PlurObject {
         if (typeof classObject.implemented[interfaceClass.namepath] !== 'undefined') {
             return;  // already implemented
         } else if (!PlurObject.isPlurifiedClass(classObject) || !PlurObject.isPlurifiedClass(interfaceClass)) {
-            throw new Error('Only plurified classes can implemented plurified class interfaces.')
+            throw new Error('Only plurified classes can implemented plurified class interfaces.');
         }
 
         const interfacePrototype = interfaceClass.prototype;
@@ -152,14 +152,14 @@ export default class PlurObject {
             if (interfacePrototype.hasOwnProperty(propertyName) && interfacePrototype[propertyName] === PlurObject.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
                 switch (typeof prototype[propertyName]) {
-                    case 'undefined':
-                        prototype[propertyName] = interfacePrototype[propertyName];
-                        break;
-                    default:
-                        if (prototype[propertyName] === PlurObject.abstractMethod) {
-                            throw new Error('Unimplemented method in ' + prototype.namepath + ' for ' +
+                case 'undefined':
+                    prototype[propertyName] = interfacePrototype[propertyName];
+                    break;
+                default:
+                    if (prototype[propertyName] === PlurObject.abstractMethod) {
+                        throw new Error('Unimplemented method in ' + prototype.namepath + ' for ' +
                                 interfaceClass.namepath + '.prototype.' + propertyName);
-                        }
+                    }
                 }
             }
         }
@@ -170,11 +170,11 @@ export default class PlurObject {
     /**
      *
      * @param {Object} object
-     * @returns {Object[]}
+     * @return {Object[]}
      */
     static values(object) {
-        let values = [];
-        for (let key in object) {
+        const values = [];
+        for (const key in object) {
             if (object.hasOwnProperty(key)) {
                 values.push(object[key]);
             }
@@ -196,7 +196,7 @@ export default class PlurObject {
 
     /**
      * Returns an array of records { namepath: string, datetime: 'string' }.
-     * @returns {!Array<!Object<string, string>>}
+     * @return {!Array<!Object<string, string>>}
      */
     static getPlurified() {
         return PlurObject._plurified;
