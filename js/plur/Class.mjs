@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/PlurClass
+ * @module plur/Class
  * @version 0.0.2
  *
  * @typedef {Object<string,(string,number,boolean,null,Array<obj>,obj)>} obj
@@ -202,4 +202,4 @@ export default class PlurClass {
 /** @type {!Array<!Object<string,string>>} Runtime information about each class that has been plurify()'d. **/
 PlurClass._plurified = [];
 
-PlurClass.plurify('plur/PlurClass', PlurClass);
+PlurClass.plurify('plur/Class', PlurClass);
