@@ -41,21 +41,29 @@ export default class TestRunner {
         this._log.info('Testing with ' + namepath + ' ...');
 
         const promise = import(filepath).then(module => {
-            let currentPromise = Promise.resolve();
+            let currentPromise = Promise.resolve();  // the promise for this test case
             const testClass = module.default;
             const properties = Object.getOwnPropertyNames(testClass.prototype);
 
+            // instantiate the test case and set it up
+            const testObject = new testClass();
+            testObject.setup();
+
+            // run any method that begins with 'test_'.
             for (let i = 0; i < properties.length; ++i) {
                 const property = properties[i];
                 if (!/^test_/.test(property) || typeof testClass.prototype[property] !== 'function') {
                     continue;
                 }
 
-                const testObject = new testClass();
+                // run each test method sequentially
                 currentPromise = currentPromise.then(value => {
                     return self.testMethod(testObject, property);
                 });
             }
+
+            // teardown the test case after all test methods have completed.
+            currentPromise.then(()=>{ testObject.teardown(); });
 
             return currentPromise;
         });
@@ -71,7 +79,7 @@ export default class TestRunner {
 
             try {
                 const retval = testObject[methodName]();
-                if (retval instanceof Promise) {
+                if (retval instanceof Promise) {  // then resolve the test asynchronously
                     retval.then(value => { resolve(); }).catch(e => { reject(e); });
                 } else {
                     resolve();

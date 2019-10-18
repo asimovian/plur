@@ -3,194 +3,68 @@
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/test/TestCase
  */
-
 'use strict';
 
 import PlurClass from '../../plur/Class.mjs';
-import AssertionError from '../../plur/error/Assertion.mjs';
+import Assert from '../../plur/test/Assert.mjs';
 import Emitter from '../../plur/event/Emitter.mjs';
 
 /**
- * Basic unit and integration testing.
+ * Basic xUnit base class for unit, integration, and system tests.
  *
+ * Any method that begins with 'test_' will be ran. Tests run sequentially, unless async is specified.
+ *
+ * The overridable setup() and teardown() methods are run before and after all tests have run, respectively.
+ *
+ * @abstract
+ * @implements {IPlurified}
  */
 export default class TestCase {
     constructor() {
-        this._promises = [];
+        this._TOPIC = this.namepath + '.';
+        this._RESULT_TOPIC = this.namepath + '.result';
         this._emitter = new Emitter();
-        this._expectedEmissions = {};
-        this._actualEmissions = {};
-        this.namepathPrefix = this.namepath + '.';
+        this.assert = new Assert();
     };
 
     /**
-     * @param {Function} callback
-     * @param {string} message
-     * @throws {AssertionError}
+     * Initialize this test case.
      */
-    assertTry(callback, message) {
-       try {
-           return callback();
-       } catch (e) {
-          throw new AssertionError(message, e);
-       }
+    setup() {};
+
+    /**
+     * Perform cleanup after the test case has been ran.
+     */
+    teardown() {};
+
+    /**
+     * Fires an event to the test case emitter.
+     *
+     * @param {String} subtopic
+     * @param {obj} data
+     */
+    emit(subtopic, data) {
+        this._emitter.emit(this._TOPIC + subtopic, data);
     };
 
-    assertCatch(callback, message) {
-       try {
-           callback();
-           throw new AssertionError(message);
-       } catch (e) {
-           return;
-       }
+    /**
+     * Fires a test case result event to the emitter. Conforms to xUnit XML result format.
+     *
+     * @param {String} methodName The test method name.
+     * @param {String} outcome 'Pass', 'Fail', 'Skip'
+     * @Param {number} time Elapsed time in milliseconds.
+     */
+    emitResult(methodName, outcome, time) {
+        // @todo this._emitter.emit(this._RESULT_TOPIC, new Result(methodName, outcome, time).model());
+        this._emitter.emit(this._RESULT_TOPIC, {
+           name: methodName.substr(5), // remove the prefixed test_
+           type: this.namepath,
+           method: methodName,
+           time: time,
+           result: outcome
+        });
     };
 };
 
 PlurClass.plurify('plur/test/Case', TestCase);
-
-TestCase.prototype.sleep = function(milliseconds) {
-    sleep.sleep((milliseconds? milliseconds : 500)); // defualt 500 ms
-};
-
-TestCase.prototype.emitter = function() {
-    return this._emitter;
-};
-
-TestCase.prototype.emit = function(eventTypeSuffix, data) {
-    this._emitter.emit(this.namepathPrefix + eventTypeSuffix, data);
-}
-
-TestCase.prototype.assertEmission = function(eventTypeSuffix, expectedCount) {
-    var self = this;
-    var eventType = this.namepathPrefix + eventTypeSuffix;
-
-    this._expectedEmissions[eventType] = expectedCount;
-    this._actualEmissions[eventType] = 0;
-
-    var subscriptionId = this._emitter.on(eventType, function(event) {
-        self._actualEmissions[eventType]++;
-    });
-
-    return subscriptionId;
-};
-
-TestCase.prototype.assertExpectedEmissions = function() {
-    for (var eventType in this._expectedEmissions) {
-        var expectedCount = this._expectedEmissions[eventType];
-        this.assertEquals(this._actualEmissions[eventType], expectedCount, 'Incorrect emission count for event type: ' + eventType);
-    }
-};
-
-/**
- * Helper method that runs all test methods for this object (methods names that start with "test").
- */
-TestCase.prototype.test = function() {
-    for (const propertyName in this) {
-        if (!/^test/.test(propertyName) || typeof this[propertyName] !== 'function' || propertyName === 'test') {
-            continue;
-        }
-
-       this[propertyName]();
-    }
-};
-
-TestCase.prototype.addPromise = function(promise) {
-    this._promises.push(promise);
-};
-
-TestCase.prototype.hasPromises = function() {
-    return ( this._promises.length !== 0 );
-};
-
-TestCase.prototype.onPromises = function(timeout) {
-    timeout = timeout || 120000; // default 2 mins
-    const promises = this._promises.concat(new Promise(function(resolve, reject) {
-        setTimeout(timeout, () => {
-            reject(new Error('TestCase promises timed out after ' + timeout + ' ms'));
-        });
-    }));
-
-    return Promise.all(promises);
-};
-
-/**
- * Determines whether a value is strictly equal.
- */
-TestCase.prototype.assert = function(test, message) {
-    if (!test)
-        throw new AssertionError(message || 'Assertion failed', { result: test});
-};
-
-/**
- * Determines whether a value is strictly equal.
- */
-TestCase.prototype.assertEquals = function(actual, expected, message) {
-    if (actual !== expected)
-        throw new AssertionError(message || 'Values are not strictly equal', { expected: expected, actual: actual});
-};
-
-/**
- * Determines whether an object has its own copy of a property and whether it strictly equals the provided value.
- */
-TestCase.prototype.assertOwns = function(object, propertyName, expected, message) {
-    if (typeof object === 'undefined') {
-        throw new AssertionError(message || 'Actual object is undefined', { expected: { propertyName: propertyName, value: expected }, actual: 'undefined' });
-    } else if (!object.hasOwnProperty(propertyName)) {
-        throw new AssertionError(message || 'Object does not own property', { expected: { propertyName: propertyName, value: expected }, actual: object[propertyName] });
-    }
-
-    this.assertEquals(object[propertyName], expected, message || 'Object does not own property');
-};
-
-/**
- * Creates an object with the expected configuration and ensures that proper construction, inheritance, etc.
- */
-TestCase.prototype.assertCreation = function(expected, message) {
-    var object = new expected.constructor(expected.constructionArguments);
-
-    // check constructor
-    this.assertEquals(object.constructor, expected.constructor, message || 'Constructor not found');
-
-    // check parent constructor
-    if (typeof expected.parentConstructor !== 'undefined') {
-        this.assertEquals(Object.getPrototypeOf(object.constructor.prototype).constructor, expected.parentConstructor, message || 'Parent constructor not inherited')
-    }
-
-    // check constructor implemented
-    if (typeof expected.interfaces !== 'undefined') {
-        // create a hash array that matches PlurClass.implemented
-        var expectedImplemented = {};
-        for (var interfaceName in expected.interfaces) {
-            expectedImplemented[expected.interfaces[interfaceName].namepath] = null;
-        }
-
-        this.assertEquals(object.constructor.implemented, expectedImplemented, message || 'Interface not implemented')
-    }
-
-    // check constructor namepath
-    this.assertOwns(object.constructor, 'namepath', expected.namepath, message || 'Constructor does not own namepath');
-    // check prototype namepath
-    this.assertOwns(object.constructor.prototype, 'namepath', expected.namepath, message || 'Prototype does not own namepath');
-};
-
-/**
- * Determines whether an object has a property name in its prototype chain and ensures that it is strictly equal
- * to the expected value.
- */
-TestCase.prototype.assertHas = function(object, propertyName, expected, message) {
-    if (typeof object === 'undefined') {
-        throw new AssertionError(message || 'Object is undefined', { expected: { value: expected, propertyName: propertyName }, actual: 'undefined' });
-    } else if (typeof object[propertyName] === 'undefined') {
-        throw new AssertionError(message || 'Object property is undefined', { expected: { value: expected, propertyName: propertyName }, actual: { object: object, value: 'undefined'} });
-    } else if (typeof expected !== 'undefined' && object[propertyName] !== expected) {
-        this.assertEquals(object[propertyName], expected, message);
-    }
-};
-
-/**
- * Promotes alcoholism among QA developers.
- */
-TestCase.prototype.fail = function(message, data) {
-    throw new AssertionError(message || 'Assertion failed', data);
-};
 
