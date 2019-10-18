@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../../plur/Class.mjs';
+import PlurClass from '../../../../plur/Class.mjs';
 import Test from '../../../../plur/test/Test.mjs';
 import IConfigurable from '../../../../plur/config/IConfigurable.mjs';
 import Config from '../../../../plur/config/Config.mjs';
@@ -118,7 +118,7 @@ export default class ConfigTest extends Test {
     }; }
 };
 
-PlurObject.plurify('plur-tests/unit/plur/ConfigTest', ConfigTest);
+PlurClass.plurify('plur-tests/unit/plur/ConfigTest', ConfigTest);
 
 /**
  * Example of how to build an IConfigurable implementation that lazy loads its static Config.
@@ -150,7 +150,7 @@ class LazyLoadConfigurable {
     };
 }
 
-PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadConfigurable', LazyLoadConfigurable, [IConfigurable]);
+PlurClass.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadConfigurable', LazyLoadConfigurable, [IConfigurable]);
 
 /**
  * Example of how to build an IConfigurable child class implementation that lazy loads its static Config merged from
@@ -177,7 +177,7 @@ class LazyLoadChildConfigurable extends LazyLoadConfigurable {
     };
 }
 
-PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadChildConfigurable', LazyLoadChildConfigurable, [IConfigurable]);
+PlurClass.plurify('plur-tests/unit/plur/config/ConfigTest__LazyLoadChildConfigurable', LazyLoadChildConfigurable, [IConfigurable]);
 
 class NotConfigurable {};
 
@@ -207,5 +207,5 @@ class ParentNotConfigurable extends NotConfigurable {
     };
 }
 
-PlurObject.plurify('plur-tests/unit/plur/config/ConfigTest__ParentNotConfigurable', ParentNotConfigurable, [IConfigurable]);
+PlurClass.plurify('plur-tests/unit/plur/config/ConfigTest__ParentNotConfigurable', ParentNotConfigurable, [IConfigurable]);
 

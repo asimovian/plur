@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import Test from '../../../plur/test/Test.mjs';
 import PortableObject from '../../../plur/PortableObject.mjs';
 
@@ -197,4 +197,4 @@ export default class PortableObjectTest extends Test {
     }; }
 }
 
-PlurObject.plurify('plur-tests/unit/plur/PortableObjectTests', PortableObjectTest);
+PlurClass.plurify('plur-tests/unit/plur/PortableObjectTests', PortableObjectTest);

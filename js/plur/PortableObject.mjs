@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../plur/Class.mjs';
+import PlurClass from '../plur/Class.mjs';
 
 /**
  * Utility for dealing with the concept of a plur "Obj". Objects with only basic primitives and non-function compounds.
@@ -136,4 +136,4 @@ export default class Obj {
     };
 }
 
-PlurObject.plurify('plur/PortableObject', Obj);
+PlurClass.plurify('plur/PortableObject', Obj);

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import Model from '../../plur/model/Model.mjs';
 import IPortable from '../../plur/model/IPortable.mjs';
 
@@ -79,4 +79,4 @@ export default class PlurError extends Error {
     };
 }
 
-PlurObject.plurify('plur/error/Error', PlurError, [ IPortable ]);
+PlurClass.plurify('plur/error/Error', PlurError, [ IPortable ]);

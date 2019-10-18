@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PortableObject from '../../plur/PortableObject.mjs';
 
 /**
@@ -48,5 +48,5 @@ export default class Schema {
 
 }
 
-PlurObject.plurify('plur/config/Schema', Schema);
+PlurClass.plurify('plur/config/Schema', Schema);
 

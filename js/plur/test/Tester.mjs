@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import {singleton as SystemLog} from '../../plur/log/System.mjs';
 
 /**
@@ -85,4 +85,4 @@ export default class Tester {
     };
 }
 
-PlurObject.plurify('plur/test/Tester', Tester);
+PlurClass.plurify('plur/test/Tester', Tester);

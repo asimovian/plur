@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import AFileSystem from '../../../plur/file/ASystem.mjs';
 
 /**
@@ -36,4 +36,4 @@ export default class HttpFileSystem extends AFileSystem {
     };
 };
 
-PlurObject.plurify('plur/http/file/System', HttpFileSystem);
+PlurClass.plurify('plur/http/file/System', HttpFileSystem);

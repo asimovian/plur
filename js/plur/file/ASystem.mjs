@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/Class.mjs";
+import PlurClass from "../../plur/Class.mjs";
 import IFileSystem from "../../plur/file/ISystem.mjs";
 
 /**
@@ -92,7 +92,7 @@ export default class AFileSystem {
     };
 };
 
-PlurObject.plurify('plur/file/ASystem', AFileSystem, [ IFileSystem ]);
+PlurClass.plurify('plur/file/ASystem', AFileSystem, [ IFileSystem ]);
 
 AFileSystem.DirNames = {
     bin: 'bin',

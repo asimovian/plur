@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 
 /**
  * Represents a means of interacting with a user/client.
@@ -18,7 +18,7 @@ export default class ITerminal {
 
 };
 
-PlurObject.plurify('plur/user/ITerminal', ITerminal);
+PlurClass.plurify('plur/user/ITerminal', ITerminal);
 
 /**
  *
@@ -26,5 +26,5 @@ PlurObject.plurify('plur/user/ITerminal', ITerminal);
  * @abstract
  * @returns {Array<string>}
  */
-ITerminal.prototype.getParameters = PlurObject.abstractMethod;
+ITerminal.prototype.getParameters = PlurClass.abstractMethod;
 

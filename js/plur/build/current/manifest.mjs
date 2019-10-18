@@ -9,7 +9,7 @@ export default [
     "plur-tests/unit/plur/config/ConfigTest.mjs",
     "plur-tests/unit/plur/PortableObjectTest.mjs",
     "plur-tests/unit/plur/UnitTest.template.mjs",
-    "plur-tests/unit/plur/PlurObjectTest.mjs",
+    "plur-tests/unit/plur/PlurClassTest.mjs",
     "plur-nodejs/terminal/Shell.mjs",
     "plur-nodejs/api/Bootstrap.mjs",
     "plur-nodejs/http/server/App.mjs",

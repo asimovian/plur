@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PlurError from '../../plur/error/Error.mjs';
 
 /**
@@ -25,7 +25,7 @@ export default class AssertionError extends PlurError {
     }
 };
 
-PlurObject.plurify('plur/error/Assertion', AssertionError);
+PlurClass.plurify('plur/error/Assertion', AssertionError);
 
 AssertionError.assert = function(result, errorConstructor, message) {
     if (!result) {

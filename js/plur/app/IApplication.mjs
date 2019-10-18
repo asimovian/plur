@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/Class.mjs";
+import PlurClass from "../../plur/Class.mjs";
 import InterfaceError from "../../plur/error/Interface.mjs";
 
 /**
@@ -24,7 +24,7 @@ export default class IApplication {
     };
 }
 
-PlurObject.plurify('plur/app/IApplication', IApplication);
+PlurClass.plurify('plur/app/IApplication', IApplication);
 
 /**
  * Bitwise status flags for use with IApplication.prototype.status().
@@ -54,7 +54,7 @@ IApplication.Status = {
  * @abstract
  * @returns {Promise}
  */
-IApplication.prototype.start = PlurObject.abstractMethod;
+IApplication.prototype.start = PlurClass.abstractMethod;
 
 /**
  * Stops the application, performing any cleanup necessary.
@@ -63,6 +63,6 @@ IApplication.prototype.start = PlurObject.abstractMethod;
  * @abstract
  * @returns {Promise}
  */
-IApplication.prototype.stop = PlurObject.abstractMethod;
+IApplication.prototype.stop = PlurClass.abstractMethod;
 
 

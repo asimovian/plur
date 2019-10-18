@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 
 /**
  * Converts an object to / from a simple data model.
@@ -35,7 +35,7 @@ export default class Model {
                     var model = [];
 
                     for (var i = 0; i < v.length; ++i) {
-                        var m = PlurObject.model(v[i], options);
+                        var m = PlurClass.model(v[i], options);
                         if (m !== null) {
                             model.push(m);
                         }
@@ -54,7 +54,7 @@ export default class Model {
                             continue;
                         }
 
-                        var m = PlurObject.model(v[propertyName], options);
+                        var m = PlurClass.model(v[propertyName], options);
                         if (m !== null) {
                             model[propertyName] = m;
                         }
@@ -101,4 +101,4 @@ export default class Model {
     };
 }
 
-PlurObject.plurify('plur/model/Model', Model);
+PlurClass.plurify('plur/model/Model', Model);

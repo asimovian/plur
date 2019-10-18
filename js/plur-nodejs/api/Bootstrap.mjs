@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/Class.mjs";
+import PlurClass from "../../plur/Class.mjs";
 import API from "../../plur/api/API.mjs";
 import Bootstrap from "../../plur/api/Bootstrap.mjs";
 import NodeJsFileSystem from "../../plur-nodejs/file/System.mjs";
@@ -32,6 +32,6 @@ class NodeJsBootstrap extends Bootstrap {
     };
 };
 
-PlurObject.plurify('plur-nodejs/api/Bootstrap', NodeJsBootstrap, Bootstrap);
+PlurClass.plurify('plur-nodejs/api/Bootstrap', NodeJsBootstrap, Bootstrap);
 
 export default NodeJsBootstrap;

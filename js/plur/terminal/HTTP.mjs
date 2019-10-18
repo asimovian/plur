@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import ITerminal from '../../plur/terminal/ITerminal.mjs';
 
 /**
@@ -20,4 +20,4 @@ export default class HttpTerminal {
     };
 }
 
-PlurObject.plurify('plur/terminal/HTTP', HttpTerminal, [ITerminal]);
+PlurClass.plurify('plur/terminal/HTTP', HttpTerminal, [ITerminal]);

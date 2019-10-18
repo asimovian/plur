@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import ITreeNode from '../../../plur/design/tree/INode.mjs';
 
 /**
@@ -22,7 +22,7 @@ export default class MapTreeNode {
     }
 };
 
-PlurObject.plurify('plur/design/tree/MapNode', MapTreeNode, [ITreeNode]);
+PlurClass.plurify('plur/design/tree/MapNode', MapTreeNode, [ITreeNode]);
 
 /**
  * Gets the value for this node.
@@ -54,9 +54,9 @@ MapTreeNode.prototype.set = function(value) {
  * @returns plur/design/tree/MapNode[]
  */
 MapTreeNode.prototype.children = function(instanceOfConstructor) {
-    var children = PlurObject.values(this._children);
+    var children = PlurClass.values(this._children);
 
-    if (PlurObject.isConstructor(instanceOfConstructor)) {
+    if (PlurClass.isConstructor(instanceOfConstructor)) {
         var filtered = [];
         for (var i = 0, n = children.length; i < n; ++i) {
             if (children[i] instanceof instanceOfConstructor) {
@@ -228,14 +228,14 @@ MapTreeNode.prototype.isLeaf = function() {
             } else if (branch.hasChild(key)) {
                 branch = branch.child(key);
             } else {
-                //TODO: if (PlurObject.isConstructor(valueConstructor)) {
+                //TODO: if (PlurClass.isConstructor(valueConstructor)) {
                 branch = branch.addChild(new MapTreeNode(new valueConstructor(), branch, key));
             }
         }
     } else { // treeMap
         var treeMap = treeList;
         for (var key in treeMap) {
-                //TODO: if (PlurObject.isConstructor(valueConstructor)) {
+                //TODO: if (PlurClass.isConstructor(valueConstructor)) {
                 branch = branch.addChild(new MapTreeNode(new valueConstructor(), branch, key));
                 branch.expand(treeMap[key]);
         }

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import Emitter from '../../plur/event/Emitter.mjs';
 
 /**
@@ -68,5 +68,5 @@ export default class Log {
 	};
 };
 
-PlurObject.plurify('plur/log/Log', Log);
+PlurClass.plurify('plur/log/Log', Log);
 

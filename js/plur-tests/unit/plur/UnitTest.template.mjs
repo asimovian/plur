@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import Test from '../../../plur/test/Test.mjs';
 
 /**
@@ -27,5 +27,5 @@ export default class UnitTest extends Test {
     }; }
 };
 
-PlurObject.plurify('plur-tests/unit/plur/UnitTest', UnitTest);
+PlurClass.plurify('plur-tests/unit/plur/UnitTest', UnitTest);
 

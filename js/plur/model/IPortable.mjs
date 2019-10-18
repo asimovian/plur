@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import InterfaceError from '../../plur/error/Interface.mjs';
 
 /**
@@ -25,7 +25,7 @@ export default class IPortable {
     };
 }
 
-PlurObject.plurify('plur/model/IPortable', IPortable);
+PlurClass.plurify('plur/model/IPortable', IPortable);
 
 /**
  * Create an object of the implementing class using the data model provided. Data will be provided in a nested
@@ -36,7 +36,7 @@ PlurObject.plurify('plur/model/IPortable', IPortable);
  * @param {!Object<string,(number|string|Object|null)>}model
  * @returns {Object}
  */
-IPortable.fromObj = PlurObject.abstractMethod;
+IPortable.fromObj = PlurClass.abstractMethod;
 
 /**
  * Create a nested primitive JS object representing class data available to serialize.
@@ -45,4 +45,4 @@ IPortable.fromObj = PlurObject.abstractMethod;
  * @abstract
  * @returns {!Object<string,(number|string|Object|null)>}
  */
-IPortable.prototype.toObj = PlurObject.abstractMethod;
+IPortable.prototype.toObj = PlurClass.abstractMethod;

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 import Bootstrap from '../../plur/api/Bootstrap.mjs';
 import BrowserFileSystem from '../../plur-browser/file/System.mjs';
@@ -36,4 +36,4 @@ export default class BrowserBootstrap extends Bootstrap {
     };
 }
 
-PlurObject.plurify('plur-browser/api/Bootstrap', BrowserBootstrap);
+PlurClass.plurify('plur-browser/api/Bootstrap', BrowserBootstrap);

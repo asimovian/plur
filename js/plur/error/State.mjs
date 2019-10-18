@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PlurError from '../../plur/error/Error.mjs';
 
 /**
@@ -25,4 +25,4 @@ export default class StateError extends PlurError {
     }
 };
 
-PlurObject.plurify('plur/error/State', StateError);
+PlurClass.plurify('plur/error/State', StateError);

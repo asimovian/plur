@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PlurError from '../../plur/error/Error.mjs';
 
 /**
@@ -28,4 +28,4 @@ export default class InterfaceError extends PlurError {
     };
 }
 
-PlurObject.plurify('plur/error/Interface', InterfaceError);
+PlurClass.plurify('plur/error/Interface', InterfaceError);

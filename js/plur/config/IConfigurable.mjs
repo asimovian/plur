@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import InterfaceError from '../../plur/error/Interface.mjs';
 
 /**
@@ -25,7 +25,7 @@ export default class IConfigurable {
     };
 }
 
-PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
+PlurClass.plurify('plur/config/IConfigurable', IConfigurable);
 
 /**
  * Returns an immutable copy of the configuration data as a primitive nested JS object.
@@ -33,7 +33,7 @@ PlurObject.plurify('plur/config/IConfigurable', IConfigurable);
  * @abstract
  * @returns {!Object<string,(number|string|Object|null)>}
  */
-IConfigurable.prototype.config = PlurObject.abstractMethod;
+IConfigurable.prototype.config = PlurClass.abstractMethod;
 
 /**
  * Returns the default configuration for the configured class.
@@ -41,4 +41,4 @@ IConfigurable.prototype.config = PlurObject.abstractMethod;
  * @abstract
  * @returns {!plur/Config}
  */
-IConfigurable.getConfig = PlurObject.abstractMethod;
+IConfigurable.getConfig = PlurClass.abstractMethod;

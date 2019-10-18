@@ -6,7 +6,7 @@
 
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import AssertionError from '../../plur/error/Assertion.mjs';
 import Emitter from '../../plur/event/Emitter.mjs';
 
@@ -46,7 +46,7 @@ export default class Test {
     };
 };
 
-PlurObject.plurify('plur/test/Test', Test);
+PlurClass.plurify('plur/test/Test', Test);
 
 Test.prototype.sleep = function(milliseconds) {
     sleep.sleep((milliseconds? milliseconds : 500)); // defualt 500 ms
@@ -158,7 +158,7 @@ Test.prototype.assertCreation = function(expected, message) {
 
     // check constructor implemented
     if (typeof expected.interfaces !== 'undefined') {
-        // create a hash array that matches PlurObject.implemented
+        // create a hash array that matches PlurClass.implemented
         var expectedImplemented = {};
         for (var interfaceName in expected.interfaces) {
             expectedImplemented[expected.interfaces[interfaceName].namepath] = null;

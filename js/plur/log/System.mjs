@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import Singleton from '../../plur/design/singleton/ASingleton.mjs';
 import Log from '../../plur/log/Log.mjs';
 
@@ -52,7 +52,7 @@ export default class SystemLog extends Singleton {
     };
 }
 
-PlurObject.plurify('plur/log/System', SystemLog);
+PlurClass.plurify('plur/log/System', SystemLog);
 
 const singleton = new SystemLog();
 export {singleton};

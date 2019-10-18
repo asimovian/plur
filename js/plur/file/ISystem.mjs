@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/Class.mjs";
+import PlurClass from "../../plur/Class.mjs";
 import InterfaceError from "../../plur/error/Interface.mjs";
 
 /**
@@ -20,7 +20,7 @@ export default class IFileSystem {
     }
 };
 
-PlurObject.plurify('plur/file/ISystem', IFileSystem);
+PlurClass.plurify('plur/file/ISystem', IFileSystem);
 
 /**
  * Combines the provided paths together into one path.
@@ -30,7 +30,7 @@ PlurObject.plurify('plur/file/ISystem', IFileSystem);
  * @param ... string[] paths
  * @returns string
  */
-IFileSystem.prototype.joinPaths = PlurObject.abstractMethod;
+IFileSystem.prototype.joinPaths = PlurClass.abstractMethod;
 
 /**
  * Retrieves the home path for all available packages, including plur sdk. Appends var args to the end.
@@ -41,7 +41,7 @@ IFileSystem.prototype.joinPaths = PlurObject.abstractMethod;
  * @param ... string[] paths
  * @returns string
  */
-IFileSystem.prototype.getHomePath = PlurObject.abstractMethod;
+IFileSystem.prototype.getHomePath = PlurClass.abstractMethod;
 
 /**
  * Retrieves the config path for this node instance, appending all provided paths.
@@ -51,7 +51,7 @@ IFileSystem.prototype.getHomePath = PlurObject.abstractMethod;
  * @param ... string[] paths
  * @returns string
  */
-IFileSystem.prototype.getConfigPath = PlurObject.abstractMethod;
+IFileSystem.prototype.getConfigPath = PlurClass.abstractMethod;
 
 /**
  * Retrieves the bin path for the Plur software appending all provided paths.
@@ -61,7 +61,7 @@ IFileSystem.prototype.getConfigPath = PlurObject.abstractMethod;
  * @param ... string[] paths
  * @returns string
  */
-IFileSystem.prototype.getBinPath = PlurObject.abstractMethod;
+IFileSystem.prototype.getBinPath = PlurClass.abstractMethod;
 
 /**
  * Retrieves only the last portion of a path.
@@ -71,7 +71,7 @@ IFileSystem.prototype.getBinPath = PlurObject.abstractMethod;
  * @param {string} filepath
  * @returns {Promise}
  */
-IFileSystem.prototype.basename = PlurObject.abstractMethod;
+IFileSystem.prototype.basename = PlurClass.abstractMethod;
 
 /**
  * Globs a path for a pattern, returning paths that match.
@@ -82,4 +82,4 @@ IFileSystem.prototype.basename = PlurObject.abstractMethod;
  * @param {!RegExp} pattern
  * @returns {Promise}
  */
-IFileSystem.prototype.find = PlurObject.abstractMethod;
+IFileSystem.prototype.find = PlurClass.abstractMethod;

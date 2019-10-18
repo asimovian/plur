@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 
 /**
  * Acts as singleton wrapper for other prototypes.
@@ -29,7 +29,7 @@ export default class ASingleton {
     };
 }
 
-PlurObject.plurify('plur/design/ASingleton', ASingleton);
+PlurClass.plurify('plur/design/ASingleton', ASingleton);
 
 /**
  * Sets the singleton object.

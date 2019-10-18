@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import Singleton from '../../../plur/design/singleton/ASingleton.mjs';
 import IFileSystem from '../../../plur/file/ISystem.mjs';
 
@@ -18,7 +18,7 @@ export default class LocalFileSystem extends Singleton {
     };
 }
 
-PlurObject.plurify('plur/file/system/Local', LocalFileSystem);
+PlurClass.plurify('plur/file/system/Local', LocalFileSystem);
 
 const singleton = new LocalFileSystem();
 export {singleton};

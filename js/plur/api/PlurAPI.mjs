@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 
 /**
@@ -26,6 +26,6 @@ class PlurAPI extends API {
     };
 }
 
-PlurObject.plurify('plur/api/PlurAPI', PlurAPI);
+PlurClass.plurify('plur/api/PlurAPI', PlurAPI);
 
 export default PlurAPI;

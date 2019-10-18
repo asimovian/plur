@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import IConfigurable from '../../../plur/config/IConfigurable.mjs';
 import Config from '../../../plur/config/Config.mjs';
 import HttpServerApp from '../../../plur-nodejs/http/server/App.mjs';
@@ -51,7 +51,7 @@ export default class GenericHttpServerApp extends HttpServerApp {
     };
 }
 
-PlurObject.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [IConfigurable]);
+PlurClass.plurify('plur-bin/http/server/GenericApp', GenericHttpServerApp, [IConfigurable]);
 
 /**
  * @typedef {Object} GenericHttpServerAppCfg plur-bin/http/server/GenericAppCfg

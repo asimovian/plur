@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../Class.mjs';
+import PlurClass from '../../Class.mjs';
 import Singleton from '../../design/singleton/ASingleton.mjs';
 
 /**
@@ -17,7 +17,7 @@ export default class ApiFileSystem extends Singleton {
     };
 }
 
-PlurObject.plurify('plur/file/system/API', ApiFileSystem);
+PlurClass.plurify('plur/file/system/API', ApiFileSystem);
 
 const singleton = new ApiFileSystem();
 export {singleton};

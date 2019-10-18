@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import StateError from '../../plur/error/State.mjs';
 import DestroyedError from '../../plur/error/Destroyed.mjs';
 import Event from '../../plur/event/Event.mjs';
@@ -266,7 +266,7 @@ export default class Emitter {
     };
 }
 
-PlurObject.plurify('plur/event/Emitter', Emitter);
+PlurClass.plurify('plur/event/Emitter', Emitter);
 
 
 /**
@@ -293,7 +293,7 @@ class _Listener {
     };
 }
 
-PlurObject.plurify('plur/event/Emitter._Listener', _Listener);
+PlurClass.plurify('plur/event/Emitter._Listener', _Listener);
 
 /**
  * The Listener Tree stores every Event Type that is currently being subscribed to by representing each token of each
@@ -354,7 +354,7 @@ class _ListenerTreeValue {
      * @returns plur/event/_ListenerTreeValue[]
      */
     getListeners() {
-        return PlurObject.values(this.listeners);
+        return PlurClass.values(this.listeners);
     };
 
     /**
@@ -364,7 +364,7 @@ class _ListenerTreeValue {
      * @returns plur/event/_ListenerTreeValue[]
      */
     getChildListeners() {
-        return PlurObject.values(this.childListeners);
+        return PlurClass.values(this.childListeners);
     };
 
     /**
@@ -378,7 +378,7 @@ class _ListenerTreeValue {
     };
 }
     
-PlurObject.plurify('plur/event/Emitter._ListenerTreeValue', _ListenerTreeValue);
+PlurClass.plurify('plur/event/Emitter._ListenerTreeValue', _ListenerTreeValue);
 
 /**
  * @var string Emitter.WILDCARD The event type wildcard. When used, it will catch any event that has the preceding token

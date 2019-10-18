@@ -1,15 +1,15 @@
 /**
  * @copyright 2015 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @requires plur/PlurObject
+ * @requires plur/PlurClass
  */
  'use strict';
 
 define([
-    'plur/PlurObject',
+    'plur/PlurClass',
     'plur/design/tree/INode' ],
 function(
-    PlurObject,
+    PlurClass,
     ITreeNode ) {
 
 /**
@@ -25,8 +25,8 @@ var ListTreeNode = function(parent, parentIndex, value) {
     this._children = [];
 };
 
-ListTreeNode.prototype = PlurObject.create('plur/design/tree/ListNode', ListTreeNode);
-PlurObject.implement(ListTreeNode, ITreeNode);
+ListTreeNode.prototype = PlurClass.create('plur/design/tree/ListNode', ListTreeNode);
+PlurClass.implement(ListTreeNode, ITreeNode);
 
 /**
  * Gets the value for this node.
@@ -57,7 +57,7 @@ ListTreeNode.prototype.set = function(value) {
 ListTreeNode.prototype.children = function(instanceOfConstructor) {
     var children = this._children;
 
-    if (PlurObject.isPlurifiedClass(instanceOfConstructor)) {
+    if (PlurClass.isPlurifiedClass(instanceOfConstructor)) {
         let filtered = [];
         for (let i = 0; i < children.length; ++i) {
             if (children[i] instanceof instanceOfConstructor) {

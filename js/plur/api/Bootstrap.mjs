@@ -5,7 +5,7 @@
  */
  'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 import PlurAPI from '../../plur/api/PlurAPI.mjs';
 import BUILD_META from '../../plur/build/current/build-meta.mjs';
@@ -78,4 +78,4 @@ export default class Bootstrap {
     };
 }
 
-PlurObject.plurify('plur/Bootstrap', Bootstrap);
+PlurClass.plurify('plur/Bootstrap', Bootstrap);

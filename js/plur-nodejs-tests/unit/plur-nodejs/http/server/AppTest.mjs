@@ -6,7 +6,7 @@
 "use strict";
 
 import http from "http";
-import PlurObject from "../../../../../plur/Class.mjs";
+import PlurClass from "../../../../../plur/Class.mjs";
 import Test from "../../../../../plur/test/Test.mjs";
 import HttpServerApp from "../../../../../plur-nodejs/http/server/App.mjs";
 
@@ -85,5 +85,5 @@ export default class HttpServerAppTest extends Test {
     }
 };
 
-PlurObject.plurify("plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest", HttpServerAppTest);
+PlurClass.plurify("plur-nodejs-tests/unit/plur-nodejs/http/server/AppTest", HttpServerAppTest);
 

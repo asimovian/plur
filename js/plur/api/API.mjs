@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 
 /**
  * Plur Framework API information. Version, debugging, etc.
@@ -51,10 +51,10 @@ export default class API {
      * @param {boolean=} debug Enable framework-wide debugging.
      */
     constructor(name, version, scmUrl, branch, importPathMap, debug) {
-        PlurObject.constProperty(this, 'name', name);
-        PlurObject.constProperty(this, 'version', version);
-        PlurObject.constProperty(this, 'scmUrl', scmUrl);
-        PlurObject.constProperty(this, 'branch', branch);
+        PlurClass.constProperty(this, 'name', name);
+        PlurClass.constProperty(this, 'version', version);
+        PlurClass.constProperty(this, 'scmUrl', scmUrl);
+        PlurClass.constProperty(this, 'branch', branch);
 
         this._debug = !!debug;
         this._importPathMap = importPathMap || {};
@@ -74,7 +74,7 @@ export default class API {
     };
 
     getImportPaths() {
-        return PlurObject.values(this._importPathMap);
+        return PlurClass.values(this._importPathMap);
     };
 
     getImportPathMap() {
@@ -86,7 +86,7 @@ export default class API {
     };
 }
 
-PlurObject.plurify('plur/api/API', API);
+PlurClass.plurify('plur/api/API', API);
 
 API.PlatformType = {
     NodeJS: 'nodejs',

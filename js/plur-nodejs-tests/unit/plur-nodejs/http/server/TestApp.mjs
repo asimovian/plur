@@ -6,7 +6,7 @@
 'use strict';
 
 import fs from 'fs';
-import PlurObject from '../../../../../plur/Class.mjs';
+import PlurClass from '../../../../../plur/Class.mjs';
 import HttpServerApp from '../../../../../plur-nodejs/http/server/App.mjs';
 import Config from '../../../../../plur/config/Config.mjs';
 
@@ -26,7 +26,7 @@ export default class HttpServerTestApp extends HttpServerApp {
   };
 }
 
-PlurObject.plurify('plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp', HttpServerTestApp);
+PlurClass.plurify('plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp', HttpServerTestApp);
 
 /**
  * @typedef {Object} HttpServerTestAppCfg plur-nodejs/http/server/TestAppCfg

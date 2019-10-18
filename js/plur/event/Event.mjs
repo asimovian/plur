@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import TypeError from '../../plur/error/Type.mjs';
 
 /**
@@ -24,7 +24,7 @@ export default class Event {
     }
 };
 
-PlurObject.plurify('plur/event/Event', Event);
+PlurClass.plurify('plur/event/Event', Event);
 
 /**
  * Retrieves the event type.

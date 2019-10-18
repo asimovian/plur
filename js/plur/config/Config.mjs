@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PortableObject from '../../plur/PortableObject.mjs';
 import IConfigurable from '../../plur/config/IConfigurable.mjs';
 import Schema from '../../plur/config/Schema.mjs';
@@ -67,14 +67,14 @@ export default class Config {
         /** @type {obj} **/
         this._cfg = null;
 
-        if (!PlurObject.implementing(configurable, IConfigurable)) {
+        if (!PlurClass.implementing(configurable, IConfigurable)) {
             throw new Error('Cannot configure for a non-configurable class. Implement IConfigurable.');
         }
 
         if (typeof configurable === 'function') {  // it's a class
             const parentClass = Object.getPrototypeOf(configurable);
 
-            if (PlurObject.implementing(parentClass, IConfigurable)) {  // it has a parent config. make a merge copy.
+            if (PlurClass.implementing(parentClass, IConfigurable)) {  // it has a parent config. make a merge copy.
                 const parentConfig = parentClass.getConfig();
                 this._schema = new Schema(cfg, parentConfig.getSchema());
                 this._cfg = Config.mergeConfig(this._schema, parentConfig.config(), cfg, true);
@@ -123,4 +123,4 @@ export default class Config {
     };
 }
 
-PlurObject.plurify('plur/config/Config', Config);
+PlurClass.plurify('plur/config/Config', Config);

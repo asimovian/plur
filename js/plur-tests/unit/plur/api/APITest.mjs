@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../../plur/Class.mjs';
+import PlurClass from '../../../../plur/Class.mjs';
 import Test from '../../../../plur/test/Test.mjs';
 import API from '../../../../plur/api/API.mjs';
 
@@ -38,6 +38,6 @@ export default class APITest extends Test {
     };
 }
 
-PlurObject.plurify('plur-tests/unit/plur/api/APITest', APITest);
+PlurClass.plurify('plur-tests/unit/plur/api/APITest', APITest);
 
 

@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/PlurObject
+ * @module plur/PlurClass
  * @version 0.0.2
  *
  * @typedef {Object<string,(string,number,boolean,null,Array<obj>,obj)>} obj
@@ -16,7 +16,7 @@ import IPlurified from '../plur/IPlurified.mjs';
  * @implements {plur/IPlurified}
  * @final
  */
-export default class PlurObject {
+export default class PlurClass {
     /**
      * Determines whether the given object or class has been plurify()'d or not.
      *
@@ -75,7 +75,7 @@ export default class PlurObject {
      *   ...
      * };
      *
-     * PlurObject.plurify('myproject/foobars/Foo', Foo);
+     * PlurClass.plurify('myproject/foobars/Foo', Foo);
      ***
      *
      * Sets the provided "namepath" property into the prototype of the provided constructor.
@@ -95,15 +95,15 @@ export default class PlurObject {
         }
 
         // inject namepath into the class's static properties and prototype properties
-        PlurObject.constProperty(classObject, 'namepath', namepath);
-        PlurObject.constProperty(classObject.prototype, 'namepath', namepath);
+        PlurClass.constProperty(classObject, 'namepath', namepath);
+        PlurClass.constProperty(classObject.prototype, 'namepath', namepath);
 
         // inject the implemented class map into the class's static properties
-        PlurObject.constProperty(classObject, 'implemented', { 'plur/IPlurified' : IPlurified }, false);
+        PlurClass.constProperty(classObject, 'implemented', { 'plur/IPlurified' : IPlurified }, false);
 
         // inherit parent interfaces if any exist
         const parentClass = Object.getPrototypeOf(classObject.prototype).constructor;
-        if (PlurObject.isPlurifiedClass(parentClass)) {
+        if (PlurClass.isPlurifiedClass(parentClass)) {
             for (const key in parentClass.implemented) {
                 if (typeof classObject.implemented[key] === 'undefined') {
                     classObject.implemented[key] = parentClass.implemented[key];
@@ -112,14 +112,14 @@ export default class PlurObject {
         }
 
         // kept for runtime metrics
-        PlurObject._plurified.push({ namepath: namepath, timestamp: Date.now() });
+        PlurClass._plurified.push({ namepath: namepath, timestamp: Date.now() });
 
         if (!Array.isArray(interfaces)) {  // all done then
             return;
         }
 
         for (let i = 0; i < interfaces.length; ++i) {
-            PlurObject.implement(classObject, interfaces[i]);
+            PlurClass.implement(classObject, interfaces[i]);
         }
     };
 
@@ -135,7 +135,7 @@ export default class PlurObject {
     static implement(classObject, interfaceClass) {
         if (typeof classObject.implemented[interfaceClass.namepath] !== 'undefined') {
             return;  // already implemented
-        } else if (!PlurObject.isPlurifiedClass(classObject) || !PlurObject.isPlurifiedClass(interfaceClass)) {
+        } else if (!PlurClass.isPlurifiedClass(classObject) || !PlurClass.isPlurifiedClass(interfaceClass)) {
             throw new Error('Only plurified classes can implemented plurified class interfaces.');
         }
 
@@ -143,9 +143,9 @@ export default class PlurObject {
         const prototype = classObject.prototype;
 
         for (const propertyName in interfacePrototype) {
-            // make sure that the interface property is assigned to PlurObject.abstractMethod
+            // make sure that the interface property is assigned to PlurClass.abstractMethod
             if (interfacePrototype.hasOwnProperty(propertyName) &&
-                interfacePrototype[propertyName] === PlurObject.abstractMethod) {
+                interfacePrototype[propertyName] === PlurClass.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
                 if (typeof prototype[propertyName] === 'undefined') {
                     prototype[propertyName] = interfacePrototype[propertyName];
@@ -188,18 +188,18 @@ export default class PlurObject {
      * @return {!Array<!Object<string, string>>}
      */
     static getPlurified() {
-        return PlurObject._plurified;
+        return PlurClass._plurified;
     };
 
     /**
      * @throws {Error}
      */
     constructor() {
-        throw new Error('Cannot instantiate private constructor of PlurObject');
+        throw new Error('Cannot instantiate private constructor of PlurClass');
     };
 }
 
 /** @type {!Array<!Object<string,string>>} Runtime information about each class that has been plurify()'d. **/
-PlurObject._plurified = [];
+PlurClass._plurified = [];
 
-PlurObject.plurify('plur/PlurObject', PlurObject);
+PlurClass.plurify('plur/PlurClass', PlurClass);

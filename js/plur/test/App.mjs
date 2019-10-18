@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 import IApplication from '../../plur/app/IApplication.mjs';
 import ITerminal from '../../plur/terminal/ITerminal.mjs';
@@ -39,7 +39,7 @@ export default class TestApp {
     };
 }
 
-PlurObject.plurify('plur/test/App', TestApp, [IApplication]);
+PlurClass.plurify('plur/test/App', TestApp, [IApplication]);
 
 TestApp.prototype._findTargets = function(callback) {
     const importPathMap = API.plur.getImportPathMap();

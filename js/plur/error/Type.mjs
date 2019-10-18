@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import PlurError from '../../plur/error/Error.mjs';
 
 /**
@@ -25,4 +25,4 @@ export default class TypeError extends PlurError {
     }
 };
 
-PlurObject.plurify('plur/error/Type', TypeError);
+PlurClass.plurify('plur/error/Type', TypeError);

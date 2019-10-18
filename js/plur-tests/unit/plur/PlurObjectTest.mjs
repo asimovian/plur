@@ -1,52 +1,52 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur-tests/unit/plur/PlurObjectTest
+ * @module plur-tests/unit/plur/PlurClassTest
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import Test from '../../../plur/test/Test.mjs';
 
 /**
- * @test plur/PlurObject
+ * @test plur/PlurClass
  */
-export default class PlurObjectTest extends Test {
+export default class PlurClassTest extends Test {
     constructor() {
         super();
     }
 
     /**
-     * @test plur/PlurObject.implement
-     * @test plur/PlurObject.implementing
+     * @test plur/PlurClass.implement
+     * @test plur/PlurClass.implementing
      */
     test_implement() {
         let IAlpha = function() {};
-        PlurObject.plurify('plur-tests/IAlpha', IAlpha);
-        IAlpha.prototype.alpha = PlurObject.abstractMethod;
+        PlurClass.plurify('plur-tests/IAlpha', IAlpha);
+        IAlpha.prototype.alpha = PlurClass.abstractMethod;
 
         let Alpha = function() {};
-        PlurObject.plurify('plur-tests/Alpha', Alpha);
-        PlurObject.implement(Alpha, IAlpha);
+        PlurClass.plurify('plur-tests/Alpha', Alpha);
+        PlurClass.implement(Alpha, IAlpha);
 
         this.assertHas(Alpha.prototype, 'alpha', IAlpha.prototype.alpha, 'Did not implement interface method');
 
         // test implementing
-        this.assert(PlurObject.implementing(new Alpha(), IAlpha));
+        this.assert(PlurClass.implementing(new Alpha(), IAlpha));
     };
 
     /**
-     * @test plur/PlurObject.abstractMethod
+     * @test plur/PlurClass.abstractMethod
      */
     test_pureVirtualFunction() {
         // this should throw an exception
         try {
-            PlurObject.abstractMethod();
+            PlurClass.abstractMethod();
             // we should not get here ...
             this.fail('Abstract function did not throw exception.');
         } catch (e) {}
     };
 };
 
-PlurObject.plurify('plur-tests/unit/plur/PlurObjectTest', PlurObjectTest);
+PlurClass.plurify('plur-tests/unit/plur/PlurClassTest', PlurClassTest);
 

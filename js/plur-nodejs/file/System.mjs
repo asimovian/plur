@@ -7,7 +7,7 @@
 
 import fs from 'fs';
 import find_files from 'file-regex';
-import PlurObject from '../../plur/Class.mjs';
+import PlurClass from '../../plur/Class.mjs';
 import AFileSystem from '../../plur/file/ASystem.mjs';
 
 /**
@@ -37,4 +37,4 @@ export default class NodeJsFileSystem extends AFileSystem {
     };
 };
 
-PlurObject.plurify('plur-nodejs/file/System', NodeJsFileSystem);
+PlurClass.plurify('plur-nodejs/file/System', NodeJsFileSystem);

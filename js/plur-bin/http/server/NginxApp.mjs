@@ -6,7 +6,7 @@
 'use strict';
 
 import fs from 'fs';
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import HttpServerApp from '../../../plur-nodejs/http/server/App.mjs';
 import Config from '../../../plur/config/Config.mjs';
 
@@ -24,7 +24,7 @@ export default class NginxHttpServerApp extends HttpServerApp {
     };
 }
 
-PlurObject.plurify('plur-bin/http/server/NginxApp', NginxHttpServerApp);
+PlurClass.plurify('plur-bin/http/server/NginxApp', NginxHttpServerApp);
 
 /**
  * @typedef {Object} NginxHttpServerAppCfg plur-bin/http/server/NginxAppCfg

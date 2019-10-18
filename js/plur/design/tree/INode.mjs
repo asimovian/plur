@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import InterfaceError from '../../../plur/error/Interface.mjs';
 
 /**
@@ -20,7 +20,7 @@ export default class ITreeNode {
     };
 }
 
-PlurObject.plurify('plur/design/tree/INode', ITreeNode);
+PlurClass.plurify('plur/design/tree/INode', ITreeNode);
 
 /**
  * Gets the value for this node.
@@ -29,7 +29,7 @@ PlurObject.plurify('plur/design/tree/INode', ITreeNode);
  * @abstract
  * @returns mixed|null value
  */
-ITreeNode.prototype.get = PlurObject.abstractMethod;
+ITreeNode.prototype.get = PlurClass.abstractMethod;
 
 /**
  * Sets the value for this node.
@@ -39,7 +39,7 @@ ITreeNode.prototype.get = PlurObject.abstractMethod;
  * @param mixed value
  * @returns mixed|null
  */
-ITreeNode.prototype.set = PlurObject.abstractMethod;
+ITreeNode.prototype.set = PlurClass.abstractMethod;
 
 /**
  * Retrieves children of this node.
@@ -49,7 +49,7 @@ ITreeNode.prototype.set = PlurObject.abstractMethod;
  * @param Function instanceOfConstructor|undefined Filters out all children that are not derived from this constructor
  * @returns plur/design/tree/INode[] children
  */
-ITreeNode.prototype.children = PlurObject.abstractMethod;
+ITreeNode.prototype.children = PlurClass.abstractMethod;
 
 /**
  * Retrieves the parent.
@@ -58,7 +58,7 @@ ITreeNode.prototype.children = PlurObject.abstractMethod;
  * @abstract
  * @returns plur/design/tree/INode|null parent
  */
-ITreeNode.prototype.parent = PlurObject.abstractMethod;
+ITreeNode.prototype.parent = PlurClass.abstractMethod;
 
 /**
  * Adds a child.
@@ -68,7 +68,7 @@ ITreeNode.prototype.parent = PlurObject.abstractMethod;
  * @param plur/design/tree/INode child
  * @returns plur/design/tree/INode child
  */
-ITreeNode.prototype.addChild = PlurObject.abstractMethod;
+ITreeNode.prototype.addChild = PlurClass.abstractMethod;
 
 /**
  * Removes a child.
@@ -77,7 +77,7 @@ ITreeNode.prototype.addChild = PlurObject.abstractMethod;
  * @abstract
  * @param plur/design/tree/INode child
  */
-ITreeNode.prototype.removeChild = PlurObject.abstractMethod;
+ITreeNode.prototype.removeChild = PlurClass.abstractMethod;
 
 
 /**
@@ -87,7 +87,7 @@ ITreeNode.prototype.removeChild = PlurObject.abstractMethod;
  * @param plur/design/tree/INode child The child to search for.
  * @returns boolean hasChild TRUE if child exists. FALSE if not.
  */
-ITreeNode.prototype.hasChild = PlurObject.abstractMethod;
+ITreeNode.prototype.hasChild = PlurClass.abstractMethod;
 
 /**
  * Determines whether this node is the root node of the tree or not.
@@ -96,7 +96,7 @@ ITreeNode.prototype.hasChild = PlurObject.abstractMethod;
  * @abstract
  * @returns boolean TRUE if this node is the root of the tree, FALSE if not
  */
-ITreeNode.prototype.isRoot = PlurObject.abstractMethod;
+ITreeNode.prototype.isRoot = PlurClass.abstractMethod;
 
 /**
  * Retrieves the root node for this tree.
@@ -105,7 +105,7 @@ ITreeNode.prototype.isRoot = PlurObject.abstractMethod;
  * @abstract
  * @returns plur/design/tree/INode root
  */
-ITreeNode.prototype.root = PlurObject.abstractMethod;
+ITreeNode.prototype.root = PlurClass.abstractMethod;
 
 /**
  * Determines whether this node is childless or not.
@@ -114,7 +114,7 @@ ITreeNode.prototype.root = PlurObject.abstractMethod;
  * @abstract
  * @returns boolean
  */
-ITreeNode.prototype.isLeaf = PlurObject.abstractMethod;
+ITreeNode.prototype.isLeaf = PlurClass.abstractMethod;
 
 /**
  * Factory method that creates a new child branch chain, each subsequent child branch corresponding to its index in the
@@ -128,5 +128,5 @@ ITreeNode.prototype.isLeaf = PlurObject.abstractMethod;
  *          A callback can be used to manually create and return each child.
  * @returns plur/design/tree/INode newLeaves[] All new leaf nodes are returned
  */
-ITreeNode.prototype.expand = PlurObject.abstractMethod;
+ITreeNode.prototype.expand = PlurClass.abstractMethod;
 

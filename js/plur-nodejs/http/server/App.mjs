@@ -6,7 +6,7 @@
 'use strict';
 
 import express from 'express';
-import PlurObject from '../../../plur/Class.mjs';
+import PlurClass from '../../../plur/Class.mjs';
 import IConfigurable from '../../../plur/config/IConfigurable.mjs';
 import Config from '../../../plur/config/Config.mjs';
 import IApplication from '../../../plur/app/IApplication.mjs';
@@ -98,7 +98,7 @@ export default class HttpServerApp {
     };
 }
 
-PlurObject.plurify('plur-nodejs/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
+PlurClass.plurify('plur-nodejs/http/server/App', HttpServerApp, [IApplication, IConfigurable]);
 
 /**
  * @typedef {Object} HttpServerAppCfg plur/http/server/AppCfg
