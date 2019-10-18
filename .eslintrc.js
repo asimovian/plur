@@ -26,5 +26,5 @@ module.exports = {
     'no-multi-spaces': [ERROR, { ignoreEOLComments: true } ],
     'object-curly-spacing': [OFF],
     'key-spacing': [OFF]
-  },
+  }
 };
