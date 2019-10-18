@@ -20,7 +20,7 @@ function(
  * Tests the event emitter.
  *
  * @constructor plur-tests/event/EmitterTest
- * @extends plur/test/Test
+ * @extends plur/test/Case
  * @tests plur/event/Emitter
  **
  */

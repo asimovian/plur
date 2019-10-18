@@ -6,7 +6,7 @@
 'use strict';
 
 import NodeJSBootstrap from '../js/plur-nodejs/api/bootstrap/nodejs.js'
-import TestApp from '../js/plur/test/App.mjs';
+import TestRunnerApp from '../js/plur/test/runner/App.mjs';
 import ShellTerminal from '../js/plur-nodejs/terminal/Shell.mjs';
 
-new TestApp(new ShellTerminal()).start();
+new TestRunnerApp(new ShellTerminal()).start();

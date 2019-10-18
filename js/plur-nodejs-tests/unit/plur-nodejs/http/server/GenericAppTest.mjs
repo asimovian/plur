@@ -7,7 +7,7 @@
 
 import http from 'http';
 import PlurClass from '../../../../../plur/Class.mjs';
-import Test from '../../../../../plur/test/Test.mjs';
+import TestCase from '../../../../../plur/test/Case.mjs';
 import GenericHttpServerApp from '../../../../../plur-nodejs/http/server/GenericApp.mjs';
 import HttpServerTestApp from '../../../../../plur-nodejs-tests/unit/plur-nodejs/http/server/TestApp.mjs';
 
@@ -15,7 +15,7 @@ import HttpServerTestApp from '../../../../../plur-nodejs-tests/unit/plur-nodejs
  * @tests plur-nodejs/http/server/GenericApp
  * @final
  */
-export default class GenericHttpAppTest extends Test {
+export default class GenericHttpAppTest extends TestCase {
     /**
      * @tests plur-nodejs/http/server/GenericApp.constructor
      */

@@ -6,7 +6,7 @@
 'use strict';
 
 import PlurClass from '../../../../plur/Class.mjs';
-import Test from '../../../../plur/test/Test.mjs';
+import TestCase from '../../../../plur/test/Case.mjs';
 import API from '../../../../plur/api/API.mjs';
 
 /**
@@ -14,7 +14,7 @@ import API from '../../../../plur/api/API.mjs';
  *
  * @tests plur/API
  */
-export default class APITest extends Test {
+export default class APITest extends TestCase {
    test_constructor() {
        const a = new API('testapi', '3.21.321', 'https://example.tld/git.git', 'master', [], true);
 

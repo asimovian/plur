@@ -6,7 +6,7 @@
 'use strict';
 
 import PlurClass from '../../../../plur/Class.mjs';
-import Test from '../../../../plur/test/Test.mjs';
+import TestCase from '../../../../plur/test/Case.mjs';
 import IConfigurable from '../../../../plur/config/IConfigurable.mjs';
 import Config from '../../../../plur/config/Config.mjs';
 import PortableObject from '../../../../plur/PortableObject.mjs';
@@ -15,7 +15,7 @@ import PortableObject from '../../../../plur/PortableObject.mjs';
  * @tests plur/config/Config
  * @final
  */
-export default class ConfigTest extends Test {
+export default class ConfigTest extends TestCase {
     constructor() {
         super();
     };

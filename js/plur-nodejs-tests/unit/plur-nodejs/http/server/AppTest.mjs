@@ -5,16 +5,16 @@
  */
 "use strict";
 
-import http from "http";
-import PlurClass from "../../../../../plur/Class.mjs";
-import Test from "../../../../../plur/test/Test.mjs";
-import HttpServerApp from "../../../../../plur-nodejs/http/server/App.mjs";
+import http from 'http';
+import PlurClass from '../../../../../plur/Class.mjs';
+import TestCase from '../../../../../plur/test/Case.mjs';
+import HttpServerApp from '../../../../../plur-nodejs/http/server/App.mjs';
 
 /**
  * @tests plur/http/server/App
  * @final
  */
-export default class HttpServerAppTest extends Test {
+export default class HttpServerAppTest extends TestCase {
     /** @tests plur/http/server/App.constructor **/
     test_constructor() {
     };

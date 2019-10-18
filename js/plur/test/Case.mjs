@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/test/Test
+ * @module plur/test/TestCase
  */
 
 'use strict';
@@ -14,7 +14,7 @@ import Emitter from '../../plur/event/Emitter.mjs';
  * Basic unit and integration testing.
  *
  */
-export default class Test {
+export default class TestCase {
     constructor() {
         this._promises = [];
         this._emitter = new Emitter();
@@ -46,21 +46,21 @@ export default class Test {
     };
 };
 
-PlurClass.plurify('plur/test/Test', Test);
+PlurClass.plurify('plur/test/Case', TestCase);
 
-Test.prototype.sleep = function(milliseconds) {
+TestCase.prototype.sleep = function(milliseconds) {
     sleep.sleep((milliseconds? milliseconds : 500)); // defualt 500 ms
 };
 
-Test.prototype.emitter = function() {
+TestCase.prototype.emitter = function() {
     return this._emitter;
 };
 
-Test.prototype.emit = function(eventTypeSuffix, data) {
+TestCase.prototype.emit = function(eventTypeSuffix, data) {
     this._emitter.emit(this.namepathPrefix + eventTypeSuffix, data);
 }
 
-Test.prototype.assertEmission = function(eventTypeSuffix, expectedCount) {
+TestCase.prototype.assertEmission = function(eventTypeSuffix, expectedCount) {
     var self = this;
     var eventType = this.namepathPrefix + eventTypeSuffix;
 
@@ -74,7 +74,7 @@ Test.prototype.assertEmission = function(eventTypeSuffix, expectedCount) {
     return subscriptionId;
 };
 
-Test.prototype.assertExpectedEmissions = function() {
+TestCase.prototype.assertExpectedEmissions = function() {
     for (var eventType in this._expectedEmissions) {
         var expectedCount = this._expectedEmissions[eventType];
         this.assertEquals(this._actualEmissions[eventType], expectedCount, 'Incorrect emission count for event type: ' + eventType);
@@ -84,7 +84,7 @@ Test.prototype.assertExpectedEmissions = function() {
 /**
  * Helper method that runs all test methods for this object (methods names that start with "test").
  */
-Test.prototype.test = function() {
+TestCase.prototype.test = function() {
     for (const propertyName in this) {
         if (!/^test/.test(propertyName) || typeof this[propertyName] !== 'function' || propertyName === 'test') {
             continue;
@@ -94,19 +94,19 @@ Test.prototype.test = function() {
     }
 };
 
-Test.prototype.addPromise = function(promise) {
+TestCase.prototype.addPromise = function(promise) {
     this._promises.push(promise);
 };
 
-Test.prototype.hasPromises = function() {
+TestCase.prototype.hasPromises = function() {
     return ( this._promises.length !== 0 );
 };
 
-Test.prototype.onPromises = function(timeout) {
+TestCase.prototype.onPromises = function(timeout) {
     timeout = timeout || 120000; // default 2 mins
     const promises = this._promises.concat(new Promise(function(resolve, reject) {
         setTimeout(timeout, () => {
-            reject(new Error('Test promises timed out after ' + timeout + ' ms'));
+            reject(new Error('TestCase promises timed out after ' + timeout + ' ms'));
         });
     }));
 
@@ -116,7 +116,7 @@ Test.prototype.onPromises = function(timeout) {
 /**
  * Determines whether a value is strictly equal.
  */
-Test.prototype.assert = function(test, message) {
+TestCase.prototype.assert = function(test, message) {
     if (!test)
         throw new AssertionError(message || 'Assertion failed', { result: test});
 };
@@ -124,7 +124,7 @@ Test.prototype.assert = function(test, message) {
 /**
  * Determines whether a value is strictly equal.
  */
-Test.prototype.assertEquals = function(actual, expected, message) {
+TestCase.prototype.assertEquals = function(actual, expected, message) {
     if (actual !== expected)
         throw new AssertionError(message || 'Values are not strictly equal', { expected: expected, actual: actual});
 };
@@ -132,7 +132,7 @@ Test.prototype.assertEquals = function(actual, expected, message) {
 /**
  * Determines whether an object has its own copy of a property and whether it strictly equals the provided value.
  */
-Test.prototype.assertOwns = function(object, propertyName, expected, message) {
+TestCase.prototype.assertOwns = function(object, propertyName, expected, message) {
     if (typeof object === 'undefined') {
         throw new AssertionError(message || 'Actual object is undefined', { expected: { propertyName: propertyName, value: expected }, actual: 'undefined' });
     } else if (!object.hasOwnProperty(propertyName)) {
@@ -145,7 +145,7 @@ Test.prototype.assertOwns = function(object, propertyName, expected, message) {
 /**
  * Creates an object with the expected configuration and ensures that proper construction, inheritance, etc.
  */
-Test.prototype.assertCreation = function(expected, message) {
+TestCase.prototype.assertCreation = function(expected, message) {
     var object = new expected.constructor(expected.constructionArguments);
 
     // check constructor
@@ -177,7 +177,7 @@ Test.prototype.assertCreation = function(expected, message) {
  * Determines whether an object has a property name in its prototype chain and ensures that it is strictly equal
  * to the expected value.
  */
-Test.prototype.assertHas = function(object, propertyName, expected, message) {
+TestCase.prototype.assertHas = function(object, propertyName, expected, message) {
     if (typeof object === 'undefined') {
         throw new AssertionError(message || 'Object is undefined', { expected: { value: expected, propertyName: propertyName }, actual: 'undefined' });
     } else if (typeof object[propertyName] === 'undefined') {
@@ -190,7 +190,7 @@ Test.prototype.assertHas = function(object, propertyName, expected, message) {
 /**
  * Promotes alcoholism among QA developers.
  */
-Test.prototype.fail = function(message, data) {
+TestCase.prototype.fail = function(message, data) {
     throw new AssertionError(message || 'Assertion failed', data);
 };
 

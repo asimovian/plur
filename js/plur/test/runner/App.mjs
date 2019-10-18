@@ -1,17 +1,17 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/test/App
+ * @module plur/test/runner/App
  */
 'use strict';
 
-import PlurClass from '../../plur/Class.mjs';
-import API from '../../plur/api/API.mjs';
-import IApplication from '../../plur/app/IApplication.mjs';
-import ITerminal from '../../plur/terminal/ITerminal.mjs';
-import Tester from '../../plur/test/Tester.mjs';
-import { singleton as ApiFileSystem } from '../../plur/file/system/API.mjs';
-import { singleton as SystemLog } from '../../plur/log/System.mjs';
+import PlurClass from '../../../plur/Class.mjs';
+import API from '../../../plur/api/API.mjs';
+import IApplication from '../../../plur/app/IApplication.mjs';
+import ITerminal from '../../../plur/terminal/ITerminal.mjs';
+import Runner from '../../../plur/test/Runner.mjs';
+import { singleton as ApiFileSystem } from '../../../plur/file/system/API.mjs';
+import { singleton as SystemLog } from '../../../plur/log/System.mjs';
 
 /**
  * Performs tests against either a provided set of test classes / test methods or against all available tests.
@@ -23,7 +23,7 @@ import { singleton as SystemLog } from '../../plur/log/System.mjs';
  * @implements {IPlurified}
  * @implements {IApplication}
  */
-export default class TestApp {
+export default class TestRunnerApp {
     /**
      * @param {!ITerminal} terminal
      */
@@ -39,9 +39,9 @@ export default class TestApp {
     };
 }
 
-PlurClass.plurify('plur/test/App', TestApp, [IApplication]);
+PlurClass.plurify('plur/test/runner/App', TestRunnerApp, [ IApplication ]);
 
-TestApp.prototype._findTargets = function(callback) {
+TestRunnerApp.prototype._findTargets = function(callback) {
     const importPathMap = API.plur.getImportPathMap();
     const filesystem = ApiFileSystem.get();
     const homePath = filesystem.getHomePath();
@@ -85,17 +85,17 @@ TestApp.prototype._findTargets = function(callback) {
     }
 };
 
-TestApp.prototype.start = function() {
+TestRunnerApp.prototype.start = function() {
     // if no targets were provided, find and test everything under the sun
     if (this._targets.length === 0) {
         var self = this;
         this._findTargets(function(targets) {
             self._targets = targets;
-            var tester = new Tester(targets);
+            var tester = new Runner(targets);
             self._start(tester);
         });
     } else {
-        var tester = new Tester(this._targets);
+        var tester = new Runner(this._targets);
         this._start(tester);
     }
 
@@ -103,18 +103,18 @@ TestApp.prototype.start = function() {
     SystemLog.get().info('(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)');
 };
 
-TestApp.prototype._start = function(tester) {
+TestRunnerApp.prototype._start = function(tester) {
     const self = this;
     let promise = tester.test(this._targets);
     promise.then(
-        function() { TestApp._onTesterPromiseFulfilled(self); },
-        function(error) { TestApp._onTesterPromiseRejected(self, error); } );
+        function() { TestRunnerApp._onTesterPromiseFulfilled(self); },
+        function(error) { TestRunnerApp._onTesterPromiseRejected(self, error); } );
 };
 
 /**
  * Expects variable "self" to exist in calling closure.
  */
-TestApp._onTesterPromiseFulfilled = function(self) {
+TestRunnerApp._onTesterPromiseFulfilled = function(self) {
     SystemLog.get().info('All tests passed.');
     self.stop(true);
 };
@@ -122,19 +122,19 @@ TestApp._onTesterPromiseFulfilled = function(self) {
 /**
  * Expects variable "self" to exist in calling closure.
  */
-TestApp._onTesterPromiseRejected = function(self, error) {
+TestRunnerApp._onTesterPromiseRejected = function(self, error) {
     SystemLog.get().error('Tests failed');
     SystemLog.get().error(error.stack)
     self.stop(false);
 };
 
-TestApp.prototype.stop = function(success) {
+TestRunnerApp.prototype.stop = function(success) {
     if (typeof process !== 'undefined') { // nodejs
         process.exit(success ? 0 : 1);
     }
 };
 
-TestApp.prototype.heartbeat = function() {
+TestRunnerApp.prototype.heartbeat = function() {
     return true;
 };
 

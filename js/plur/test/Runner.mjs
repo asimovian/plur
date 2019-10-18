@@ -1,7 +1,7 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/test/Tester
+ * @module plur/test/runner
  */
 'use strict';
 
@@ -14,7 +14,7 @@ import {singleton as SystemLog} from '../../plur/log/System.mjs';
  * @final
  * @implements {IPlurified}
  */
-export default class Tester {
+export default class TestRunner {
 	constructor(testClassNamepaths) {
         this._log = SystemLog.get();
         this._testClassNamepaths = testClassNamepaths;
@@ -85,4 +85,4 @@ export default class Tester {
     };
 }
 
-PlurClass.plurify('plur/test/Tester', Tester);
+PlurClass.plurify('plur/test/Runner', TestRunner);

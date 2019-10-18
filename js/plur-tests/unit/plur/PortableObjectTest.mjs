@@ -7,13 +7,13 @@
 'use strict';
 
 import PlurClass from '../../../plur/Class.mjs';
-import Test from '../../../plur/test/Test.mjs';
+import TestCase from '../../../plur/test/Case.mjs';
 import PortableObject from '../../../plur/PortableObject.mjs';
 
 /**
  * @tests plur/PortableObject
  */
-export default class PortableObjectTest extends Test {
+export default class PortableObjectTest extends TestCase {
     constructor() {
         super();
     }

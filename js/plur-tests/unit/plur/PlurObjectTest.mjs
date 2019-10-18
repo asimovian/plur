@@ -6,12 +6,12 @@
 'use strict';
 
 import PlurClass from '../../../plur/Class.mjs';
-import Test from '../../../plur/test/Test.mjs';
+import TestCase from '../../../plur/test/Case.mjs';
 
 /**
  * @test plur/PlurClass
  */
-export default class PlurClassTest extends Test {
+export default class PlurClassTest extends TestCase {
     constructor() {
         super();
     }
