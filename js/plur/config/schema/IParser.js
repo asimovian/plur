@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../plur/PlurObject.mjs';
+import PlurObject from '../../../plur/Class.mjs';
 import InterfaceError from '../../../plur/error/Interface';
 
 /**
