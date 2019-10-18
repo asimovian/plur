@@ -14,7 +14,7 @@ import AssertionError from "js/plur/error/Assertion.mjs";
  * @implements {IPlurified}
  * @final
  */
-class Assert {
+export default class Assert {
     /**
      * @param {Function} callback
      * @param {string} message
@@ -94,5 +94,3 @@ class Assert {
 }
 
 PlurClass.plurify('plur/test/Assert', Assert);
-
-export default Assert;

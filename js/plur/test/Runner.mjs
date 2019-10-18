@@ -1,11 +1,12 @@
 /**
  * @copyright 2019 Asimovian LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
- * @module plur/test/runner
+ * @module plur/test/Runner
  */
 'use strict';
 
 import PlurClass from '../../plur/Class.mjs';
+import Emitter from '../../plur/event/Emitter.mjs';
 import {singleton as SystemLog} from '../../plur/log/System.mjs';
 
 /**
@@ -16,6 +17,9 @@ import {singleton as SystemLog} from '../../plur/log/System.mjs';
  */
 export default class TestRunner {
 	constructor(testClassNamepaths) {
+        this._TOPIC = this.namepath + '.';
+        this._RESULT_TOPIC = this.namepath + '.result';
+        this._emitter = new Emitter();
         this._log = SystemLog.get();
         this._testClassNamepaths = testClassNamepaths;
     };
@@ -36,7 +40,7 @@ export default class TestRunner {
 
     testClass(namepath) {
         const self = this;
-        const filepath = '../../' + namepath + '.mjs';
+        const filepath = '../../' + namepath + '.mjs';  //@todo use filesystem class
 
         this._log.info('Testing with ' + namepath + ' ...');
 
@@ -90,6 +94,34 @@ export default class TestRunner {
         });
 
         return promise;
+    };
+
+    /**
+     * Fires an event to the test case emitter.
+     *
+     * @param {String} subtopic
+     * @param {obj} data
+     */
+    _emit(subtopic, data) {
+        this._emitter.emit(this._TOPIC + subtopic, data);
+    };
+
+    /**
+     * Fires a test case result event to the emitter. Conforms to xUnit XML result format.
+     *
+     * @param {String} methodName The test method name.
+     * @param {String} outcome 'Pass', 'Fail', 'Skip'
+     * @param {number} time Elapsed time in milliseconds.
+     */
+    _emitResult(methodName, outcome, time) {
+        // @todo this._emitter.emit(this._RESULT_TOPIC, new Result(methodName, outcome, time).model());
+        this._emitter.emit(this._RESULT_TOPIC, {
+            name: methodName.substr(5), // remove the prefixed test_
+            type: this.namepath,
+            method: methodName,
+            time: time,
+            result: outcome
+        });
     };
 }
 

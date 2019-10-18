@@ -14,7 +14,7 @@ import API from '../../plur/api/API.mjs';
  * @implements {IPlurified}
  * @final
  */
-class PlurAPI extends API {
+export default class PlurAPI extends API {
     /**
      * @param {string} version
      * @param {string} scmUrl
@@ -27,5 +27,3 @@ class PlurAPI extends API {
 }
 
 PlurClass.plurify('plur/api/PlurAPI', PlurAPI);
-
-export default PlurAPI;
