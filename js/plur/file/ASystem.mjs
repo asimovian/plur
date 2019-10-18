@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from "../../plur/PlurObject.mjs";
+import PlurObject from "../../plur/Class.mjs";
 import IFileSystem from "../../plur/file/ISystem.mjs";
 
 /**

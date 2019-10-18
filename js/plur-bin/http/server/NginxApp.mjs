@@ -6,7 +6,7 @@
 'use strict';
 
 import fs from 'fs';
-import PlurObject from '../../../plur/PlurObject.mjs';
+import PlurObject from '../../../plur/Class.mjs';
 import HttpServerApp from '../../../plur-nodejs/http/server/App.mjs';
 import Config from '../../../plur/config/Config.mjs';
 

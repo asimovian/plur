@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../plur/PlurObject.mjs';
+import PlurObject from '../plur/Class.mjs';
 
 /**
  * Utility for dealing with the concept of a plur "Obj". Objects with only basic primitives and non-function compounds.

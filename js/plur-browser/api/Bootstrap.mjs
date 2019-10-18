@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject.mjs';
+import PlurObject from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 import Bootstrap from '../../plur/api/Bootstrap.mjs';
 import BrowserFileSystem from '../../plur-browser/file/System.mjs';

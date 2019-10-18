@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject.mjs';
+import PlurObject from '../../plur/Class.mjs';
 import Singleton from '../../plur/design/singleton/ASingleton.mjs';
 import Log from '../../plur/log/Log.mjs';
 

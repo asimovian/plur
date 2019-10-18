@@ -6,7 +6,7 @@
 "use strict";
 
 import http from "http";
-import PlurObject from "../../../../../plur/PlurObject.mjs";
+import PlurObject from "../../../../../plur/Class.mjs";
 import Test from "../../../../../plur/test/Test.mjs";
 import HttpServerApp from "../../../../../plur-nodejs/http/server/App.mjs";
 

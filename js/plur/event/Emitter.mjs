@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject.mjs';
+import PlurObject from '../../plur/Class.mjs';
 import StateError from '../../plur/error/State.mjs';
 import DestroyedError from '../../plur/error/Destroyed.mjs';
 import Event from '../../plur/event/Event.mjs';

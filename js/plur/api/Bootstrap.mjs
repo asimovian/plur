@@ -5,7 +5,7 @@
  */
  'use strict';
 
-import PlurObject from '../../plur/PlurObject.mjs';
+import PlurObject from '../../plur/Class.mjs';
 import API from '../../plur/api/API.mjs';
 import PlurAPI from '../../plur/api/PlurAPI.mjs';
 import BUILD_META from '../../plur/build/current/build-meta.mjs';

@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import PlurObject from '../../../../plur/PlurObject.mjs';
+import PlurObject from '../../../../plur/Class.mjs';
 import Test from '../../../../plur/test/Test.mjs';
 import IConfigurable from '../../../../plur/config/IConfigurable.mjs';
 import Config from '../../../../plur/config/Config.mjs';

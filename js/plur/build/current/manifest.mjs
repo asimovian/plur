@@ -27,7 +27,7 @@ export default [
     "plur/config/IConfigurable.mjs",
     "plur/config/Schema.mjs",
     "plur/http/file/System.mjs",
-    "plur/PlurObject.mjs",
+    "plur/Class.mjs",
     "plur/file/system/Local.mjs",
     "plur/file/system/API.mjs",
     "plur/file/ISystem.mjs",

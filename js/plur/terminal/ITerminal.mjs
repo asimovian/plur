@@ -6,7 +6,7 @@
  */
 'use strict';
 
-import PlurObject from '../../plur/PlurObject.mjs';
+import PlurObject from '../../plur/Class.mjs';
 
 /**
  * Represents a means of interacting with a user/client.
