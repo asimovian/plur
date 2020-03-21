@@ -18,11 +18,11 @@ Documentation
 
 Contributors
 ------------
-* Roy Laurie (roy.laurie@asimovian.software)
+* Roy Laurie (roy.laurie@asmov.company)
 
 License (MIT)
 --------------
-Copyright (c) 2019 Asimovian LLC
+Copyright (c) 2020 Asmov LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
