@@ -1,8 +1,8 @@
 /**
- * @copyright 2019 Asimovian LLC
+ * @copyright 2020 Asmov LLC
  * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
  * @module plur/Class
- * @version 0.0.2
+ * @version 2020.0.1
  *
  * @typedef {Object<string,(string,number,boolean,null,Array<obj>,obj)>} obj
  */
@@ -180,7 +180,31 @@ export default class PlurClass {
      */
     static constProperty(object, key, value, enumerable) {
         Object.defineProperty(object, key, { value: value, writable: false, configurable: false,
-            enumerable: ( typeof enumerable === 'boolean' ? enumerable: true )});
+            enumerable: ( typeof enumerable === 'boolean' ? enumerable : true )});
+    };
+
+    /**
+     * Returns a string namepath for the provided value (class, object, or string).
+     * @param {Function|Object|String} v
+     * @returns {string}
+     * @throws {Error} on invalid parameter
+     */
+    static namepath(v) {
+        switch(typeof v) {
+            case 'function':
+            case 'object':
+                if (typeof v.namepath === 'string') {
+                    return v.namepath;
+                }
+
+                throw new Error('Class does not have a namepath');
+
+            case 'string':
+                return v;
+
+            default:
+                throw new Error('Invalid parameter for namepath');
+        }
     };
 
     /**
