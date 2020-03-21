@@ -11,7 +11,7 @@ This project uses JS as an **enterprise** language by following closely behind t
 
 Contributors
 ------------
-* Roy Laurie \<<roy.laurie@asimov.company>\>, Asimov LLC
+* Roy Laurie (roy.laurie@asimov.company)
 
 License (MIT)
 --------------
