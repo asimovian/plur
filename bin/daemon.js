@@ -1,7 +1,7 @@
 #!/usr/bin/nodejs
 /**
- * @copyright 2015 Asimovian LLC
- * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @copyright 2015 Asmov LLC
+ * @license MIT https://github.com/asmov/plur/blob/master/LICENSE.txt
  */
 var requirejs = require('../../../../main/js/plur/plur-requirejs.js');
 requirejs(['plur/service/daemon/Generic', 'plur/obj/Parser'], function(PlurGenericServiceDaemon, ObjParser) { // no-indent

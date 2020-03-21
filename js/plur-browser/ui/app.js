@@ -1,6 +1,6 @@
 /**
- * @copyright 2017 Asimovian LLC
- * @license MIT https://github.com/asimovian/plur-www/blob/master/LICENSE.txt
+ * @copyright 2017 Asmov LLC
+ * @license MIT https://github.com/asmov/plur-www/blob/master/LICENSE.txt
  * @module plur/web/ui
  */
 'use strict';

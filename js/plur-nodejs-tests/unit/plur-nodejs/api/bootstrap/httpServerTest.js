@@ -1,7 +1,7 @@
 #!/usr/bin/env nodejs
 /**
- * @copyright 2019 Asimovian LLC
- * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @copyright 2019 Asmov LLC
+ * @license MIT https://github.com/asmov/plur/blob/master/LICENSE.txt
  * @tests plur/api/bootstraps/nodejs
  * @tests plur/api/bootstraps/browser
  */

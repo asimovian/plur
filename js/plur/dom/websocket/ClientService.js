@@ -1,6 +1,6 @@
 /**
- * @copyright 2015 Asimovian LLC
- * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @copyright 2015 Asmov LLC
+ * @license MIT https://github.com/asmov/plur/blob/master/LICENSE.txt
  */
 define(['plur/PlurObject', 'plur/websocket/WebsocketClientService', 'browser/plur/dom/websocket/DomWebsocket'],
 function(PlurObject, WebsocketClientService, DomWebsocket) {

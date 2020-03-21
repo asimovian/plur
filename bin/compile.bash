@@ -1,6 +1,6 @@
 #!/bin/bash
-# @copyright 2019 Asimovian LLC
-# @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+# @copyright 2019 Asmov LLC
+# @license MIT https://github.com/asmov/plur/blob/master/LICENSE.txt
 #
 # Uses Google's Closure Compiler to compile all source files for each plur module available.
 #

@@ -7,7 +7,7 @@ fi
 
 homedir=$(realpath .)
 wwwdir='/var/www/plur-tests'
-scmurl='git@github.com:asimovian/plur.git'
+scmurl='git@github.com:asmov/plur.git'
 branch='roylaurie/unstable'
 
 # Make a symlink of the Google Closure Compiler to bin/compiler for ease of use.

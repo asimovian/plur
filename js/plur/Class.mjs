@@ -1,6 +1,6 @@
 /**
  * @copyright 2020 Asmov LLC
- * @license MIT https://github.com/asimovian/plur/blob/master/LICENSE.txt
+ * @license MIT https://github.com/asmov/plur/blob/master/LICENSE.txt
  * @module plur/Class
  * @version 2020.0.1
  *

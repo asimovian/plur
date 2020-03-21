@@ -59,8 +59,8 @@ How to Install
 
 Clone the plur.git repository and work from that directory:
 ```sh
-mkdir -p ~/project/asimovian/plur ; cd ~/project/asimovian/plur
-git clone git@github.com:asimovian/plur.git
+mkdir -p ~/project/asmov/plur ; cd ~/project/asmov/plur
+git clone git@github.com:asmov/plur.git
 git checkout roylaurie/unstable
 git clean -f ; git pull
 ```
