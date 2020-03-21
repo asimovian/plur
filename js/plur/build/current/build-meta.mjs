@@ -1,7 +1,7 @@
 /** @module plur/api/build.meta **/
 export default {
     name: 'plur',
-    version: '0.0.2',
+    version: '2020.0.1',
     scmUrl: '',
     branch: ''
 };
