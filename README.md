@@ -11,11 +11,11 @@ This project uses JS as an **enterprise** language by following closely behind t
 
 Contributors
 ------------
-* Roy Laurie \<<roy.laurie@asimovian.software>\>, Asimovian LLC
+* Roy Laurie \<<roy.laurie@asimov.company>\>, Asimov LLC
 
 License (MIT)
 --------------
-Copyright (c) 2019 Asimovian LLC
+Copyright (c) 2020 Asmov LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
