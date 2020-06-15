@@ -67,7 +67,7 @@ export default class Obj {
 
         Obj.copy(b, result, fillOnly);
         return result;
-    }
+    };
 
     static equal(a, b) {
         if (Obj.isPrimitiveType(a)) {
@@ -120,7 +120,7 @@ export default class Obj {
 
     static isCompoundType(o) {
         return ( typeof o === 'object' && o !== null );
-    }
+    };
 
     static isPortableType(o) {
         switch(typeof o) {
