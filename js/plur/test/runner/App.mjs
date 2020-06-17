@@ -51,7 +51,7 @@ TestRunnerApp.prototype._findTargets = function(callback) {
     // create an array of potential test targets, skipping any paths that do not include the word "tests" in their name
     var pathNames = [];
     for (const key in importPathMap) {
-        if (key.match(/tests/)) {
+        if (key.match(/-tests$/)) {
             pathNames.push(key);
         }
     }

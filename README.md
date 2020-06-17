@@ -1,4 +1,4 @@
-![Image of plur](/doc/media/image/plur.png)
+`(-(-_-(-_(-_(-_-)_-)-_-)_-)_-)-)`
 ====
 
 **Plur** is both an application framework and a nodal network cloud platform that scales apps and services across VMs.

@@ -22,7 +22,15 @@ export default class PlurAPI extends API {
      * @param {boolean|undefined} debug Enable framework-wide debugging.
      */
     constructor(version, scmUrl, branch, debug) {
-        super('plur', version, scmUrl, branch, debug);
+        const importPathMap = {
+            'plur': 'plur/js/plur',
+            'plur-extern': 'plur/extern/js',
+            'plur-tests': 'plur/js/plur-tests',
+            'plur-browser': 'plur/js/plur-browser',
+            'plur-browser-tests': 'plur/js/plur-browser-tests',
+        };
+
+        super('plur', version, scmUrl, branch, importPathMap, debug);
     };
 }
 
