@@ -5,16 +5,18 @@
  */
 'use strict';
 
-import PlurClass from '../../plur/Class.mjs';
+import { PlurMeta, iPlurCompatable } from '../../plur/Meta.mjs';
 import API from '../../plur/api/API.mjs';
 
 /**
  * Plur Framework API information.
  *
- * @implements {IPlurified}
  * @final
+ * @implements iPlurCompatable
  */
 export default class PlurAPI extends API {
+    static const namepath = 'plur/api/PlurAPI';
+
     /**
      * @param {string} version
      * @param {string} scmUrl
@@ -32,6 +34,8 @@ export default class PlurAPI extends API {
 
         super('plur', version, scmUrl, branch, importPathMap, debug);
     };
+
+    getNamepath() { return PlurAPI.namepath; };
 }
 
-PlurClass.plurify('plur/api/PlurAPI', PlurAPI);
+PlurMeta.conform(PlurAPI);

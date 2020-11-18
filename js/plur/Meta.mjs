@@ -8,51 +8,76 @@
  */
 'use strict';
 
-import IPlurified from '../plur/IPlurified.mjs';
+import iPlurCompatable from '../plur/iCompatable.mjs';
+export iPlurCompatable;
+
+export class PlurMetaDescriptor {
+    static namepath = 'plur/Meta/Descriptor';
+
+    #metaNamepath = null;
+    #classObject = null;
+
+    constructor(classObject) {
+        this.#metaNamepath = classObject.namepath;
+        this.#classObject = classObject;
+    };
+
+    getNamepath() { return this.#namepath; };
+
+    getMetaNamepath() {
+        return this.#metaNamepath;
+    };
+
+    getClassObject() {
+        return this.#classObject;
+    };
+};
 
 /**
  * Utility for prototype object construction.
  *
- * @implements {plur/IPlurified}
+ * @implements {plur/iPlurCompatable}
  * @final
  */
-export default class PlurClass {
+export default class PlurMeta {
+    static const #metaDescriptors = [];
+
     /**
      * Determines whether the given object or class has been plurify()'d or not.
      *
-     * @param {Object|Function|IPlurified} o The object or class object to review.
+     * @param {Object|Function|iPlurCompatable} o The object or class object to review.
      * @return {boolean} TRUE if plurified FALSE if not
      */
-    static isPlurified(o) {
-        return ( typeof o.implemented === 'object' && typeof o.implemented['plur/IPlurified'] !== 'undefined');
+    static isCompatable(o) {
+        return ( typeof o.__implemented === 'object' && typeof o.__implemented['plur/iPlurCompatable'] !== 'undefined');
     };
 
     /**
      * Determines whether the given class have been plurify()'d or not. FALSE on objects of a class.
      *
-     * @param {Function|IPlurified} c The class object to review
+     * @param {Function|iPlurCompatable} c The class object to review
      * @return {boolean} TRUE if a plurified class FALSE if not
      */
-    static isPlurifiedClass(c) {
-        return ( c.hasOwnProperty('implemented') && typeof c.implemented === 'object' &&
-            typeof c.implemented['plur/IPlurified'] !== 'undefined');
+    static isClassCompatable(c) {
+        return ( c.hasOwnProperty('__implemented') && typeof c.__implemented === 'object' &&
+            typeof c.implemented['plur/iPlurCompatable'] !== 'undefined');
     };
 
     /**
      *
-     * @param {IPlurified} object
-     * @param {IPlurified} interfaceConstructor
+     * @param {iPlurCompatable} object
+     * @param {iPlurCompatable} interfaceConstructor
      * @return {boolean}
      */
     static implementing(object, interfaceConstructor) {
         const constructor = ( object instanceof Function ? object : Object.getPrototypeOf(object).constructor );
 
-        if (typeof constructor.implemented === 'undefined') {
+        if (typeof constructor.__implemented === 'undefined') {
             return false;
         } else if (typeof interfaceConstructor === 'string') {
-            return ( typeof constructor.implemented[interfaceConstructor] !== 'undefined' );
+            return ( typeof constructor.__implemented[interfaceConstructor] !== 'undefined' );
         } else {
-            return ( typeof constructor.implemented[interfaceConstructor.namepath] !== 'undefined' );
+            return ( typeof constructor.__implemented[interfaceConstructor.namepath] !== 'undefined' );
         }
     };
 
@@ -75,19 +100,19 @@ export default class PlurClass {
      *   ...
      * };
      *
-     * PlurClass.plurify('myproject/foobars/Foo', Foo);
+     * PlurMeta.plurify('myproject/foobars/Foo', Foo);
      ***
      *
      * Sets the provided "namepath" property into the prototype of the provided constructor.
      *
-     * Sets the "implemented" property into the constructor that maps implemented interface namepaths
+     * Sets the "__implemented" property into the constructor that maps implemented interface namepaths
      * to their constructors.
      *
      * @param {string} namepath The namepath to set both statically and on the prototype.
-     * @param {!IPlurified} classObject The class to be plurified
-     * @param {Array<IPlurified>=} interfaces Interfaces to be implemented.
+     * @param {!iPlurCompatable} classObject The class to be plurified
+     * @param {Array<iPlurCompatable>=} interfaces Interfaces to be implemented.
      */
-    static plurify(namepath, classObject, interfaces) {
+    static conform(namepath, classObject, interfaces) {
         if (!(classObject instanceof Function) || typeof classObject.prototype === 'undefined') {
             throw new Error('Non-class passed to plurify()');
         } else if (this.isPlurifiedClass(classObject)) {
@@ -95,47 +120,47 @@ export default class PlurClass {
         }
 
         // inject namepath into the class's static properties and prototype properties
-        PlurClass.constProperty(classObject, 'namepath', namepath);
-        PlurClass.constProperty(classObject.prototype, 'namepath', namepath);
+        //PlurMeta.constProperty(classObject, 'namepath', namepath);
+        //PlurMeta.constProperty(classObject.prototype, 'namepath', namepath);
 
         // inject the implemented class map into the class's static properties
-        PlurClass.constProperty(classObject, 'implemented', { 'plur/IPlurified' : IPlurified }, false);
+        PlurMeta.constProperty(classObject, '__implemented', { 'plur/iPlurCompatable' : iPlurCompatable }, false);
 
         // inherit parent interfaces if any exist
         const parentClass = Object.getPrototypeOf(classObject.prototype).constructor;
-        if (PlurClass.isPlurifiedClass(parentClass)) {
-            for (const key in parentClass.implemented) {
-                if (typeof classObject.implemented[key] === 'undefined') {
-                    classObject.implemented[key] = parentClass.implemented[key];
+        if (PlurMeta.isPlurifiedClass(parentClass)) {
+            for (const key in parentClass.__implemented) {
+                if (typeof classObject.__implemented[key] === 'undefined') {
+                    classObject.__implemented[key] = parentClass.__implemented[key];
                 }
             }
         }
 
         // kept for runtime metrics
-        PlurClass._plurified.push({ namepath: namepath, timestamp: Date.now() });
+        PlurMeta.#metaDescriptors[namepath] = new MetaDescriptor(classObject);
 
         if (!Array.isArray(interfaces)) {  // all done then
             return;
         }
 
         for (let i = 0; i < interfaces.length; ++i) {
-            PlurClass.implement(classObject, interfaces[i]);
+            PlurMeta.implement(classObject, interfaces[i]);
         }
     };
 
     /**
      * Define a subject constructor/prototype as implementing a given interface constructor.
      * Copies the interface prototype's abstract methods in to the subject prototype.
-     * Adds the interface pathname to the subject constructor.implemented variable.
+     * Adds the interface pathname to the subject constructor.__implemented variable.
      *
-     * @param {IPlurified} classObject
-     * @param {IPlurified} interfaceClass
+     * @param {iPlurCompatable} classObject
+     * @param {iPlurCompatable} interfaceClass
      * @throws {Error}
      */
     static implement(classObject, interfaceClass) {
-        if (typeof classObject.implemented[interfaceClass.namepath] !== 'undefined') {
+        if (typeof classObject.__implemented[interfaceClass.namepath] !== 'undefined') {
             return;  // already implemented
-        } else if (!PlurClass.isPlurifiedClass(classObject) || !PlurClass.isPlurifiedClass(interfaceClass)) {
+        } else if (!PlurMeta.isPlurifiedClass(classObject) || !PlurMeta.isPlurifiedClass(interfaceClass)) {
             throw new Error('Only plurified classes can implemented plurified class interfaces.');
         }
 
@@ -143,9 +168,9 @@ export default class PlurClass {
         const prototype = classObject.prototype;
 
         for (const propertyName in interfacePrototype) {
-            // make sure that the interface property is assigned to PlurClass.abstractMethod
+            // make sure that the interface property is assigned to PlurMeta.abstractMethod
             if (interfacePrototype.hasOwnProperty(propertyName) &&
-                interfacePrototype[propertyName] === PlurClass.abstractMethod) {
+                interfacePrototype[propertyName] === PlurMeta.abstractMethod) {
                 // set it if it's undefined. ignore if it exists and is already abstract. throw error otherwise.
                 if (typeof prototype[propertyName] === 'undefined') {
                     prototype[propertyName] = interfacePrototype[propertyName];
@@ -153,7 +178,7 @@ export default class PlurClass {
             }
         }
 
-        classObject.implemented[interfaceClass.namepath] = interfaceClass;
+        classObject.__implemented[interfaceClass.namepath] = interfaceClass;
     };
 
     /**
@@ -192,12 +217,18 @@ export default class PlurClass {
     static namepath(v) {
         switch(typeof v) {
             case 'function':
-            case 'object':
                 if (typeof v.namepath === 'string') {
                     return v.namepath;
                 }
 
                 throw new Error('Class does not have a namepath');
+
+            case 'object':
+                if (typeof v.getNamepath !== 'undefined') {
+                    return v.getNamepath();
+                }
+
+                throw new Error('Object does not have a namepath method');
 
             case 'string':
                 return v;
@@ -211,19 +242,28 @@ export default class PlurClass {
      * Returns an array of records { namepath: string, datetime: 'string' }.
      * @return {!Array<!Object<string, string>>}
      */
-    static getPlurified() {
-        return PlurClass._plurified;
+    static getMetaDescriptors() {
+        return PlurMeta.#metaDescriptors;
     };
+
+    static getMetaDescriptor(namepath) {
+        if (typeof PlurMeta.#metaDescriptors[namepath] !== 'undefined') {
+            return PlurMeta.#metaDescriptors[namepath];
+        }
+
+        throw new Error('Meta descriptor not found for namepath');
+    };
+
 
     /**
      * @throws {Error}
      */
     constructor() {
-        throw new Error('Cannot instantiate private constructor of PlurClass');
+        throw new Error('Cannot instantiate private constructor of PlurMeta');
     };
 }
 
 /** @type {!Array<!Object<string,string>>} Runtime information about each class that has been plurify()'d. **/
-PlurClass._plurified = [];
+PlurMeta._plurified = [];
 
-PlurClass.plurify('plur/Class', PlurClass);
+PlurMeta.plurify('plur/Meta', PlurMeta);
