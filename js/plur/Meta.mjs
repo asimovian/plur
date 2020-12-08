@@ -112,7 +112,7 @@ export default class PlurMeta {
      * @param {!iPlurCompatable} classObject The class to be plurified
      * @param {Array<iPlurCompatable>=} interfaces Interfaces to be implemented.
      */
-    static conform(namepath, classObject, interfaces) {
+    static conformClass(classObject, interfaces) {
         if (!(classObject instanceof Function) || typeof classObject.prototype === 'undefined') {
             throw new Error('Non-class passed to plurify()');
         } else if (this.isPlurifiedClass(classObject)) {
@@ -137,7 +137,7 @@ export default class PlurMeta {
         }
 
         // kept for runtime metrics
-        PlurMeta.#metaDescriptors[namepath] = new MetaDescriptor(classObject);
+        PlurMeta.#metaDescriptors[classObject.namepath] = new MetaDescriptor(classObject);
 
         if (!Array.isArray(interfaces)) {  // all done then
             return;
@@ -147,6 +147,8 @@ export default class PlurMeta {
             PlurMeta.implement(classObject, interfaces[i]);
         }
     };
+
+    static conformInteface(
 
     /**
      * Define a subject constructor/prototype as implementing a given interface constructor.
